@@ -1,7 +1,7 @@
 # react-native-starter-kit
 
 
-### Feature:
+### Features:
 * Redux : https://redux.js.org
 * Redux Saga: https://github.com/redux-saga/redux-saga
 * React Navigation : (https://reactnavigation.org/docs/getting-started.html , https://github.com/react-navigation/react-navigation)
