@@ -106,12 +106,12 @@ const DrawerNavigatorView = DrawerNavigator({
   DrawerSettingScreen: {screen: DrawerSettingScreen},
 },
 {
-  drawerWidth: 200,
+ // drawerWidth: 200,
   drawerPosition: "left",
   initialRouteName: "DrawerHomeScreen",
   navigationOptions: ({navigation}) => ({
     headerStyle: {backgroundColor: 'green'},
-    title: 'DrawerStackView',
+    title: '',
     headerLeft: drawerIcon1(navigation), 
   })
 });
@@ -122,7 +122,7 @@ const DrawerStackView = StackNavigator({
   headerMode: 'none',
   navigationOptions: ({navigation}) => ({
     headerStyle: {backgroundColor: 'green'},
-    title: 'DrawerStackView',
+    title: '',
     gesturesEnabled: false,
     headerLeft: drawerIcon1(navigation), 
   })

@@ -36,6 +36,7 @@ class DetailView extends Component<{}> {
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
+      tabBarLabel: 'Home',
       headerTitle: '',
       title: 'Place',
       headerTintColor: 'white',

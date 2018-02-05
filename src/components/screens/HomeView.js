@@ -62,6 +62,7 @@ class HomeView extends Component<{}> {
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
+      tabBarLabel: 'Home',
       headerTitle: '',
       title: 'Home',
       headerTintColor: 'white',

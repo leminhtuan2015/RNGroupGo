@@ -2,11 +2,25 @@ import React from 'react';
 import { Text, View, Button } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 
+import { List,
+  Icon,
+} from 'react-native-elements'
+
+import IconManager from "../../utils/IconManager"
 import HomeViewContainer from '../../containers/HomeViewContainer';
 import PlaceViewContainer from '../../containers/PlaceViewContainer';
 import AddPlaceViewContainer from '../../containers/AddPlaceViewContainer';
 
 class TabDetailsScreen extends React.Component {
+
+  static navigationOptions = ({navigation}) => {
+    return {
+      tabBarIcon: IconManager.icon("star", "red", () => {
+        navigation.navigate("TabDetailsScreen")
+      })
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -17,12 +31,21 @@ class TabDetailsScreen extends React.Component {
 }
 
 class TabSettingsScreen extends React.Component {
+
+  static navigationOptions = ({navigation}) => {
+    return {
+      tabBarIcon: IconManager.icon("bars", "green", () => {
+        navigation.navigate("TabSettingsScreen")
+      })
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         { /* other code from before here */ }
         <Button
-          title="SETTING : Go to Details"
+          title="Go to Details"
           onPress={() => this.props.navigation.navigate('TabDetailsScreen')}
         />
       </View>
@@ -63,6 +86,9 @@ const TabStackUser = StackNavigator({
   TabStackUserDetailScreen: { screen:  TabStackUserDetailScreen},
 },
 {
+  tabBarIcon: IconManager.icon("user", "blue", () => {
+    navigation.navigate("TabStackUserScreen")
+  })
 });
 
 const TabStackWeather = StackNavigator({
@@ -75,8 +101,28 @@ const TabStackWeather = StackNavigator({
 
 const TabNavigatorView =  TabNavigator(
   {
-    TabStackWeather: { screen: TabStackWeather },
-    TabStackUser: { screen: TabStackUser },
+    TabStackWeather: {
+      screen: TabStackWeather, 
+      navigationOptions: ({navigation}) => ({
+				showLabel: false,
+				tabBarIcon: IconManager.icon("apple", "black", () => {
+					navigation.navigate("TabStackWeather")
+				}),
+				showIcon: true
+		  }) 
+    },
+
+    TabStackUser: { 
+      screen: TabStackUser, 
+			navigationOptions: ({navigation}) => ({
+				showLabel: false,
+				tabBarIcon: IconManager.icon("user", "blue", () => {
+					navigation.navigate("TabStackUser")
+				}),
+				showIcon: true
+		  })  
+    },
+
     TabDetailsScreen: { screen: TabDetailsScreen },
     TabSettingsScreen: { screen: TabSettingsScreen },
   },

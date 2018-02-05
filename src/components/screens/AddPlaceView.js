@@ -41,6 +41,7 @@ class EditView extends Component<{}> {
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
+      tabBarLabel: 'Home',
       headerTitle: '',
       title: 'Add Place',
       headerTintColor: 'white',
