@@ -1,0 +1,59 @@
+#!/bin/sh
+
+ICON_1024="./1024.png"
+SPALSH_2048="./2048_splash.png"
+IOS_PROJECT="../ios/demo_react_native/"
+ICON_OUTPUT="${IOS_PROJECT}/Images.xcassets/AppIcon.appiconset"
+SPLASH_OUTPUT="${IOS_PROJECT}/Images.xcassets/LaunchImage.launchimage"
+
+# EXPORT ICONS
+
+sips -Z 16 "$ICON_1024" --out "$ICON_OUTPUT/icon16.png"
+sips -Z 29 "$ICON_1024" --out "$ICON_OUTPUT/icon29.png"
+sips -Z 32 "$ICON_1024" --out "$ICON_OUTPUT/icon32.png"
+sips -Z 40 "$ICON_1024" --out "$ICON_OUTPUT/icon40.png"
+sips -Z 48 "$ICON_1024" --out "$ICON_OUTPUT/icon48.png"
+sips -Z 50 "$ICON_1024" --out "$ICON_OUTPUT/icon50.png"
+sips -Z 55 "$ICON_1024" --out "$ICON_OUTPUT/icon55.png"
+sips -Z 57 "$ICON_1024" --out "$ICON_OUTPUT/icon57.png"
+sips -Z 58 "$ICON_1024" --out "$ICON_OUTPUT/icon58.png"
+sips -Z 64 "$ICON_1024" --out "$ICON_OUTPUT/icon64.png"
+sips -Z 72 "$ICON_1024" --out "$ICON_OUTPUT/icon72.png"
+sips -Z 76 "$ICON_1024" --out "$ICON_OUTPUT/icon76.png"
+sips -Z 80 "$ICON_1024" --out "$ICON_OUTPUT/icon80.png"
+sips -Z 87 "$ICON_1024" --out "$ICON_OUTPUT/icon87.png"
+sips -Z 88 "$ICON_1024" --out "$ICON_OUTPUT/icon88.png"
+sips -Z 100 "$ICON_1024" --out "$ICON_OUTPUT/icon100.png"
+sips -Z 114 "$ICON_1024" --out "$ICON_OUTPUT/icon114.png"
+sips -Z 120 "$ICON_1024" --out "$ICON_OUTPUT/icon120.png"
+sips -Z 128 "$ICON_1024" --out "$ICON_OUTPUT/icon128.png"
+sips -Z 144 "$ICON_1024" --out "$ICON_OUTPUT/icon144.png"
+sips -Z 152 "$ICON_1024" --out "$ICON_OUTPUT/icon152.png"
+sips -Z 167 "$ICON_1024" --out "$ICON_OUTPUT/icon167.png"
+sips -Z 172 "$ICON_1024" --out "$ICON_OUTPUT/icon172.png"
+sips -Z 180 "$ICON_1024" --out "$ICON_OUTPUT/icon180.png"
+sips -Z 196 "$ICON_1024" --out "$ICON_OUTPUT/icon196.png"
+sips -Z 256 "$ICON_1024" --out "$ICON_OUTPUT/icon256.png"
+sips -Z 512 "$ICON_1024" --out "$ICON_OUTPUT/icon512.png"
+sips -Z 1024 "$ICON_1024" --out "$ICON_OUTPUT/icon1024.png"
+
+# EXPORT SPLASHS
+# HEIGHT-WIDTH
+
+sips -Z 960 -c 960 640 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default640x960.png"
+sips -Z 480 -c 480 320 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default320x480.png"
+sips -Z 1136 -c 1136 640 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default640x1136.png"
+sips -Z 1334 -c 1334 750 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default750x1334.png"
+sips -Z 1024 -c 768 1024 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default1024x768.png"
+sips -Z 1024 -c 768 1024 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default768x1024.png"
+sips -Z 2208 -c 2208 1242 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default2208x1242.png"
+sips -Z 2208 -c 1242 2208 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default1242x2208.png"
+sips -Z 2048 -c 2048 1536 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default2048x1536.png"
+sips -Z 2048 -c 1536 2048 "$SPALSH_2048" --out "$SPLASH_OUTPUT/Default1536x2048.png"
+
+
+
+
+
+
+

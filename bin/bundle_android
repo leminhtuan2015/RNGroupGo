@@ -1,0 +1,13 @@
+INDEX_JS="./index.js"
+BUNDLE_OUTPUT="./android/app/src/main/assets/index.android.bundle"
+ASSETS_DEST="android/app/src/main/res/"
+
+cd ../
+
+react-native bundle \
+  --dev false \
+	--entry-file ${INDEX_JS} \
+  --bundle-output ${BUNDLE_OUTPUT} \
+  --assets-dest ${ASSETS_DEST} \ 
+	--platform android
+
