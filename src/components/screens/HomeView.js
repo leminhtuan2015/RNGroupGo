@@ -34,6 +34,7 @@ import ImageManager from "../../utils/ImageManager"
 import {styleStackHeader} from "../../utils/Constant.js"
 
 import LMTRN from "../../native_modules/LMTRN"
+import SqliteHelper from "../../helpers/SqliteHelper"
 
 class HomeView extends Component<{}> {
   static headerRight = null
@@ -44,10 +45,16 @@ class HomeView extends Component<{}> {
     super(props)
     
     this.showIntertitialAd()
+    this.test()
+  }
 
-    let lmtRN = new LMTRN()
-    lmtRN.squareMe(3)
-    lmtRN.log("TUAN XXXXX")
+  test(){
+    //let lmtRN = new LMTRN()
+    //lmtRN.squareMe(3)
+    //lmtRN.log("TUAN XXXXX")
+
+    let sqlite = new SqliteHelper()
+    sqlite.select()
   }
 
   static navigationOptions = ({navigation}) => {
@@ -67,7 +74,7 @@ class HomeView extends Component<{}> {
       title: 'Home',
       headerTintColor: 'white',
 		  headerStyle: styleStackHeader,
-			headerRight: this.headerRight
+			headerRight: this.headerRight,
 		}
 	}
 

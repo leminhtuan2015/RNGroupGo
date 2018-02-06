@@ -115,7 +115,7 @@ const TabNavigatorView =  TabNavigator(
     TabStackUser: { 
       screen: TabStackUser, 
 			navigationOptions: ({navigation}) => ({
-				showLabel: false,
+				tabBarLabel: "User",
 				tabBarIcon: IconManager.icon("user", "blue", () => {
 					navigation.navigate("TabStackUser")
 				}),
@@ -123,8 +123,18 @@ const TabNavigatorView =  TabNavigator(
 		  })  
     },
 
-    TabDetailsScreen: { screen: TabDetailsScreen },
-    TabSettingsScreen: { screen: TabSettingsScreen },
+    TabDetailsScreen: {
+      screen: TabDetailsScreen, 
+      navigationOptions: ({navigation}) => ({
+				tabBarLabel: "Detail",
+		  }) 
+    },
+    TabSettingsScreen: {
+      screen: TabSettingsScreen,
+      navigationOptions: ({navigation}) => ({
+				tabBarLabel: "Detail",
+		  }) 
+    },
   },
   {
   }

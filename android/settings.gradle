@@ -1,11 +1,14 @@
 rootProject.name = 'demo_react_native'
 
+// Include Modules in to Project
 include ':app'
 include ':react-native-navigation'
 include ':react-native-admob'
 include ':react-native-vector-icons'
+include ':react-native-sqlite-storage'
 
+// Library Project AAR path
 project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
 project(':react-native-admob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-admob/android')
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-
+project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/src/android')
