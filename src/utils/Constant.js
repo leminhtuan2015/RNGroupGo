@@ -6,5 +6,7 @@ export const styleStackHeader = {
   left: 0,
   right: 15,
   borderBottomWidth: 0,
+  elevation: 0,
+  shadowOpacity: 0,
 }
 
