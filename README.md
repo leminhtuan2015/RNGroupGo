@@ -9,3 +9,4 @@
 * React Native Element : https://github.com/react-native-training/react-native-elements
 * React Native Admob : https://github.com/sbugert/react-native-admob
 * React Native Vector Icons : https://github.com/oblador/react-native-vector-icons
+* React Native Sqlite : https://github.com/andpor/react-native-sqlite-storage
