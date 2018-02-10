@@ -17,3 +17,23 @@ export function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
+
+export function getCurrentPosition(callback) {
+    try {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const region = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+
+					callback(region, null)
+        },
+        (error) => {
+					callback(null, error)
+        }
+      );
+    } catch(e) {
+			callback(null, e)
+    }
+  };
