@@ -14,6 +14,13 @@ firebase.initializeApp(config)
 let database = firebase.database()
 
 class FirebaseHelper {
+
+  static subscribe(path, callback){
+    let ref = database.ref(path);
+    ref.on('value', function(snapshot) {
+      callback(snapshot.val())
+    });
+  }
   
   static read(){
     return database

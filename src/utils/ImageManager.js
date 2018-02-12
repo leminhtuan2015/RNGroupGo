@@ -39,7 +39,15 @@ const ImageManager = (image) => {
              source={require("../resources/images/location.png")} />
       )
 
+   } else if(image == "location1") {
+      return (
+           <Image
+             style={{width: 32, height: 32}}
+             source={require("../resources/images/location1.png")} />
+      )
+
    }
+
 }
 
 export default ImageManager

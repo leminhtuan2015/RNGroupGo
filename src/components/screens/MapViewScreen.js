@@ -17,6 +17,7 @@ import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
+import FirebaseHelper from "../../helpers/FirebaseHelper"
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -51,20 +52,23 @@ class MapViewScreen extends React.Component {
     latitude: 21.009792, 
     longitude: 105.823421
   }
-
-  reloadComponent = true
-
+  
   constructor(props){
     super(props)
 
     this.state = {
+      friend1CoordinateAnimated: 
+        new AnimatedRegion(MapViewScreen.defaultCoordinate),
 			currentCoordinateAnimated: 
         new AnimatedRegion(MapViewScreen.defaultCoordinate),
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
+    this.reloadComponent = true
+
     this.getCurrentPosition()
     this.bind()
+    this.subscribeFriends()
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -73,9 +77,28 @@ class MapViewScreen extends React.Component {
     this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
   }
 
+  subscribeFriends = () => {
+    let path = "users/709549E2-9BCD-4C27-9A41-C8EB112B4973/"
+
+    FirebaseHelper.subscribe(path, (data) => {
+      console.log("subscribe : " + JSON.stringify(data)) 
+
+      const newCoordinate = data
+      const {friend1CoordinateAnimated} = this.state
+
+      if (Platform.OS === 'android') {
+        if (this.markerFriend1) {
+          this.markerFriend1._component.animateMarkerToCoordinate(newCoordinate, 500);
+        }
+      } else {
+        friend1CoordinateAnimated.timing(newCoordinate).start();
+      }
+    })  
+  }
+
   getCurrentPosition = () => {
     //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
-
+    // NEED REFACTOR
     Utils.getCurrentPosition((region, error) => {
       console.log("Get Current Position done : " + JSON.stringify(region))
       console.log("Get Current Position error : " + JSON.stringify(error))
@@ -85,7 +108,7 @@ class MapViewScreen extends React.Component {
         this.setState({currentCoordinateAnimated: 
           new AnimatedRegion(region)})
 
-        this.reloadComponent = false 
+        //this.reloadComponent = false 
       }
 
       this.props.dispatch({
@@ -137,8 +160,8 @@ class MapViewScreen extends React.Component {
 
     const { currentCoordinateAnimated } = this.state;
     const newCoordinate = {
-      latitude: this.state.currentCoordinate.latitude, 
-      longitude: this.state.currentCoordinate.longitude
+      latitude: lat, 
+      longitude: lon,
     };
 
     if (Platform.OS === 'android') {
@@ -172,10 +195,19 @@ class MapViewScreen extends React.Component {
           <MapView.Marker.Animated
             coordinate={this.state.currentCoordinateAnimated}
             ref={marker => { this.marker = marker }}
-            title="2"
-            description="marker.description"
+            title="Me"
+            description="description"
           >
             {ImageManager("location")}
+          </MapView.Marker.Animated>
+
+          <MapView.Marker.Animated
+            coordinate={this.state.friend1CoordinateAnimated}
+            ref={marker => { this.markerFriend1 = marker }}
+            title="Friend1"
+            description="description"
+          >
+            {ImageManager("location1")}
           </MapView.Marker.Animated>
         </MapView>
 
