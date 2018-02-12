@@ -52,6 +52,8 @@ class MapViewScreen extends React.Component {
     longitude: 105.823421
   }
 
+  reloadComponent = true
+
   constructor(props){
     super(props)
 
@@ -61,7 +63,7 @@ class MapViewScreen extends React.Component {
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
-    this.getData()
+    this.getCurrentPosition()
     this.bind()
   }
 
@@ -71,21 +73,30 @@ class MapViewScreen extends React.Component {
     this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
   }
 
-  getData(){
+  getCurrentPosition = () => {
     //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
 
     Utils.getCurrentPosition((region, error) => {
       console.log("Get Current Position done : " + JSON.stringify(region))
       console.log("Get Current Position error : " + JSON.stringify(error))
-      
-      this.setState({currentCoordinate: region})
-      this.setState({currentCoordinateAnimated: new AnimatedRegion(region)})
+     
+      if(region) {
+        this.setState({currentCoordinate: region})
+        this.setState({currentCoordinateAnimated: 
+          new AnimatedRegion(region)})
 
-      this.props.dispatch({type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, data: region})
+        this.reloadComponent = false 
+      }
+
+      this.props.dispatch({
+        type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, 
+        data: region
+      })
     }) 
   }
 
   bind(){
+    setInterval(this.getCurrentPosition, 5 * 1000)
     setInterval(this.moveMarker, 5 * 1000)
   }
 
@@ -118,7 +129,6 @@ class MapViewScreen extends React.Component {
 	}
 
   moveMarker = () => {
-    this.getData()
     let lat = this.state.currentCoordinate.latitude 
     let lon = this.state.currentCoordinate.longitude 
 
@@ -138,6 +148,10 @@ class MapViewScreen extends React.Component {
     } else {
       currentCoordinateAnimated.timing(newCoordinate).start();
     }
+  }
+
+  shouldComponentUpdate(){
+    return this.reloadComponent
   }
 
   render() {
