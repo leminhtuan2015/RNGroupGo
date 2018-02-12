@@ -47,21 +47,22 @@ class MapViewScreen extends React.Component {
     drawerLabel: 'Map',
   };
 
+  static defaultCoordinate = {
+    latitude: 21.009792, 
+    longitude: 105.823421
+  }
+
   constructor(props){
     super(props)
 
     this.state = {
-			currentCoordinateAnimated: new AnimatedRegion({
-         latitude: 21.009792, 
-         longitude: 105.823421, }),
-		  currentCoordinate: {
-				 latitude: 21.009792, 
-         longitude: 105.823421, 
-			}
+			currentCoordinateAnimated: 
+        new AnimatedRegion(MapViewScreen.defaultCoordinate),
+		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
-    //this.getData()
-    //this.bind()
+    this.getData()
+    this.bind()
   }
 
   componentWillReceiveProps = (newProps) => {
