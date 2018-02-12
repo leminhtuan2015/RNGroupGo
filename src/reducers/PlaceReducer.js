@@ -115,8 +115,6 @@ function filter(keyword){
   return data
 }
 
-
-
 export default PlaceReducer
 
 

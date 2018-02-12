@@ -1,12 +1,12 @@
 var firebase = require("firebase");
 
 var config = {
-  apiKey: "AIzaSyBjrTO1f1u17LNYwW054-3EVoNqL5wA0O0",
-  authDomain: "react-native-weather-87fee.firebaseapp.com",
-  databaseURL: "https://react-native-weather-87fee.firebaseio.com",
-  projectId: "react-native-weather-87fee",
-  storageBucket: "react-native-weather-87fee.appspot.com",
-  messagingSenderId: "663997325870" 
+	apiKey: "AIzaSyBr_UcbJtRJhIltfk4bBKRTeAXkTW7jAvg",
+	authDomain: "react-native-way.firebaseapp.com",
+	databaseURL: "https://react-native-way.firebaseio.com",
+	projectId: "react-native-way",
+	storageBucket: "react-native-way.appspot.com",
+	messagingSenderId: "289883308274"
 }
 
 firebase.initializeApp(config)
@@ -20,11 +20,13 @@ class FirebaseHelper {
       .ref('/cities/99099/')
       .once('value')
       .then(function(snapshot) {
-
         var username = (snapshot.val()) || 'Anonymous';
-        
         return username
     })
+  }
+
+  static write(path, dataObject){
+		database.ref(path).set(dataObject); 
   }
   
   static filter(keyword){
@@ -48,7 +50,6 @@ class FirebaseHelper {
 
 	static snapshotToArray(snapshot) {
     var returnArr = [];
-
     snapshot.forEach(function(childSnapshot) {
         var item = childSnapshot.val();
         item.key = childSnapshot.key;
@@ -58,8 +59,6 @@ class FirebaseHelper {
 
     return returnArr;
 	};
-
-
 }
 
 export default FirebaseHelper

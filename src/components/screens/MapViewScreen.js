@@ -13,8 +13,10 @@ import {
   Platform,
 } from "react-native"
 
-import * as Utils from "../../utils/Utils"
 import * as Constant from "../../utils/Constant"
+import * as Utils from "../../utils/Utils"
+import * as ActionTypes from "../../constants/ActionTypes"
+import ImageManager from "../../utils/ImageManager"
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -50,26 +52,36 @@ class MapViewScreen extends React.Component {
 
     this.state = {
 			currentCoordinateAnimated: new AnimatedRegion({
-         latitude: 0, 
-         longitude: 0, }),
+         latitude: 21.009792, 
+         longitude: 105.823421, }),
 		  currentCoordinate: {
-				 latitude: 0, 
-         longitude: 0, 
+				 latitude: 21.009792, 
+         longitude: 105.823421, 
 			}
     }
 
-    this.getData()
-    this.bind()
+    //this.getData()
+    //this.bind()
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    console.log("MapView will receive props")
+
+    this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
   }
 
   getData(){
-   Utils.getCurrentPosition((region, error) => {
-     console.log("Get Current Position done" + JSON.stringify(region))
-     console.log("Get Current Position error" + JSON.stringify(error))
+    //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
 
-     this.setState({currentCoordinate: region})
-     this.setState({currentCoordinateAnimated: new AnimatedRegion(region)})
-   }) 
+    Utils.getCurrentPosition((region, error) => {
+      console.log("Get Current Position done : " + JSON.stringify(region))
+      console.log("Get Current Position error : " + JSON.stringify(error))
+      
+      this.setState({currentCoordinate: region})
+      this.setState({currentCoordinateAnimated: new AnimatedRegion(region)})
+
+      this.props.dispatch({type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, data: region})
+    }) 
   }
 
   bind(){
@@ -77,31 +89,31 @@ class MapViewScreen extends React.Component {
   }
 
 	regionFrom1(lat, lon) {
-			return result = {
-					latitude: lat,
-					longitude: lon,
-					latitudeDelta: LATITUDE_DELTA,
-					longitudeDelta: LONGITUDE_DELTA,
-			}
+		return result = {
+			latitude: lat,
+			longitude: lon,
+			latitudeDelta: LATITUDE_DELTA,
+			longitudeDelta: LONGITUDE_DELTA,
+		}
 	}
 
 	regionFrom(lat, lon, distance) {
-			distance = distance/2
-			const circumference = 40075
-			const oneDegreeOfLatitudeInMeters = 111.32 * 1000
-			const angularDistance = distance/circumference
+		distance = distance/2
+		const circumference = 40075
+		const oneDegreeOfLatitudeInMeters = 111.32 * 1000
+		const angularDistance = distance/circumference
 
-			const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
-			const longitudeDelta = Math.abs(Math.atan2(
-							Math.sin(angularDistance)*Math.cos(lat),
-							Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
+		const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
+		const longitudeDelta = Math.abs(Math.atan2(
+						Math.sin(angularDistance)*Math.cos(lat),
+						Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
 
-			return result = {
-					latitude: lat,
-					longitude: lon,
-					latitudeDelta,
-					longitudeDelta,
-			}
+		return result = {
+			latitude: lat,
+			longitude: lon,
+			latitudeDelta,
+			longitudeDelta,
+		}
 	}
 
   moveMarker = () => {
@@ -109,7 +121,8 @@ class MapViewScreen extends React.Component {
     let lat = this.state.currentCoordinate.latitude 
     let lon = this.state.currentCoordinate.longitude 
 
-    Toast.show(lat + ":" + lon, Toast.SHORT, Toast.TOP, Constant.styleToast); 
+    Toast.show("lat: " + lat + "\n" + "lon: " + lon, 
+			Toast.SHORT, Toast.TOP, Constant.styleToast); 
 
     const { currentCoordinateAnimated } = this.state;
     const newCoordinate = {
@@ -146,9 +159,9 @@ class MapViewScreen extends React.Component {
             ref={marker => { this.marker = marker }}
             title="2"
             description="marker.description"
-            image={require('../../resources/images/location2.png')}
-          />
-
+          >
+            {ImageManager("location")}
+          </MapView.Marker.Animated>
         </MapView>
 
         <TouchableOpacity onPress={() => this.moveMarker()}>

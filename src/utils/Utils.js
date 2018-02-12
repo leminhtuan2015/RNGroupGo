@@ -19,21 +19,22 @@ export function guid() {
 }
 
 export function getCurrentPosition(callback) {
-    try {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const region = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
+  try {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
 
-					callback(region, null)
-        },
-        (error) => {
-					callback(null, error)
-        }
-      );
-    } catch(e) {
-			callback(null, e)
-    }
-  };
+        callback(region, null)
+      },
+      (error) => {
+        callback(null, error)
+      }
+    );
+  } catch(e) {
+    callback(null, e)
+  }
+};
+

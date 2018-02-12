@@ -16,7 +16,7 @@ import {
 } from 'react-native-elements'
 
 import NavBarItem from '../views/NavBarItem';
-import MapViewScreen from './MapViewScreen';
+import MapViewContainer from '../../containers/MapViewContainer';
 
 class DrawerHomeScreen extends React.Component {
   static navigationOptions = {
@@ -92,12 +92,12 @@ const drawerIcon = (navigation) => (<Icon
 const DrawerNavigatorView = DrawerNavigator({
   DrawerHomeScreen: {screen: DrawerHomeScreen},
   DrawerDetailScreen: {screen: DrawerDetailScreen},
-  MapViewScreen: {screen: MapViewScreen},
+  MapViewContainer: {screen: MapViewContainer},
 },
 {
  // drawerWidth: 200,
   drawerPosition: "left",
-  initialRouteName: "MapViewScreen",
+  initialRouteName: "MapViewContainer",
   navigationOptions: ({navigation}) => ({
     headerStyle: {backgroundColor: 'green'},
     title: '',

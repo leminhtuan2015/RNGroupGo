@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import WeatherReducer from '../reducers/WeatherReducer'
 import PlaceReducer from '../reducers/PlaceReducer'
+import MapReducer from '../reducers/MapReducer'
 import RootNavigatorReducer from '../navigator/RootNavigatorReducer'
 
 import rootSaga from '../saga/Saga'
@@ -11,6 +12,7 @@ import rootSaga from '../saga/Saga'
 const reducers = combineReducers({
   weatherState: WeatherReducer,  // WeatherReducer is manage weatherState data object
   placeState: PlaceReducer,  
+  mapState: MapReducer,  
   nav: RootNavigatorReducer,
 });
 
@@ -22,6 +24,8 @@ console.log("Store state: " + JSON.stringify(Store.getState()))
 
 sagaMiddleware.run(rootSaga)
 
-console.log("222222222222222222222222222222222222222")
-var x = 100
 export default Store;
+
+
+
+
