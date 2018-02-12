@@ -1,6 +1,7 @@
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Marker, AnimatedRegion } from 'react-native-maps';
 import React from 'react';
+import Toast from 'react-native-toast-native';
 import {
   Dimensions,
   StyleSheet,
@@ -13,6 +14,7 @@ import {
 } from "react-native"
 
 import * as Utils from "../../utils/Utils"
+import * as Constant from "../../utils/Constant"
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -47,24 +49,31 @@ class MapViewScreen extends React.Component {
     super(props)
 
     this.state = {
-			coordinate: new AnimatedRegion({
-         latitude: 21.016911, 
-         longitude:105.925298, }),
+			currentCoordinateAnimated: new AnimatedRegion({
+         latitude: 0, 
+         longitude: 0, }),
 		  currentCoordinate: {
-				 latitude: 21.016911, 
-         longitude:105.925298, 
+				 latitude: 0, 
+         longitude: 0, 
 			}
     }
 
     this.getData()
+    this.bind()
   }
 
   getData(){
    Utils.getCurrentPosition((region, error) => {
      console.log("Get Current Position done" + JSON.stringify(region))
+     console.log("Get Current Position error" + JSON.stringify(error))
 
      this.setState({currentCoordinate: region})
+     this.setState({currentCoordinateAnimated: new AnimatedRegion(region)})
    }) 
+  }
+
+  bind(){
+    setInterval(this.moveMarker, 5 * 1000)
   }
 
 	regionFrom1(lat, lon) {
@@ -75,7 +84,6 @@ class MapViewScreen extends React.Component {
 					longitudeDelta: LONGITUDE_DELTA,
 			}
 	}
-
 
 	regionFrom(lat, lon, distance) {
 			distance = distance/2
@@ -96,11 +104,17 @@ class MapViewScreen extends React.Component {
 			}
 	}
 
-  change = () => {
-    const { coordinate } = this.state;
+  moveMarker = () => {
+    this.getData()
+    let lat = this.state.currentCoordinate.latitude 
+    let lon = this.state.currentCoordinate.longitude 
+
+    Toast.show(lat + ":" + lon, Toast.SHORT, Toast.TOP, Constant.styleToast); 
+
+    const { currentCoordinateAnimated } = this.state;
     const newCoordinate = {
-      latitude: 21.0150778 + ((Math.random() - 0.5) * (LATITUDE_DELTA / 2)),
-      longitude: 105.9258556 + ((Math.random() - 0.5) * (LONGITUDE_DELTA / 2)),
+      latitude: this.state.currentCoordinate.latitude, 
+      longitude: this.state.currentCoordinate.longitude
     };
 
     if (Platform.OS === 'android') {
@@ -108,7 +122,7 @@ class MapViewScreen extends React.Component {
         this.marker._component.animateMarkerToCoordinate(newCoordinate, 500);
       }
     } else {
-      coordinate.timing(newCoordinate).start();
+      currentCoordinateAnimated.timing(newCoordinate).start();
     }
   }
 
@@ -128,22 +142,16 @@ class MapViewScreen extends React.Component {
           }}
         >
           <MapView.Marker.Animated
-            coordinate={this.state.currentCoordinate}
+            coordinate={this.state.currentCoordinateAnimated}
+            ref={marker => { this.marker = marker }}
             title="2"
             description="marker.description"
             image={require('../../resources/images/location2.png')}
           />
 
-          <MapView.Marker.Animated
-            coordinate={this.state.coordinate}
-            ref={marker => { this.marker = marker }}
-            title="1"
-            description="marker.description"
-            image={require('../../resources/images/location1.png')}
-          />
         </MapView>
 
-        <TouchableOpacity onPress={() => this.change()}>
+        <TouchableOpacity onPress={() => this.moveMarker()}>
             <Text>Move</Text>
         </TouchableOpacity>
       </View>
@@ -152,8 +160,4 @@ class MapViewScreen extends React.Component {
 }
 
 export default MapViewScreen
-
-
-
-
 
