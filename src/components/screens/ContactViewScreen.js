@@ -65,6 +65,9 @@ class ContactViewScreen extends React.Component {
 
   onPressListItem = (rowData) => {
     console.log("Pressed : " + JSON.stringify(rowData))
+    const userId = rowData.key
+    this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
+      data: [userId]})
   }
 
   onTextChange = (text) => {

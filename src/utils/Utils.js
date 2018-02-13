@@ -1,3 +1,5 @@
+import DeviceInfo from 'react-native-device-info';
+
 export function log(message){
   console.log("Logger : " + message)
 }
@@ -38,3 +40,6 @@ export function getCurrentPosition(callback) {
   }
 };
 
+export function uniqueId(){
+  return DeviceInfo.getUniqueID()
+}

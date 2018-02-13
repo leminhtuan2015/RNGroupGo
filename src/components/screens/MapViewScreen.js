@@ -13,6 +13,8 @@ import {
   Platform,
 } from "react-native"
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 
 import * as Constant from "../../utils/Constant"
@@ -20,7 +22,6 @@ import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
 import FirebaseHelper from "../../helpers/FirebaseHelper"
-import DeviceInfo from 'react-native-device-info';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -51,6 +52,25 @@ class MapViewScreen extends React.Component {
     drawerLabel: 'Map',
   };
 
+  static navigationOptions = ({navigation}) => {
+    const { params = {} } = navigation.state;
+
+		const headerRight = 
+      <Icon 
+        name="users"
+        size={25}
+        color='#ffffff'
+        underlayColor="transparent"
+        onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
+    
+    return {
+      tabBarLabel: 'Map',
+      drawerLabel: 'Map',
+      headerTitle: '',
+			headerRight: headerRight,
+		}
+	}
+
   static defaultCoordinate = {
     latitude: 21.009792, 
     longitude: 105.823421
@@ -72,6 +92,16 @@ class MapViewScreen extends React.Component {
     console.log("MapView will receive props")
 
     this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
+  }
+
+  componentDidMount(){
+    this.props.navigation
+      .setParams({rightButtonOnPress: this.rightButtonOnPress}); 
+  }
+
+  rightButtonOnPress = () => {
+    console.log("Right button Pressed : " + 
+      this.props.store.mapState.users.length) 
   }
 
   getCurrentPosition = () => {
@@ -148,31 +178,14 @@ class MapViewScreen extends React.Component {
   }
 
   renderMarkers(){
-	  const uniqueId = DeviceInfo.getUniqueID();
-
     return (
       <View>
         <MarkerAnimatedView
-          userId={uniqueId}
+          userId={Utils.uniqueId()}
           title="Me"
           description="Me"
           imageName="location"
         />
-
-        <MarkerAnimatedView
-          userId="EDF7C50A-C833-4575-A2EE-E472DEFDE8B5"
-          title="tuan"
-          description="tuan"
-          imageName="location1"
-        />
-
-        <MarkerAnimatedView
-          userId="709549E2-9BCD-4C27-9A41-C8EB112B4973"
-          title="tuan 1"
-          description="tuan 1"
-          imageName="location1"
-        />
-
       </View>
     )   
   }

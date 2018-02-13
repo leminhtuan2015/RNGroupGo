@@ -3,13 +3,20 @@ import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import DeviceInfo from 'react-native-device-info';
 
-export const MapReducer = (state = {}, action) => {
+const initialState = {
+  currentCoordinate: {latitude: 0, longitude: 0},
+  users: [],
+}
+
+export const MapReducer = (state = initialState, action) => {
 
   const {type, data} = action 
 
   switch (type) {
   case ActionTypes.GET_CURRENT_PLACE:
     return getCurrentPlace(state)
+  case ActionTypes.SET_USERS_IN_MAP:
+    return setUsersInMap(state, data)
   case ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE:
     updateLocationToFirebase(data) 
     return state
@@ -29,8 +36,12 @@ function getCurrentPlace(state){
     return state 
 }
 
+function setUsersInMap(state, data){
+  return Object.assign({}, state, {users: data})
+}
+
 function updateLocationToFirebase(data){
-	const uniqueId = DeviceInfo.getUniqueID();
+	const uniqueId = Utils.uniqueId();
 
   FirebaseHelper.write("users/" + uniqueId +"/coordinate", data)
 } 

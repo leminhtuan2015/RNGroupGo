@@ -45,9 +45,7 @@ class FirebaseHelper {
       .endAt(keyword + "\uf8ff")
       .once("value", function(data) {
          //console.log("Equal to filter: " + JSON.stringify(data.val()));
-         
          let arrayData = FirebaseHelper.snapshotToArray(data) 
-
          //console.log("Array filter: " + JSON.stringify(arrayData));
          return arrayData
     })

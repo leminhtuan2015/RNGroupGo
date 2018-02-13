@@ -2,6 +2,7 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 
 import * as ActionTypes from "../constants/ActionTypes"
+import * as Utils from "../utils/Utils"
 import Weather from "../models/Weather"
 import Place from "../models/Place"
 import FirebaseHelper from "../helpers/FirebaseHelper"
@@ -55,15 +56,12 @@ export function* firebaseFilterCity(action){
 
 export function* firebaseFilterUser(action){
   let {data} = action
-
-  if(!data){
-    yield put({ type: ActionTypes.SET_FILTER_USERS, data: [] })
-    return
-  }
-
   console.log("Saga Firebase Filter User : " + data)
   let users = yield call(FirebaseHelper.filter, data, "users", "name")
   console.log("users filtered: " + JSON.stringify(users))
+	const uniqueId = Utils.uniqueId();
+  delete users["679152F5-79BE-4158-9180-EBCF97005512"]
+  console.log("users filtered ok: " + JSON.stringify(users))
   let userData = FirebaseHelper.snapshotToArray(users) 
   yield put({ type: ActionTypes.SET_FILTER_USERS, data: userData })
 }

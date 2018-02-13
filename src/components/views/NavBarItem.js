@@ -11,7 +11,7 @@ class NavBarItem extends Component {
         style={{ paddingHorizontal: 20 }}
         onPress={() => onPress()}
       >
-        <Icon name={iconName} size={20} color="#fff" />
+        <Icon name={iconName} size={25} color="#fff" />
       </TouchableOpacity>
 
     );
