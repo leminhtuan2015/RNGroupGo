@@ -13,6 +13,8 @@ import {
   Platform,
 } from "react-native"
 
+import MarkerAnimatedView from "../views/MarkerAnimatedView"
+
 import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
@@ -57,44 +59,19 @@ class MapViewScreen extends React.Component {
     super(props)
 
     this.state = {
-			currentCoordinateAnimated: 
-        new AnimatedRegion(MapViewScreen.defaultCoordinate),
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
-		this.friend1CoordinateAnimated = new AnimatedRegion(MapViewScreen.defaultCoordinate),
     this.reloadComponent = true
 
     this.getCurrentPosition()
     this.bind()
-    this.subscribeFriends()
   }
 
   componentWillReceiveProps = (newProps) => {
     console.log("MapView will receive props")
 
     this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
-  }
-
-  subscribeFriends = () => {
-    let path = "users/709549E2-9BCD-4C27-9A41-C8EB112B4973/"
-
-    FirebaseHelper.subscribe(path, (data) => {
-      console.log("subscribe : " + JSON.stringify(data)) 
-
-      const newCoordinate = data.coordinate
-
-      console.log("subscribe To: " + JSON.stringify(newCoordinate)) 
-
-      if (Platform.OS === 'android') {
-        if (this.markerFriend1) {
-          this.markerFriend1.
-  					_component.animateMarkerToCoordinate(newCoordinate, 500);
-        }
-      } else {
-        this.friend1CoordinateAnimated.timing(newCoordinate).start();
-      }
-    })  
   }
 
   getCurrentPosition = () => {
@@ -105,23 +82,22 @@ class MapViewScreen extends React.Component {
       console.log("Get Current Position error : " + JSON.stringify(error))
      
       if(region) {
+        const text = "lat:" + region.latitude + "\n" + "lon:" + region.longitude
+        Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
+
         this.setState({currentCoordinate: region})
-        this.setState({currentCoordinateAnimated: 
-          new AnimatedRegion(region)})
-
         this.reloadComponent = false 
-      }
 
-      this.props.dispatch({
-        type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, 
-        data: region
-      })
+        this.props.dispatch({
+          type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, 
+          data: region
+        })
+      }
     }) 
   }
 
   bind(){
     setInterval(this.getCurrentPosition, 5 * 1000)
-    setInterval(this.moveMarker, 5 * 1000)
   }
 
 	regionFrom1(lat, lon) {
@@ -152,64 +128,49 @@ class MapViewScreen extends React.Component {
 		}
 	}
 
-  moveMarker = () => {
-    let lat = this.state.currentCoordinate.latitude 
-    let lon = this.state.currentCoordinate.longitude 
-
-    Toast.show("lat: " + lat + "\n" + "lon: " + lon, 
-			Toast.SHORT, Toast.TOP, Constant.styleToast); 
-
-    const { currentCoordinateAnimated } = this.state;
-    const newCoordinate = {
-      latitude: lat, 
-      longitude: lon,
-    };
-
-    if (Platform.OS === 'android') {
-      if (this.marker) {
-        this.marker._component.animateMarkerToCoordinate(newCoordinate, 500);
-      }
-    } else {
-      currentCoordinateAnimated.timing(newCoordinate).start();
-    }
-  }
-
   shouldComponentUpdate(){
     return this.reloadComponent
   }
 
+  renderMarkers(){
+    return (
+      <View>
+        <MarkerAnimatedView
+          userId="679152F5-79BE-4158-9180-EBCF97005512"
+          title="tuan"
+          description="tuan"
+          imageName="location"
+        />
+
+        <MarkerAnimatedView
+          userId="709549E2-9BCD-4C27-9A41-C8EB112B4973"
+          title="tuan 1"
+          description="tuan 1"
+          imageName="location1"
+        />
+
+      </View>
+    )   
+  }
+
   render() {
+    const regionOk = this.regionFrom(
+      this.state.currentCoordinate.latitude,
+      this.state.currentCoordinate.longitude,
+      300)
+
     return (
       <View style={styles.container}>
         <MapView
           provider={PROVIDER_GOOGLE}
           showsCompass={true}
           style={styles.map}
-          region={this.regionFrom(
-              this.state.currentCoordinate.latitude,
-              this.state.currentCoordinate.longitude,
-              300)}
+          region={regionOk}
           onRegionChangeComplete = {(region) => {
             console.log(" region", region)
           }}
         >
-          <MapView.Marker.Animated
-            coordinate={this.state.currentCoordinateAnimated}
-            ref={marker => { this.marker = marker }}
-            title="Me"
-            description="description"
-          >
-            {ImageManager("location")}
-          </MapView.Marker.Animated>
-
-          <MapView.Marker.Animated
-            coordinate={this.friend1CoordinateAnimated}
-            ref={marker => { this.markerFriend1 = marker }}
-            title="Friend1"
-            description="description"
-          >
-            {ImageManager("location1")}
-          </MapView.Marker.Animated>
+          {this.renderMarkers()}
         </MapView>
 
         <TouchableOpacity onPress={() => this.subscribeFriends()}>
