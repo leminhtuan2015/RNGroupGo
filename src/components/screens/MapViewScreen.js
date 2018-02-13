@@ -57,13 +57,12 @@ class MapViewScreen extends React.Component {
     super(props)
 
     this.state = {
-      friend1CoordinateAnimated: 
-        new AnimatedRegion(MapViewScreen.defaultCoordinate),
 			currentCoordinateAnimated: 
         new AnimatedRegion(MapViewScreen.defaultCoordinate),
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
+		this.friend1CoordinateAnimated = new AnimatedRegion(MapViewScreen.defaultCoordinate),
     this.reloadComponent = true
 
     this.getCurrentPosition()
@@ -83,15 +82,17 @@ class MapViewScreen extends React.Component {
     FirebaseHelper.subscribe(path, (data) => {
       console.log("subscribe : " + JSON.stringify(data)) 
 
-      const newCoordinate = data
-      const {friend1CoordinateAnimated} = this.state
+      const newCoordinate = data.coordinate
+
+      console.log("subscribe To: " + JSON.stringify(newCoordinate)) 
 
       if (Platform.OS === 'android') {
         if (this.markerFriend1) {
-          this.markerFriend1._component.animateMarkerToCoordinate(newCoordinate, 500);
+          this.markerFriend1.
+  					_component.animateMarkerToCoordinate(newCoordinate, 500);
         }
       } else {
-        friend1CoordinateAnimated.timing(newCoordinate).start();
+        this.friend1CoordinateAnimated.timing(newCoordinate).start();
       }
     })  
   }
@@ -108,7 +109,7 @@ class MapViewScreen extends React.Component {
         this.setState({currentCoordinateAnimated: 
           new AnimatedRegion(region)})
 
-        //this.reloadComponent = false 
+        this.reloadComponent = false 
       }
 
       this.props.dispatch({
@@ -202,7 +203,7 @@ class MapViewScreen extends React.Component {
           </MapView.Marker.Animated>
 
           <MapView.Marker.Animated
-            coordinate={this.state.friend1CoordinateAnimated}
+            coordinate={this.friend1CoordinateAnimated}
             ref={marker => { this.markerFriend1 = marker }}
             title="Friend1"
             description="description"
@@ -211,7 +212,7 @@ class MapViewScreen extends React.Component {
           </MapView.Marker.Animated>
         </MapView>
 
-        <TouchableOpacity onPress={() => this.moveMarker()}>
+        <TouchableOpacity onPress={() => this.subscribeFriends()}>
             <Text>Move</Text>
         </TouchableOpacity>
       </View>
