@@ -62,10 +62,10 @@ class MapViewScreen extends React.Component {
     this.state = {
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
     }
-
+    
+    this.timerId = null
     this.reloadComponent = true
 
-    this.getCurrentPosition()
     this.bind()
   }
 
@@ -97,8 +97,19 @@ class MapViewScreen extends React.Component {
     }) 
   }
 
-  bind(){
-    setInterval(this.getCurrentPosition, 10 * 1000)
+  bind = () => {
+    this.getCurrentPosition()
+    this.autoUpdateMyPosition()
+  }
+
+  autoUpdateMyPosition = () => {
+    this.timerId = setInterval(this.getCurrentPosition, 10 * 1000)
+  }
+
+  stopUpdateMyPosition = () => {
+    if(this.timerId){
+      clearInterval(this.timerId)
+    }
   }
 
 	regionFrom1(lat, lon) {
@@ -131,6 +142,11 @@ class MapViewScreen extends React.Component {
 
   shouldComponentUpdate(){
     return this.reloadComponent
+  }
+
+  componentWillUnmount(){
+    console.log("will un-mount")
+    this.stopUpdateMyPosition()
   }
 
   renderMarkers(){

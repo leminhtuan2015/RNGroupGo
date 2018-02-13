@@ -17,6 +17,7 @@ import {
 
 import NavBarItem from '../views/NavBarItem';
 import MapViewContainer from '../../containers/MapViewContainer';
+import ContactViewScreen from './ContactViewScreen';
 
 class DrawerHomeScreen extends React.Component {
   static navigationOptions = {
@@ -40,20 +41,6 @@ class DrawerHomeScreen extends React.Component {
   }
 }
 
-class DrawerDetailScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Drawer Detail Screen',
-  };
-
-  render() {
-    return (
-      <Button
-        onPress={() => this.props.navigation.goBack()}
-        title="Go back"
-      />
-    );
-  }
-}
 
 const drawerOnPress = (navigation) => {
   console.log("Drawer Button Pressed: " + JSON.stringify(navigation.state))
@@ -90,9 +77,8 @@ const drawerIcon = (navigation) => (<Icon
   />)
 
 const DrawerNavigatorView = DrawerNavigator({
-  DrawerHomeScreen: {screen: DrawerHomeScreen},
-  DrawerDetailScreen: {screen: DrawerDetailScreen},
   MapViewContainer: {screen: MapViewContainer},
+  ContactViewScreen: {screen: ContactViewScreen},
 },
 {
  // drawerWidth: 200,
