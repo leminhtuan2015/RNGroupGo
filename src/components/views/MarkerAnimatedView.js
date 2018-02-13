@@ -39,13 +39,9 @@ class MarkerAnimatedView extends React.Component {
 
     FirebaseHelper.subscribe(path, (data) => {
       console.log("subscribe : " + JSON.stringify(data)) 
-
       const newCoordinate = data.coordinate
-
       console.log("subscribe To: " + JSON.stringify(newCoordinate)) 
-
       this.moveMarker(newCoordinate)
-
     })  
   }
   
