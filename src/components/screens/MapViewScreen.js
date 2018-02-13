@@ -98,7 +98,7 @@ class MapViewScreen extends React.Component {
   }
 
   bind(){
-    setInterval(this.getCurrentPosition, 5 * 1000)
+    setInterval(this.getCurrentPosition, 10 * 1000)
   }
 
 	regionFrom1(lat, lon) {
@@ -184,7 +184,7 @@ class MapViewScreen extends React.Component {
           {this.renderMarkers()}
         </MapView>
 
-        <TouchableOpacity onPress={() => this.subscribeFriends()}>
+        <TouchableOpacity onPress={() => {}}>
             <Text>Move</Text>
         </TouchableOpacity>
       </View>
