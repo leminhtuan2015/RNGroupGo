@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
+import NavBarItem from "../views/NavBarItem"
 
 import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
@@ -56,11 +57,8 @@ class MapViewScreen extends React.Component {
     const { params = {} } = navigation.state;
 
 		const headerRight = 
-      <Icon 
-        name="users"
-        size={25}
-        color='#ffffff'
-        underlayColor="transparent"
+      <NavBarItem 
+        iconName="users"
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
