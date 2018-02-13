@@ -20,6 +20,7 @@ import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
 import FirebaseHelper from "../../helpers/FirebaseHelper"
+import DeviceInfo from 'react-native-device-info';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -133,13 +134,23 @@ class MapViewScreen extends React.Component {
   }
 
   renderMarkers(){
+
+	  const uniqueId = DeviceInfo.getUniqueID();
+
     return (
       <View>
         <MarkerAnimatedView
-          userId="679152F5-79BE-4158-9180-EBCF97005512"
+          userId={uniqueId}
+          title="Me"
+          description="Me"
+          imageName="location"
+        />
+
+        <MarkerAnimatedView
+          userId="EDF7C50A-C833-4575-A2EE-E472DEFDE8B5"
           title="tuan"
           description="tuan"
-          imageName="location"
+          imageName="location1"
         />
 
         <MarkerAnimatedView
