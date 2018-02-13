@@ -1,31 +1,128 @@
 import React from 'react';
 import {
-  Dimensions,
+  Alert,
+  Platform,
   StyleSheet,
-  Button,
-  Image,
   Text,
   View,
-  TouchableOpacity,
-  Platform,
-} from "react-native"
+  TouchableHighlight,
+  ScrollView,
+  ImageBackground, 
+  ActivityIndicator,
+  ListView,
+} from 'react-native';
 
 import { 
   Icon,
+  Divider,
+  FormLabel, 
+  FormInput, 
+  FormValidationMessage,
+  List,
+  ListItem,
 } from 'react-native-elements'
 
+import * as ActionTypes from "../../constants/ActionTypes"
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: 'transparent',
+  },
+
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 20,
+  },
+
+  button: {
+    alignItems: 'center',
+  },
+
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
+})
 
 class ContactViewScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Contacts',
   };
 
+  constructor(props){
+    super(props)
+
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+    this.state = {
+      dataSource: this.ds.cloneWithRows([]),
+    }
+  }
+
+  onPressListItem = (rowData) => {
+    console.log("Pressed : " + JSON.stringify(rowData))
+  }
+
+  onTextChange = (text) => {
+    console.log("dispatch filter user..........")
+    this.props.dispatch({type: ActionTypes.FIREBASE_FILTER_USER, data: text})
+  }
+
+  renderRow = (rowData, sectionID) => {
+    return (
+      <ListItem
+        onPress={() => {this.onPressListItem(rowData)}}
+        underlayColor="#bdbdbd"
+        titleStyle={{color: "green", fontSize: 24}}
+        subtitleStyle={{color: "#blue", fontSize: 16}}
+        key={sectionID}
+        title={rowData.name}
+        subtitle={rowData.id}
+      />
+    )
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    console.log("will receive props")
+
+    this.setState({
+      dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
+    })
+  }
+
   render() {
     return (
-      <Button
-        onPress={() => this.props.navigation.goBack()}
-        title="Go back"
-      />
+      <View id="container" style={styles.container}>
+        <View id="contentContainer" style={styles.contentContainer}>
+          <FormInput
+            inputStyle={{color: "#2196f3", marginLeft: 20}}
+            containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
+            ref={(input) => {this.input = input}}
+            onChangeText={(text) => {this.onTextChange(text)}}
+            placeholder="Name"
+            autoCorrect={false}
+            defaultValue="" />
+
+            <Text />
+
+            <View style={{flex: 1}}>
+              <List 
+                style={{flex: 1, }}
+                containerStyle={{
+                  borderBottomColor: "#ffffff",
+                  borderBottomWidth: 0,
+                  borderTopWidth: 1,}}>
+                <ListView 
+                  renderRow={this.renderRow}
+                  dataSource={this.state.dataSource}/>
+              </List>
+            </View>
+        </View>
+      </View>
     );
   }
 }

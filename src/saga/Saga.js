@@ -20,9 +20,7 @@ export function* bye(){
 
 export function* getWeatherData(action){
   let {data} = action
-
   console.log("Saga Get Weather Data :" + JSON.stringify(data))
-
   let weather = new Weather()
   let response = yield call(weather.today, data.city, data.countryCode)
   console.log("Get Weather Data ::: " + JSON.stringify(response))
@@ -31,7 +29,6 @@ export function* getWeatherData(action){
 
 export function* getPlaces(){
   console.log("Saga Get Places")
-
   let places = yield call(Place.allFromStorage)
   //let places = yield call(Place.all)
   let weather = new Weather()
@@ -39,30 +36,37 @@ export function* getPlaces(){
   for(i = 0; i < places.length; i++){
     let place = places[i]
     weather = yield call(weather.today, place.city, place.countryCode)
-   
     place.temp = weather.temp 
     console.log("Temp 123: " + weather.temp)
   }
-
 //  yield delay(5000)
-
   yield put({ type: ActionTypes.SAVE_PLACES, data: places })
 }
 
 export function* firebaseFilterCity(action){
   let {data} = action
-
   console.log("Saga Firebase Filter City")
-
   //let response =  yield call(FirebaseHelper.read)
-  let cities = yield call(FirebaseHelper.filter, data)
-
+  let cities = yield call(FirebaseHelper.filter, data, "cities")
   //console.log("places filtered: " + JSON.stringify(cities))
-  
   let arrayCity = FirebaseHelper.snapshotToArray(cities) 
-
   yield put({ type: ActionTypes.SET_FILTER_CITIES, data: arrayCity })
 } 
+
+export function* firebaseFilterUser(action){
+  let {data} = action
+
+  if(!data){
+    yield put({ type: ActionTypes.SET_FILTER_USERS, data: [] })
+    return
+  }
+
+  console.log("Saga Firebase Filter User : " + data)
+  let users = yield call(FirebaseHelper.filter, data, "users", "name")
+  console.log("users filtered: " + JSON.stringify(users))
+  let userData = FirebaseHelper.snapshotToArray(users) 
+  yield put({ type: ActionTypes.SET_FILTER_USERS, data: userData })
+}
 
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
@@ -74,6 +78,7 @@ export default function* rootSaga() {
   yield takeEvery(ActionTypes.GET_WEATHER_DATA, getWeatherData)
   yield takeEvery(ActionTypes.GET_PLACES, getPlaces)
   yield takeEvery(ActionTypes.FIREBASE_FILTER_CITY, firebaseFilterCity)
+  yield takeEvery(ActionTypes.FIREBASE_FILTER_USER, firebaseFilterUser)
 }
 
 

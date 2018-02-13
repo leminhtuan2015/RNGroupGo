@@ -17,30 +17,11 @@ import {
 
 import NavBarItem from '../views/NavBarItem';
 import MapViewContainer from '../../containers/MapViewContainer';
-import ContactViewScreen from './ContactViewScreen';
+import ContactViewContainer from '../../containers/ContactViewContainer';
 
-class DrawerHomeScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Drawer Home Screen',
-  };
-
-  render() {
-    return (
-      <View>
-       <Button
-        onPress={() => this.props.navigation.navigate('DrawerDetailScreen')}
-        title="Go to Detail"
-      />
-      <Button
-        onPress={() => this.props.navigation.navigate('HomeView')}
-        title="Go to Weather"
-      />
-
-      </View>
-    );
-  }
-}
-
+import GroupViewScreen from './GroupViewScreen';
+import ProfileViewScreen from './ProfileViewScreen';
+import SettingViewScreen from './SettingViewScreen';
 
 const drawerOnPress = (navigation) => {
   console.log("Drawer Button Pressed: " + JSON.stringify(navigation.state))
@@ -78,7 +59,10 @@ const drawerIcon = (navigation) => (<Icon
 
 const DrawerNavigatorView = DrawerNavigator({
   MapViewContainer: {screen: MapViewContainer},
-  ContactViewScreen: {screen: ContactViewScreen},
+  ContactViewContainer: {screen: ContactViewContainer},
+  GroupViewScreen: {screen: GroupViewScreen},
+  ProfileViewScreen: {screen: ProfileViewScreen},
+  SettingViewScreen: {screen: SettingViewScreen},
 },
 {
  // drawerWidth: 200,

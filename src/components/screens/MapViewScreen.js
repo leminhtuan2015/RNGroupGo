@@ -65,7 +65,6 @@ class MapViewScreen extends React.Component {
     
     this.timerId = null
     this.reloadComponent = true
-
     this.bind()
   }
 
@@ -85,7 +84,6 @@ class MapViewScreen extends React.Component {
       if(region) {
         const text = "lat:" + region.latitude + "\n" + "lon:" + region.longitude
         Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
-
         this.setState({currentCoordinate: region})
         this.reloadComponent = false 
 
@@ -150,7 +148,6 @@ class MapViewScreen extends React.Component {
   }
 
   renderMarkers(){
-
 	  const uniqueId = DeviceInfo.getUniqueID();
 
     return (

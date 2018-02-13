@@ -22,13 +22,12 @@ class FirebaseHelper {
     });
   }
   
-  static read(){
+  static read(path){
     return database
-      .ref('/cities/99099/')
+      .ref(path)
       .once('value')
       .then(function(snapshot) {
-        var username = (snapshot.val()) || 'Anonymous';
-        return username
+        return snapshot.val()
     })
   }
 
@@ -36,10 +35,11 @@ class FirebaseHelper {
 		database.ref(path).set(dataObject); 
   }
   
-  static filter(keyword){
+  static filter(keyword, path, orderBy = "name"){
+    console.log("FILTERING : kw = " + keyword + " path = " + path + " or = " + orderBy)
     let query = database
-      .ref("cities")
-      .orderByChild("name")
+      .ref(path)
+      .orderByChild(orderBy)
       .limitToFirst(30)
       .startAt(keyword)
       .endAt(keyword + "\uf8ff")
@@ -58,10 +58,10 @@ class FirebaseHelper {
 	static snapshotToArray(snapshot) {
     var returnArr = [];
     snapshot.forEach(function(childSnapshot) {
-        var item = childSnapshot.val();
-        item.key = childSnapshot.key;
+      var item = childSnapshot.val();
+      item.key = childSnapshot.key;
 
-        returnArr.push(item);
+      returnArr.push(item);
     });
 
     return returnArr;
