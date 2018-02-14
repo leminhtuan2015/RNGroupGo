@@ -175,14 +175,31 @@ class MapViewScreen extends React.Component {
     this.stopUpdateMyPosition()
   }
 
-  renderMarkers(){
+  renderFriendsMarker = () => {
+    let users = this.props.store.mapState.users 
+    console.log("xxx Users : "  + JSON.stringify(users))
+    let view = users.map((user) => {
+      return this.renderMarker(user, "location1") 
+    })
+
+    let meMarker = this.renderMarker(Utils.uniqueId(), "location")
+    
+    return (
+      <View>
+        {view}
+        {meMarker}
+      </View>
+    )
+  }
+
+  renderMarker = (userId, imageName) => {
     return (
       <View>
         <MarkerAnimatedView
-          userId={Utils.uniqueId()}
+          userId={userId}
           title="Me"
           description="Me"
-          imageName="location"
+          imageName={imageName}
         />
       </View>
     )   
@@ -205,7 +222,7 @@ class MapViewScreen extends React.Component {
             console.log(" region", region)
           }}
         >
-          {this.renderMarkers()}
+          {this.renderFriendsMarker()}
         </MapView>
 
         <TouchableOpacity onPress={() => {}}>
