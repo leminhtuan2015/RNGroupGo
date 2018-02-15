@@ -32,28 +32,6 @@ const TabStackWeather = StackNavigator({
 
 const TabNavigatorView =  TabNavigator(
   {
-    TabStackWeather: {
-      screen: TabStackWeather, 
-      navigationOptions: ({navigation}) => ({
-				showLabel: false,
-				tabBarIcon: IconManager.icon("apple", "black", () => {
-					navigation.navigate("TabStackWeather")
-				}),
-				showIcon: true
-		  }) 
-    },
-
-    MapView: {
-      screen: MapViewContainer, 
-      navigationOptions: ({navigation}) => ({
-				showLabel: false,
-				tabBarIcon: IconManager.icon("map-marker", "black", () => {
-					navigation.navigate("MapView")
-				}),
-				showIcon: true
-		  }) 
-    },
-
     ContactView: {
       screen: ContactViewContainer, 
       navigationOptions: ({navigation}) => ({
@@ -71,6 +49,17 @@ const TabNavigatorView =  TabNavigator(
 				showLabel: false,
 				tabBarIcon: IconManager.icon("users", "black", () => {
 					navigation.navigate("GroupView")
+				}),
+				showIcon: true
+		  }) 
+    },
+
+    MapView: {
+      screen: MapViewContainer, 
+      navigationOptions: ({navigation}) => ({
+				showLabel: false,
+				tabBarIcon: IconManager.icon("map-marker", "black", () => {
+					navigation.navigate("MapView")
 				}),
 				showIcon: true
 		  }) 
