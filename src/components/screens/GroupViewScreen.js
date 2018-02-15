@@ -17,6 +17,7 @@ import {
 class GroupViewScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Groups',
+    tabBarLabel: 'Groups',
   };
 
   render() {

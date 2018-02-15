@@ -17,6 +17,7 @@ import {
 class SettingViewScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Setting',
+    tabBarLabel: 'Setting',
   };
 
   render() {

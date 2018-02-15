@@ -11,7 +11,7 @@ class User {
 
   static all(){
     var users = []
-
+    let list = []
     list.forEach(function(element) {
       let user = new User(element.name, element.avatar_url)
       

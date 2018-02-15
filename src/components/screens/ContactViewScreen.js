@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    marginTop: 20,
+    marginTop: 60,
   },
 
   button: {
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
 class ContactViewScreen extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Contacts',
+    tabBarLabel: 'Contacts',
   };
 
   constructor(props){
@@ -82,7 +83,6 @@ class ContactViewScreen extends React.Component {
         underlayColor="#bdbdbd"
         titleStyle={{color: "green", fontSize: 24}}
         subtitleStyle={{color: "#blue", fontSize: 16}}
-        key={sectionID}
         title={rowData.name}
         subtitle={rowData.id}
       />
@@ -91,10 +91,12 @@ class ContactViewScreen extends React.Component {
 
   componentWillReceiveProps = (newProps) => {
     console.log("will receive props")
+    
+    if(newProps == this.props){return}
 
-    this.setState({
-      dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
-    })
+    //this.setState({
+    //  dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
+    //})
   }
 
   render() {
@@ -115,11 +117,13 @@ class ContactViewScreen extends React.Component {
             <View style={{flex: 1}}>
               <List 
                 style={{flex: 1, }}
+                enableEmptySections={true}
                 containerStyle={{
                   borderBottomColor: "#ffffff",
                   borderBottomWidth: 0,
                   borderTopWidth: 1,}}>
                 <ListView 
+                  enableEmptySections={true}
                   renderRow={this.renderRow}
                   dataSource={this.state.dataSource}/>
               </List>
