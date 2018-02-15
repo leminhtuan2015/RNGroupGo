@@ -90,13 +90,11 @@ class ContactViewScreen extends React.Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-    console.log("will receive props")
+    console.log("Contact will receive props :" + JSON.stringify(this.props))
     
-    if(newProps == this.props){return}
-
-    //this.setState({
-    //  dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
-    //})
+    this.setState({
+      dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
+    })
   }
 
   render() {

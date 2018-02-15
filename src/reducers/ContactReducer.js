@@ -3,7 +3,12 @@ import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import DeviceInfo from 'react-native-device-info';
 
-export const ContactReducer = (state = {}, action) => {
+
+const initialState = {
+  filterUsers: [],
+}
+
+export const ContactReducer = (state = initialState, action) => {
 
   const {type, data} = action 
 

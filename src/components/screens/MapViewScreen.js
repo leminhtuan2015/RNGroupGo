@@ -79,6 +79,7 @@ class MapViewScreen extends React.Component {
 
     this.state = {
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
+      reloadView: true,
     }
     
     this.timerId = null
@@ -225,7 +226,9 @@ class MapViewScreen extends React.Component {
           {this.renderFriendsMarker()}
         </MapView>
 
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {
+          console.log("Users : " + this.props.store.mapState.users.length)
+        }}>
             <Text>Move</Text>
         </TouchableOpacity>
       </View>
