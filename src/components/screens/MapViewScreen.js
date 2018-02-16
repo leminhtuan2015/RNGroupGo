@@ -59,12 +59,13 @@ class MapViewScreen extends React.Component {
 		const headerRight = 
       <NavBarItem 
         iconName="users"
+        color={Constant.appColor}
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
-      tabBarLabel: 'Map',
-      drawerLabel: 'Map',
-      headerTitle: '',
+      tabBarLabel: params.label,
+      drawerLabel: params.label,
+      headerTitle: params.title,
 			headerRight: headerRight,
 		}
 	}
@@ -100,7 +101,9 @@ class MapViewScreen extends React.Component {
 
   rightButtonOnPress = () => {
     console.log("Right button Pressed : " + 
-      this.props.store.mapState.users.length) 
+      JSON.stringify(this.props.store.mapState.users)) 
+
+    this.props.navigation.navigate("ChattingView")
   }
 
   getCurrentPosition = () => {
@@ -112,7 +115,7 @@ class MapViewScreen extends React.Component {
      
       if(region) {
         const text = "lat:" + region.latitude + "\n" + "lon:" + region.longitude
-        Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
+        //Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
         this.setState({currentCoordinate: region})
         this.reloadComponent = false 
 
@@ -229,7 +232,7 @@ class MapViewScreen extends React.Component {
         <TouchableOpacity onPress={() => {
           console.log("Users : " + this.props.store.mapState.users.length)
         }}>
-            <Text>Move</Text>
+            <Text>Location</Text>
         </TouchableOpacity>
       </View>
     );

@@ -11,6 +11,7 @@ import {
   Icon,
 } from 'react-native-elements'
 
+import * as Constant from "../../utils/Constant"
 import IconManager from "../../utils/IconManager"
 
 import HomeViewContainer from '../../containers/HomeViewContainer';
@@ -21,6 +22,7 @@ import MapViewContainer from '../../containers/MapViewContainer';
 import ContactViewContainer from '../../containers/ContactViewContainer';
 import GroupViewScreen from './GroupViewScreen';
 import SettingViewScreen from './SettingViewScreen';
+import ChattingViewScreen from './ChattingViewScreen';
 
 const TabStackWeather = StackNavigator({
   TabStackHomeScreen: { screen: HomeViewContainer},
@@ -30,14 +32,34 @@ const TabStackWeather = StackNavigator({
 {
 });
 
+
+const StackContactView = StackNavigator({
+  ContactView: { screen: ContactViewContainer},
+  ContactMapView: {screen: MapViewContainer},
+  ChattingView: {screen: ChattingViewScreen},
+}, {
+ // mode: 'modal',
+})
+
 const TabNavigatorView =  TabNavigator(
   {
-    ContactView: {
-      screen: ContactViewContainer, 
+    MapView: {
+      screen: MapViewContainer, 
       navigationOptions: ({navigation}) => ({
 				showLabel: false,
-				tabBarIcon: IconManager.icon("user", "black", () => {
-					navigation.navigate("ContactView")
+				tabBarIcon: IconManager.icon("map-marker", Constant.appColor, () => {
+					navigation.navigate("MapView")
+				}),
+				showIcon: true
+		  }) 
+    },
+ 
+    StackContactView: {
+      screen: StackContactView, 
+      navigationOptions: ({navigation}) => ({
+				showLabel: false,
+				tabBarIcon: IconManager.icon("user", Constant.appColor, () => {
+					navigation.navigate("StackContactView")
 				}),
 				showIcon: true
 		  }) 
@@ -47,29 +69,18 @@ const TabNavigatorView =  TabNavigator(
       screen: GroupViewScreen, 
       navigationOptions: ({navigation}) => ({
 				showLabel: false,
-				tabBarIcon: IconManager.icon("users", "black", () => {
+				tabBarIcon: IconManager.icon("users", Constant.appColor, () => {
 					navigation.navigate("GroupView")
 				}),
 				showIcon: true
 		  }) 
     },
-
-    MapView: {
-      screen: MapViewContainer, 
-      navigationOptions: ({navigation}) => ({
-				showLabel: false,
-				tabBarIcon: IconManager.icon("map-marker", "black", () => {
-					navigation.navigate("MapView")
-				}),
-				showIcon: true
-		  }) 
-    },
-    
+   
     SettingView: {
       screen: SettingViewScreen, 
       navigationOptions: ({navigation}) => ({
 				showLabel: false,
-				tabBarIcon: IconManager.icon("bars", "black", () => {
+				tabBarIcon: IconManager.icon("bars", Constant.appColor, () => {
 					navigation.navigate("SettingView")
 				}),
 				showIcon: true

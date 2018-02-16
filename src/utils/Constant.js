@@ -10,7 +10,7 @@ export const styleStackHeader = {
   shadowOpacity: 0,
 }
 
-const styleToast = {
+export const styleToast = {
 	 backgroundColor: "#4ADDFB",
 	 width: 300,
 	 color: "#ffffff",
@@ -21,3 +21,5 @@ const styleToast = {
 	 fontWeight: "bold",
 	 yOffset: 40
 };
+
+export const appColor = "#2196F3"

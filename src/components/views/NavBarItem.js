@@ -5,13 +5,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 class NavBarItem extends Component {
   render() {
-    const { iconName, onPress } = this.props;
+    const { iconName, color = "#fff", onPress } = this.props;
     return (
       <TouchableOpacity
         style={{ paddingHorizontal: 20 }}
         onPress={() => onPress()}
       >
-        <Icon name={iconName} size={25} color="#fff" />
+        <Icon name={iconName} size={25} color={color} />
       </TouchableOpacity>
 
     );

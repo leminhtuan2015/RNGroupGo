@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    marginTop: 60,
+    marginTop: 5,
   },
 
   button: {
@@ -69,6 +69,11 @@ class ContactViewScreen extends React.Component {
     const userId = rowData.key
     this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
       data: [userId]})
+
+    this.props.navigation.navigate("ContactMapView",
+      {label: "Contacts",
+       title: "Friends",  
+    })
   }
 
   onTextChange = (text) => {
@@ -82,7 +87,7 @@ class ContactViewScreen extends React.Component {
         onPress={() => {this.onPressListItem(rowData)}}
         underlayColor="#bdbdbd"
         titleStyle={{color: "green", fontSize: 24}}
-        subtitleStyle={{color: "#blue", fontSize: 16}}
+        subtitleStyle={{color: "blue", fontSize: 16}}
         title={rowData.name}
         subtitle={rowData.id}
       />
