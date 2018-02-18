@@ -31,7 +31,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    flex: 1,
     top: 0,
     left: 0,
     right: 0,
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
+    flex: 0.8,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -52,8 +53,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     right: 10,
-    bottom: 50,
+    bottom: 80,
+  },
+  toolbar: {
+    backgroundColor: "white",
+    position: 'absolute',
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: 10,
+    right: 30,
+    left: 30,
+  },
+  toolbarContainer: {
+    backgroundColor: "white",
+    position: 'absolute',
+    height: 60,
+    right: 0,
+    left: 0,
+    bottom: 0,
   }
+
 });
 
 class MapViewScreen extends React.Component {
@@ -225,7 +245,7 @@ class MapViewScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <MapView
+        <MapView 
           provider={PROVIDER_GOOGLE}
           showsCompass={true}
           style={styles.map}
@@ -248,8 +268,19 @@ class MapViewScreen extends React.Component {
           <Text />
           {IconManager.icon("map-marker", "gray", null, 50, "gray")}
         </View>
+
+        <View style={styles.toolbarContainer}>
+        <View style={styles.toolbar}>
+          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
+          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
+          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
+          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
+          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
+        </View>
+        </View>
+
       </View>
-    );
+          );
   }
 }
 
