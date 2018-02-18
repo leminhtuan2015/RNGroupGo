@@ -14,7 +14,7 @@ import {
 } from "react-native"
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
 
@@ -46,6 +46,14 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  tool: {
+    backgroundColor: "transparent",
+    position: 'absolute',
+    flex: 1,
+    alignItems: 'flex-end',
+    right: 10,
+    bottom: 50,
+  }
 });
 
 class MapViewScreen extends React.Component {
@@ -228,12 +236,18 @@ class MapViewScreen extends React.Component {
         >
           {this.renderFriendsMarker()}
         </MapView>
-
-        <TouchableOpacity onPress={() => {
-          console.log("Users : " + this.props.store.mapState.users.length)
-        }}>
-            <Text>Location</Text>
-        </TouchableOpacity>
+        
+        <View style={styles.tool}>
+          {IconManager.icon("plus-circle", "gray", null, 50, "gray")}
+          <Text />
+          {IconManager.icon("minus-circle", "gray", null, 50, "gray")}
+          <Text />
+          <Text />
+          <Text />
+          <Text />
+          <Text />
+          {IconManager.icon("map-marker", "gray", null, 50, "gray")}
+        </View>
       </View>
     );
   }
