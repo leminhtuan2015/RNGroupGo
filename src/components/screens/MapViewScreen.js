@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   toolbarContainer: {
     backgroundColor: "white",
     position: 'absolute',
-    height: 60,
+    height: 50,
     right: 0,
     left: 0,
     bottom: 0,
@@ -87,7 +87,7 @@ class MapViewScreen extends React.Component {
 		const headerRight = 
       <NavBarItem 
         iconName="users"
-        color={Constant.appColor}
+        color="gray"
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
     
     return {
@@ -108,7 +108,6 @@ class MapViewScreen extends React.Component {
 
     this.state = {
 		  currentCoordinate: MapViewScreen.defaultCoordinate,
-      reloadView: true,
     }
     
     this.timerId = null
@@ -131,7 +130,6 @@ class MapViewScreen extends React.Component {
     console.log("Right button Pressed : " + 
       JSON.stringify(this.props.store.mapState.users)) 
 
-    this.props.navigation.navigate("ChattingView")
   }
 
   getCurrentPosition = () => {
@@ -199,7 +197,8 @@ class MapViewScreen extends React.Component {
 	}
 
   shouldComponentUpdate(){
-    return this.reloadComponent
+    //return this.reloadComponent
+    return true 
   }
 
   componentWillUnmount(){
@@ -208,20 +207,28 @@ class MapViewScreen extends React.Component {
   }
 
   renderFriendsMarker = () => {
+
     let users = this.props.store.mapState.users 
-    console.log("xxx Users : "  + JSON.stringify(users))
+    //let users = ["709549E2-9BCD-4C27-9A41-C8EB112B4973"]
+    console.log(" renderFriendsMarker : "  + JSON.stringify(users))
+
     let view = users.map((user) => {
+      console.log(" renderFriendsMarker_ : "  + user)
       return this.renderMarker(user, "location1") 
     })
 
     let meMarker = this.renderMarker(Utils.uniqueId(), "location")
     
-    return (
-      <View>
-        {view}
-        {meMarker}
-      </View>
-    )
+    if(users){
+      return (
+        <View>
+          {meMarker}
+          {view}
+        </View>
+      )
+    } else {
+      return meMarker
+    }
   }
 
   renderMarker = (userId, imageName) => {
@@ -258,25 +265,36 @@ class MapViewScreen extends React.Component {
         </MapView>
         
         <View style={styles.tool}>
-          {IconManager.icon("plus-circle", "gray", null, 50, "gray")}
+          {IconManager.icon("plus-circle", "gray", null)}
           <Text />
-          {IconManager.icon("minus-circle", "gray", null, 50, "gray")}
-          <Text />
-          <Text />
+          {IconManager.icon("minus-circle", "gray", null)}
           <Text />
           <Text />
           <Text />
-          {IconManager.icon("map-marker", "gray", null, 50, "gray")}
+          <Text />
+          <Text />
+          {IconManager.icon("map-marker", "gray", null)}
         </View>
 
         <View style={styles.toolbarContainer}>
-        <View style={styles.toolbar}>
-          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
-          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
-          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
-          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
-          {IconManager.icon("map-marker", "gray", null, 40, "gray")}
-        </View>
+          <View style={styles.toolbar}>
+            {IconManager.icon("search", "gray", () => {
+              this.props.navigation.navigate("SearchView")
+            }, 30, "gray")}
+
+            {IconManager.icon("user", "gray", () => {
+              this.props.navigation.navigate("ContactView")
+            }, 30, "gray")}
+
+            {IconManager.icon("users", "gray", () => {
+              this.props.navigation.navigate("GroupView")
+            }, 30, "gray")}
+
+            {IconManager.icon("bars", "gray", () => {
+              this.props.navigation.navigate("SettingView")
+            }, 30, "gray")}
+
+          </View>
         </View>
 
       </View>

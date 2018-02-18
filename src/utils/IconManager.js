@@ -7,8 +7,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 class IconManager {
-  static icon(name, color = "green",
-    onPress = (() => {}), size = 30, underlayColor = "transparent"){
+  static icon(name, color = "green", onPress = (() => {}), 
+    size = 30, underlayColor = "transparent"){
     let icon = <FontAwesome 
         name={name}
         size={size}

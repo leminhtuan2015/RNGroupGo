@@ -65,15 +65,14 @@ class ContactViewScreen extends React.Component {
   }
 
   onPressListItem = (rowData) => {
+    //this.props.navigation.goBack()
+    this.props.navigation.navigate("MapView")
+
     console.log("Pressed : " + JSON.stringify(rowData))
     const userId = rowData.key
     this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
       data: [userId]})
 
-    this.props.navigation.navigate("ContactMapView",
-      {label: "Contacts",
-       title: "Friends",  
-    })
   }
 
   onTextChange = (text) => {
