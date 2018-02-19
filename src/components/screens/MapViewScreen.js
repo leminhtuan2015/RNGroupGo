@@ -89,7 +89,7 @@ class MapViewScreen extends React.Component {
         iconName="users"
         color="gray"
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
-    
+
     return {
       tabBarLabel: params.label,
       drawerLabel: params.label,
@@ -197,8 +197,8 @@ class MapViewScreen extends React.Component {
 	}
 
   shouldComponentUpdate(){
-    //return this.reloadComponent
-    return true 
+    return this.reloadComponent
+    //return true 
   }
 
   componentWillUnmount(){

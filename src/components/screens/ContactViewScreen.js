@@ -23,6 +23,7 @@ import {
 } from 'react-native-elements'
 
 import * as ActionTypes from "../../constants/ActionTypes"
+import NavBarItem from "../views/NavBarItem"
 
 const styles = StyleSheet.create({
   container: {
@@ -49,9 +50,20 @@ const styles = StyleSheet.create({
 })
 
 class ContactViewScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Contacts',
-    tabBarLabel: 'Contacts',
+  static navigationOptions = ({navigation}) => {
+    const { params = {} } = navigation.state;
+
+    const headerLeft = 
+      <NavBarItem 
+        iconName="times"
+        color="gray"
+        onPress={ () => {navigation.goBack()}} />
+ 
+    return {
+      drawerLabel: 'Contacts',
+      tabBarLabel: 'Contacts',
+			headerLeft: headerLeft,
+		}
   };
 
   constructor(props){
@@ -72,7 +84,6 @@ class ContactViewScreen extends React.Component {
     const userId = rowData.key
     this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
       data: [userId]})
-
   }
 
   onTextChange = (text) => {

@@ -1,4 +1,4 @@
-import { Marker, AnimatedRegion } from 'react-native-maps';
+import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
 import React from 'react';
 import Toast from 'react-native-toast-native';
 import {
@@ -16,6 +16,7 @@ import * as Constant from "../../utils/Constant"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
 import FirebaseHelper from "../../helpers/FirebaseHelper"
+import image from "../../resources/images/location1.png"
 
 class MarkerAnimatedView extends React.Component {
 
@@ -59,14 +60,14 @@ class MarkerAnimatedView extends React.Component {
   render() {
     return (
       <View>
-        <Marker.Animated
+        <MapView.Marker.Animated
           coordinate={this.coordinateAnimated}
           ref={marker => { this.marker = marker }}
           title={this.props.title}
           description={this.props.description}
         >
           {ImageManager(this.props.imageName)}
-        </Marker.Animated>
+        </MapView.Marker.Animated>
       </View>
     );
   }

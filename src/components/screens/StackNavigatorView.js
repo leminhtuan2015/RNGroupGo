@@ -68,8 +68,8 @@ const StackNavigatorView =  StackNavigator(
 
 
   },
-
   {
+    mode: "modal",
   }
 );
 
