@@ -22,6 +22,7 @@ import {
   ListItem,
 } from 'react-native-elements'
 
+import { NavigationActions } from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
 import NavBarItem from "../views/NavBarItem"
 
@@ -76,9 +77,20 @@ class ContactViewScreen extends React.Component {
     }
   }
 
+	resetTo(route) {
+		const actionToDispatch = NavigationActions.reset({
+			index: 0,
+			key: null,
+			actions: [NavigationActions.navigate({ routeName: route })],
+		});
+		this.props.navigation.dispatch(actionToDispatch);
+	}
+
   onPressListItem = (rowData) => {
     //this.props.navigation.goBack()
-    this.props.navigation.navigate("MapView")
+    //this.props.navigation.navigate("MapView")
+    
+    this.resetTo("RootStack")
 
     console.log("Pressed : " + JSON.stringify(rowData))
     const userId = rowData.key
