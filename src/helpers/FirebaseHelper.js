@@ -34,7 +34,11 @@ class FirebaseHelper {
   static write(path, dataObject){
 		database.ref(path).set(dataObject); 
   }
-  
+
+  static push(path, dataObject){
+		database.ref(path).push(dataObject); 
+  }
+
   static filter(keyword, path, orderBy = "name"){
     console.log("FILTERING : kw = " + keyword + " path = " + path + " or = " + orderBy)
     let query = database

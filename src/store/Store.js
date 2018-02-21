@@ -6,7 +6,8 @@ import RootNavigatorReducer from '../navigator/RootNavigatorReducer'
 import WeatherReducer from '../reducers/WeatherReducer'
 import PlaceReducer from '../reducers/PlaceReducer'
 import MapReducer from '../reducers/MapReducer'
-import ContactReducer from '../reducers/ContactReducer'
+import UserReducer from '../reducers/UserReducer'
+import GroupReducer from '../reducers/GroupReducer'
 
 import rootSaga from '../saga/Saga'
 
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   weatherState: WeatherReducer,  // WeatherReducer is manage weatherState data object
   placeState: PlaceReducer,  
   mapState: MapReducer,  
-  contactState: ContactReducer,  
+  userState: UserReducer,  
+  groupState: GroupReducer,  
 });
 
 const sagaMiddleware = createSagaMiddleware()

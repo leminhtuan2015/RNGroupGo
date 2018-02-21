@@ -71,17 +71,18 @@ class ContactViewScreen extends React.Component {
     super(props)
 
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.selectedUser = null
 
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
     }
   }
 
-	resetTo(route) {
+	resetTo = (route) => {
 		const actionToDispatch = NavigationActions.reset({
 			index: 0,
 			key: null,
-			actions: [NavigationActions.navigate({ routeName: route })],
+			actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
 		});
 		this.props.navigation.dispatch(actionToDispatch);
 	}
@@ -89,9 +90,11 @@ class ContactViewScreen extends React.Component {
   onPressListItem = (rowData) => {
     //this.props.navigation.goBack()
     //this.props.navigation.navigate("MapView")
+
+    this.selectedUser = rowData
     
     this.resetTo("RootStack")
-
+    
     console.log("Pressed : " + JSON.stringify(rowData))
     const userId = rowData.key
     this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
@@ -120,7 +123,7 @@ class ContactViewScreen extends React.Component {
     console.log("Contact will receive props :" + JSON.stringify(this.props))
     
     this.setState({
-      dataSource: this.ds.cloneWithRows(newProps.store.contactState.filterUsers),
+      dataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
     })
   }
 
@@ -158,7 +161,6 @@ class ContactViewScreen extends React.Component {
     );
   }
 }
-
 
 export default ContactViewScreen
 

@@ -66,6 +66,20 @@ export function* firebaseFilterUser(action){
   yield put({ type: ActionTypes.SET_FILTER_USERS, data: userData })
 }
 
+export function* getGroups(action){
+  let {data} = action
+  let userId = data.userId
+  let groupIds = yield call(FirebaseHelper.read, "group_user/")
+
+  console.log("Group ok: " + JSON.stringify(groupIds))
+
+  let groups = yield call(FirebaseHelper.read, "groups/" + groupIds)
+
+  console.log("Group ok1: " + JSON.stringify(groups))
+
+  yield put({ type: ActionTypes.SET_GROUPS, data: groups })
+} 
+
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -77,6 +91,7 @@ export default function* rootSaga() {
   yield takeEvery(ActionTypes.GET_PLACES, getPlaces)
   yield takeEvery(ActionTypes.FIREBASE_FILTER_CITY, firebaseFilterCity)
   yield takeEvery(ActionTypes.FIREBASE_FILTER_USER, firebaseFilterUser)
+  yield takeEvery(ActionTypes.GET_GROUPS, getGroups)
 }
 
 

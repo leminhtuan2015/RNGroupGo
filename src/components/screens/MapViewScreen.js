@@ -84,16 +84,22 @@ class MapViewScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
 
-		const headerRight = 
+		let headerRight = 
       <NavBarItem 
-        iconName="users"
+        iconName="location-arrow"
         color="gray"
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
+
+		const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>) 
+
+    if(!params.selectedUser){
+      headerRight = <Text></Text>
+    }
 
     return {
       tabBarLabel: params.label,
       drawerLabel: params.label,
-      headerTitle: params.title,
+      headerTitle: headerTitle,
 			headerRight: headerRight,
 		}
 	}
@@ -130,6 +136,16 @@ class MapViewScreen extends React.Component {
     console.log("Right button Pressed : " + 
       JSON.stringify(this.props.store.mapState.users)) 
 
+    Toast.show("Requesting Location", Toast.SHORT, Toast.CENTER, Constant.styleToast);
+
+    let userIds = this.props.store.mapState.users
+    userIds.push(Utils.uniqueId())
+
+    this.createGroup(userIds)
+  }
+
+  createGroup = (userIds) => {
+    this.props.dispatch({type: ActionTypes.CREATE_GROUP, data: {userIds: userIds}})
   }
 
   getCurrentPosition = () => {
@@ -279,11 +295,11 @@ class MapViewScreen extends React.Component {
         <View style={styles.toolbarContainer}>
           <View style={styles.toolbar}>
             {IconManager.icon("search", "gray", () => {
-              this.props.navigation.navigate("SearchView")
+              this.props.navigation.navigate("ContactView")
             }, 30, "gray")}
 
             {IconManager.icon("user", "gray", () => {
-              this.props.navigation.navigate("ContactView")
+              this.props.navigation.navigate("FriendView")
             }, 30, "gray")}
 
             {IconManager.icon("users", "gray", () => {

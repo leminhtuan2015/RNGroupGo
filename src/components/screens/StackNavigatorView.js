@@ -16,7 +16,7 @@ import IconManager from "../../utils/IconManager"
 
 import MapViewContainer from '../../containers/MapViewContainer';
 import ContactViewContainer from '../../containers/ContactViewContainer';
-import GroupViewScreen from './GroupViewScreen';
+import GroupViewContainer from '../../containers/GroupViewContainer';
 import SettingViewScreen from './SettingViewScreen';
 import ChattingViewScreen from './ChattingViewScreen';
 
@@ -45,7 +45,7 @@ const StackNavigatorView =  StackNavigator(
     },
 
     GroupView: {
-      screen: GroupViewScreen, 
+      screen: GroupViewContainer, 
       navigationOptions: ({navigation}) => ({
 				showLabel: false,
 				tabBarIcon: IconManager.icon("users", Constant.appColor, () => {

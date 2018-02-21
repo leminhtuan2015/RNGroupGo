@@ -11,13 +11,13 @@ export const styleStackHeader = {
 }
 
 export const styleToast = {
-	 backgroundColor: "#4ADDFB",
+	 backgroundColor: "#000000",
 	 width: 300,
 	 color: "#ffffff",
 	 fontSize: 15,
 	 lineHeight: 2,
 	 lines: 4,
-	 borderRadius: 15,
+	 borderRadius: 5,
 	 fontWeight: "bold",
 	 yOffset: 40
 };

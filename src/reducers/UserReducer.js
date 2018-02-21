@@ -8,7 +8,7 @@ const initialState = {
   filterUsers: [],
 }
 
-export const ContactReducer = (state = initialState, action) => {
+export const UserReducer = (state = initialState, action) => {
 
   const {type, data} = action 
 
@@ -24,6 +24,6 @@ function setFilterUsers(state, data){
   return Object.assign({}, state, {filterUsers: data})
 }
 
-export default ContactReducer
+export default UserReducer
 
 
