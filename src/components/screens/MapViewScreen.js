@@ -144,8 +144,8 @@ class MapViewScreen extends React.Component {
     this.createGroup(userIds)
   }
 
-  createGroup = (userIds) => {
-    this.props.dispatch({type: ActionTypes.CREATE_GROUP, data: {userIds: userIds}})
+  addFriend = (userIds) => {
+    this.props.dispatch({type: ActionTypes.AD_FRIEND data: {userIds: userIds}})
   }
 
   getCurrentPosition = () => {

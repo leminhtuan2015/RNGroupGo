@@ -16,8 +16,8 @@ import {
 
 class FriendViewScreen extends React.Component {
   static navigationOptions = {
-    drawerLabel: 'Groups',
-    tabBarLabel: 'Groups',
+    drawerLabel: 'Friends',
+    tabBarLabel: 'Friends',
   };
 
   render() {

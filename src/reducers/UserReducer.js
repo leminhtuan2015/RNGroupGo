@@ -15,6 +15,8 @@ export const UserReducer = (state = initialState, action) => {
   switch (type) {
   case ActionTypes.SET_FILTER_USERS:
     return setFilterUsers(state, data)
+  case ActionTypes.ADD_FRIEND:
+    return addFriend(state, data)
   default:
     return state 
   }
@@ -22,6 +24,10 @@ export const UserReducer = (state = initialState, action) => {
 
 function setFilterUsers(state, data){
   return Object.assign({}, state, {filterUsers: data})
+}
+
+function addFriend(state, data){
+  return state 
 }
 
 export default UserReducer
