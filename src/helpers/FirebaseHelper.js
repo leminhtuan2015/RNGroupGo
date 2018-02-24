@@ -17,8 +17,12 @@ class FirebaseHelper {
 
   static subscribe(path, callback){
     let ref = database.ref(path);
+    var willCallBack = false
     ref.on('value', function(snapshot) {
-      callback(snapshot.val())
+      if(willCallBack){
+        callback(snapshot.val())
+      }
+      willCallBack = true
     });
   }
   

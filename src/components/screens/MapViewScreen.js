@@ -11,6 +11,7 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  Alert,
 } from "react-native"
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -141,12 +142,18 @@ class MapViewScreen extends React.Component {
     let userIds = this.props.store.mapState.users
     userIds.push(Utils.uniqueId())
 
-    this.createGroup(userIds)
+    this.addFriend(userIds)
+    this.requestLocation(userIds[0])
   }
 
   addFriend = (userIds) => {
-    this.props.dispatch({type: ActionTypes.AD_FRIEND,
+    this.props.dispatch({type: ActionTypes.ADD_FRIEND,
       data: {userIds: userIds}})
+  }
+
+  requestLocation = (userId) => {
+    this.props.dispatch({type: ActionTypes.REQUEST_LOCATION,
+      data: {userId: userId}})
   }
 
   getCurrentPosition = () => {
@@ -170,9 +177,22 @@ class MapViewScreen extends React.Component {
     }) 
   }
 
+  subscribe = (path) => {
+    console.log("Subscribe xxx: " + path)
+
+    function callback(data){
+      console.log("callback data : " + JSON.stringify(data))
+      Alert.alert("" + JSON.stringify(data))
+    }
+
+    this.props.dispatch({type: ActionTypes.SUBSCRIBE,
+      data: {path: path, callback: callback}}) 
+  }
+
   bind = () => {
     this.getCurrentPosition()
     this.autoUpdateMyPosition()
+    this.subscribe("users/" + Utils.uniqueId() + "/inbox")
   }
 
   autoUpdateMyPosition = () => {

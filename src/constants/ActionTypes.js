@@ -25,6 +25,9 @@ export const GET_GROUPS = "GET_GROUPS"
 export const SET_GROUPS = "SET_GROUPS"
 
 export const ADD_FRIEND = "ADD_FRIEND"
+export const SUBSCRIBE = "SUBSCRIBE"
+
+export const REQUEST_LOCATION = "REQUEST_LOCATION"
 
 
 
