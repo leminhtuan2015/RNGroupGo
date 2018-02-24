@@ -145,7 +145,8 @@ class MapViewScreen extends React.Component {
   }
 
   addFriend = (userIds) => {
-    this.props.dispatch({type: ActionTypes.AD_FRIEND data: {userIds: userIds}})
+    this.props.dispatch({type: ActionTypes.AD_FRIEND,
+      data: {userIds: userIds}})
   }
 
   getCurrentPosition = () => {

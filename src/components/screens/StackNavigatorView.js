@@ -26,6 +26,10 @@ const StackNavigatorView =  StackNavigator(
     MapView: {
       screen: MapViewContainer, 
     },
+
+    ContactView: {
+      screen: ContactViewContainer,
+    },
  
     FriendView: {
       screen: FriendViewScreen, 

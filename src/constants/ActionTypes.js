@@ -23,3 +23,11 @@ export const SET_USERS_IN_MAP = "SET_USERS_IN_MAP"
 export const CREATE_GROUP = "CREATE_GROUP"
 export const GET_GROUPS = "GET_GROUPS"
 export const SET_GROUPS = "SET_GROUPS"
+
+export const ADD_FRIEND = "ADD_FRIEND"
+
+
+
+
+
+
