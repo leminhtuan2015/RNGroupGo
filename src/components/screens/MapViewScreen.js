@@ -177,12 +177,35 @@ class MapViewScreen extends React.Component {
     }) 
   }
 
-  subscribe = (path) => {
-    console.log("Subscribe xxx: " + path)
+  acceptJoinChannel = (channelId) => {
+    this.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
+      data: {channelId: channelId, userId: Utils.uniqueId()}})
+  }
 
-    function callback(data){
+  rejectJoinChannel = (channelId) => {
+    this.props.dispatch({type: ActionTypes.REJECT_JOIN_CHANNEL,
+      data: {channelId: channelId, userId: Utils.uniqueId()}})
+  }
+
+  subscribe = (path) => {
+    console.log("Subscribe MapView: " + path)
+
+    callback = (data) => {
       console.log("callback data : " + JSON.stringify(data))
-      Alert.alert("" + JSON.stringify(data))
+//      Alert.alert("" + JSON.stringify(data))
+
+      const channelId = data.data.channelId
+
+      Alert.alert(
+        'In Comming Call',
+        JSON.stringify(data),
+        [
+          {text: 'Ask me later', onPress: () => {this.rejectJoinChannel(channelId)}},
+          {text: 'Cancel', onPress: () => {this.rejectJoinChannel(channelId)}, style: 'cancel'},
+          {text: 'OK', onPress: () => {this.acceptJoinChannel(channelId)}},
+        ],
+        { cancelable: false }
+      )
     }
 
     this.props.dispatch({type: ActionTypes.SUBSCRIBE,

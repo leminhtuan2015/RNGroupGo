@@ -24,6 +24,7 @@ import {
 
 import { NavigationActions } from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
+import * as Utils from "../../utils/Utils"
 import NavBarItem from "../views/NavBarItem"
 
 const styles = StyleSheet.create({
@@ -78,27 +79,69 @@ class ContactViewScreen extends React.Component {
     }
   }
 
-	resetTo = (route) => {
-		const actionToDispatch = NavigationActions.reset({
-			index: 0,
-			key: null,
-			actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
-		});
-		this.props.navigation.dispatch(actionToDispatch);
-	}
+  resetTo = (route) => {
+    const actionToDispatch = NavigationActions.reset({
+        index: 0,
+        key: null,
+        actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
+    });
+    this.props.navigation.dispatch(actionToDispatch);
+}
+
+  subscribe = (path) => {
+    console.log("Subscribe ContactView: " + path)
+
+    callback = (data) => {
+      console.log("callback data : " + JSON.stringify(data))
+
+      const friendResponseStatus = data.users[this.selectedUser.key]
+      if(friendResponseStatus == 1){
+        Alert.alert("Accepted")
+        this.gotoMapWithFriend(this.selectedUser.key)
+      } else if(friendResponseStatus == -1){
+        Alert.alert("Rejected")
+      }
+
+    }
+
+    this.props.dispatch({type: ActionTypes.SUBSCRIBE,
+      data: {path: path, callback: callback}})
+  }
+
+  createChannel = (userId) => {
+    const channelId = Utils.guid()
+
+    let jsonData = {}
+    jsonData[userId] = 0
+    jsonData[Utils.uniqueId()] = 1
+
+    this.props.dispatch({type: ActionTypes.CREATE_CHANNEL,
+                     data: {jsonData: jsonData, channelId: channelId}})
+
+    return channelId
+  }
+
+  requestLocation = (userId) => {
+
+    const channelId = this.createChannel(userId)
+    this.subscribe("channels/" + channelId)
+
+    this.props.dispatch({type: ActionTypes.REQUEST_LOCATION,
+      data: {fromUserId: Utils.uniqueId(),toUserId: userId, channelId: channelId}})
+  }
+
+  gotoMapWithFriend = (userId) => {
+    this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP, data: [userId]})
+    this.resetTo("RootStack")
+  }
 
   onPressListItem = (rowData) => {
     //this.props.navigation.goBack()
     //this.props.navigation.navigate("MapView")
-
     this.selectedUser = rowData
-    
-    this.resetTo("RootStack")
-    
-    console.log("Pressed : " + JSON.stringify(rowData))
     const userId = rowData.key
-    this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
-      data: [userId]})
+
+    this.requestLocation(userId)
   }
 
   onTextChange = (text) => {

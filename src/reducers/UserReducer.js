@@ -21,6 +21,12 @@ export const UserReducer = (state = initialState, action) => {
     return subscribe(state, data)
   case ActionTypes.REQUEST_LOCATION:
     return requestLocation(state, data)
+  case ActionTypes.CREATE_CHANNEL:
+    return createChannel(state, data)
+  case ActionTypes.REJECT_JOIN_CHANNEL:
+     return rejectJoinChannel(state, data)
+  case ActionTypes.ACCEPT_JOIN_CHANNEL:
+     return acceptJoinChannel(state, data)
   default:
     return state 
   }
@@ -34,9 +40,30 @@ function addFriend(state, data){
   return state 
 }
 
+function createChannel(state, data){
+  let {jsonData, channelId} = data
+  FirebaseHelper.write("channels/" + channelId, {users: jsonData})
+
+  return state
+}
+
+function rejectJoinChannel(state, data){
+  let {channelId, userId} = data
+  FirebaseHelper.write("channels/" + channelId + "/users/" + userId, -1)
+  return state
+}
+
+function acceptJoinChannel(state, data){
+  let {channelId, userId} = data
+  FirebaseHelper.write("channels/" + channelId + "/users/" + userId, 1)
+
+  return state
+}
+
 function requestLocation(state, data){
-  let {userId} = data
-  FirebaseHelper.write("users/" + userId + "/inbox", {x: 1}) 
+  let {fromUserId, toUserId, channelId} = data
+  FirebaseHelper.write("users/" + toUserId + "/inbox",
+    {data: data, receiveTime: (new Date().getMilliseconds())}) 
   return state
 }
 

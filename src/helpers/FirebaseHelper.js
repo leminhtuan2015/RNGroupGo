@@ -25,6 +25,14 @@ class FirebaseHelper {
       willCallBack = true
     });
   }
+
+  static observe(path, callback){
+    let ref = database.ref(path);
+    ref.on('value', function(snapshot) {
+      callback(snapshot.val())
+    });
+  }
+
   
   static read(path){
     return database

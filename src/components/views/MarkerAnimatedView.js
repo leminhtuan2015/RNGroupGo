@@ -21,8 +21,8 @@ import image from "../../resources/images/location1.png"
 class MarkerAnimatedView extends React.Component {
 
   static defaultCoordinate = {
-    latitude: 21.009792, 
-    longitude: 105.823421
+    latitude: 0.0, 
+    longitude: 0.0,
   }
   
   constructor(props){
@@ -38,7 +38,7 @@ class MarkerAnimatedView extends React.Component {
     //let path = "users/709549E2-9BCD-4C27-9A41-C8EB112B4973/"
     let path = "users/" + userId
 
-    FirebaseHelper.subscribe(path, (data) => {
+    FirebaseHelper.observe(path, (data) => {
       console.log("subscribe : " + JSON.stringify(data)) 
       const newCoordinate = data.coordinate
       console.log("subscribe To: " + JSON.stringify(newCoordinate)) 
