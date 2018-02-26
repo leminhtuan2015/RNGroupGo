@@ -106,8 +106,8 @@ class MapViewScreen extends React.Component {
 	}
 
   static defaultCoordinate = {
-    latitude: 21.009792, 
-    longitude: 105.823421
+    latitude: 0,
+    longitude: 0,
   }
   
   constructor(props){
@@ -137,24 +137,15 @@ class MapViewScreen extends React.Component {
     console.log("Right button Pressed : " + 
       JSON.stringify(this.props.store.mapState.users)) 
 
-    Toast.show("Requesting Location", Toast.SHORT, Toast.CENTER, Constant.styleToast);
+//    Toast.show("Requesting Location", Toast.SHORT, Toast.CENTER, Constant.styleToast);
 
-    let userIds = this.props.store.mapState.users
-    userIds.push(Utils.uniqueId())
-
-    this.addFriend(userIds)
-    this.requestLocation(userIds[0])
+    leaveMap()
   }
 
-  addFriend = (userIds) => {
-    this.props.dispatch({type: ActionTypes.ADD_FRIEND,
-      data: {userIds: userIds}})
+  leaveMap = () => {
+
   }
 
-  requestLocation = (userId) => {
-    this.props.dispatch({type: ActionTypes.REQUEST_LOCATION,
-      data: {userId: userId}})
-  }
 
   getCurrentPosition = () => {
     //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
@@ -177,12 +168,16 @@ class MapViewScreen extends React.Component {
     }) 
   }
 
-  acceptJoinChannel = (channelId) => {
+  acceptJoinChannel = (data) => {
+    const channelId = data.data.channelId
+
     this.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
   }
 
-  rejectJoinChannel = (channelId) => {
+  rejectJoinChannel = (data) => {
+    const channelId = data.data.channelId
+
     this.props.dispatch({type: ActionTypes.REJECT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
   }
@@ -194,15 +189,13 @@ class MapViewScreen extends React.Component {
       console.log("callback data : " + JSON.stringify(data))
 //      Alert.alert("" + JSON.stringify(data))
 
-      const channelId = data.data.channelId
-
       Alert.alert(
         'In Comming Call',
         JSON.stringify(data),
         [
-          {text: 'Ask me later', onPress: () => {this.rejectJoinChannel(channelId)}},
-          {text: 'Cancel', onPress: () => {this.rejectJoinChannel(channelId)}, style: 'cancel'},
-          {text: 'OK', onPress: () => {this.acceptJoinChannel(channelId)}},
+          {text: 'Ask me later', onPress: () => {this.rejectJoinChannel(data)}},
+          {text: 'Cancel', onPress: () => {this.rejectJoinChannel(data)}, style: 'cancel'},
+          {text: 'OK', onPress: () => {this.acceptJoinChannel(data)}},
         ],
         { cancelable: false }
       )

@@ -26,6 +26,15 @@ class FirebaseHelper {
     });
   }
 
+  static unSubcribe(path){
+    //ref.off("value", originalCallback);
+    //ref.off("value", originalCallback, this);
+    //ref.off("value");
+
+    let ref = database.ref(path);
+    ref.off();
+  }
+
   static observe(path, callback){
     let ref = database.ref(path);
     ref.on('value', function(snapshot) {

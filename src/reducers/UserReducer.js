@@ -27,6 +27,8 @@ export const UserReducer = (state = initialState, action) => {
      return rejectJoinChannel(state, data)
   case ActionTypes.ACCEPT_JOIN_CHANNEL:
      return acceptJoinChannel(state, data)
+  case ActionTypes.LEAVE_CHANNEL:
+     return unSubscribeChannel(state, data)
   default:
     return state 
   }
@@ -71,6 +73,14 @@ function subscribe(state, data){
   let {path, callback} = data
 
   FirebaseHelper.subscribe(path, callback) 
+
+  return state
+}
+
+function unSubscribe(state, data){
+  let {channelId} = data
+
+  FirebaseHelper.unSubscribe("channels/" + channelId)
 
   return state
 }
