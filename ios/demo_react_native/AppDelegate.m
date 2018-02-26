@@ -13,6 +13,10 @@
 #import <React/RCTRootView.h>
 #import "RCCManager.h"
 
+#if RCT_DEV
+#import <React/RCTDevLoadingView.h>
+#endif
+
 @import GoogleMaps;
 
 @implementation AppDelegate
@@ -35,6 +39,14 @@
   self.window.backgroundColor = [UIColor whiteColor];
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
 
+  #if RCT_DEV
+    RCTBridge *bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
+                                           moduleProvider:nil
+                                           launchOptions:launchOptions];
+  
+    [bridge moduleForClass:[RCTDevLoadingView class]];
+  #endif
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"demo_react_native"
                                                initialProperties:nil
