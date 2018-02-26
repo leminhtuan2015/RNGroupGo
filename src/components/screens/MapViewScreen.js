@@ -213,7 +213,6 @@ class MapViewScreen extends React.Component {
   }
 
   bind = () => {
-    this.getCurrentPosition()
     this.autoUpdateMyPosition()
     this.subscribe("users/" + Utils.uniqueId() + "/inbox")
   }
@@ -266,6 +265,10 @@ class MapViewScreen extends React.Component {
     this.stopUpdateMyPosition()
   }
 
+  componentDidMount(){
+    this.getCurrentPosition()
+  }
+
   renderFriendsMarker = () => {
 
     let users = this.props.store.mapState.users 
@@ -293,7 +296,7 @@ class MapViewScreen extends React.Component {
 
   renderMarker = (userId, imageName) => {
     return (
-      <View>
+      <View key={userId}>
         <MarkerAnimatedView
           userId={userId}
           title="Me"
