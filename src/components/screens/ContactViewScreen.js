@@ -116,7 +116,6 @@ class ContactViewScreen extends React.Component {
     let jsonData = {}
     jsonData[userId] = 0
     jsonData[Utils.uniqueId()] = 1
-    jsonData["channelId"] = channelId
 
     this.props.dispatch({type: ActionTypes.CREATE_CHANNEL,
                      data: {jsonData: jsonData, channelId: channelId}})
@@ -139,7 +138,6 @@ class ContactViewScreen extends React.Component {
   }
 
   unSubscribeChannel = (data) => {
-
     console.log("leaveChannel : " + JSON.stringify(data))
     this.props.dispatch({type: ActionTypes.LEAVE_CHANNEL, data: data})
   }

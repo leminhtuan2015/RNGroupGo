@@ -44,7 +44,7 @@ function addFriend(state, data){
 
 function createChannel(state, data){
   let {jsonData, channelId} = data
-  FirebaseHelper.write("channels/" + channelId, {users: jsonData})
+  FirebaseHelper.write("channels/" + channelId, {users: jsonData, channelId: channelId})
 
   return state
 }
@@ -77,8 +77,10 @@ function subscribe(state, data){
   return state
 }
 
-function unSubscribe(state, data){
+function unSubscribeChannel(state, data){
   let {channelId} = data
+
+  console.log("unSubscribeChannel : " + channelId)
 
   FirebaseHelper.unSubscribe("channels/" + channelId)
 

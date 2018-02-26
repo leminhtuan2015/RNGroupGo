@@ -26,7 +26,7 @@ class FirebaseHelper {
     });
   }
 
-  static unSubcribe(path){
+  static unSubscribe(path){
     //ref.off("value", originalCallback);
     //ref.off("value", originalCallback, this);
     //ref.off("value");

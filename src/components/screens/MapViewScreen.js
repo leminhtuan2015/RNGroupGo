@@ -173,6 +173,8 @@ class MapViewScreen extends React.Component {
 
     this.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
+
+//    TODO : JOIN
   }
 
   rejectJoinChannel = (data) => {
@@ -182,7 +184,7 @@ class MapViewScreen extends React.Component {
       data: {channelId: channelId, userId: Utils.uniqueId()}})
   }
 
-  subscribe = (path) => {
+  subscribeInbox = (path) => {
     console.log("Subscribe MapView: " + path)
 
     callback = (data) => {
@@ -207,7 +209,7 @@ class MapViewScreen extends React.Component {
 
   bind = () => {
     this.autoUpdateMyPosition()
-    this.subscribe("users/" + Utils.uniqueId() + "/inbox")
+    this.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
   }
 
   autoUpdateMyPosition = () => {
