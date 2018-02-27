@@ -24,7 +24,7 @@ import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
-import ContactService from "../../services/ContactService"
+import MapService from "../../services/MapService"
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -118,7 +118,7 @@ class MapViewScreen extends React.Component {
       currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
-    this.contactService = new ContactService(this)
+    this.MapService = new MapService(this)
     this.timerId = null
     this.reloadComponent = true
     this.bind()
@@ -173,7 +173,7 @@ class MapViewScreen extends React.Component {
   bind = () => {
     this.autoUpdateMyPosition()
 //    this.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
-    this.contactService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
+    this.MapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
   }
 
   autoUpdateMyPosition = () => {

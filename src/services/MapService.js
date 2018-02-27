@@ -1,7 +1,7 @@
 import * as ActionTypes from "../constants/ActionTypes"
 import { NavigationActions } from 'react-navigation';
 
-class ContactService {
+class MapService {
 
   constructor(component){
     this.component = component
@@ -64,4 +64,4 @@ class ContactService {
 
 }
 
-export default ContactService
+export default MapService
