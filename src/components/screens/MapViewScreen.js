@@ -14,6 +14,7 @@ import {
   Alert,
 } from "react-native"
 
+import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
@@ -170,11 +171,30 @@ class MapViewScreen extends React.Component {
 
   acceptJoinChannel = (data) => {
     const channelId = data.data.channelId
+    const fromUserId = data.data.fromUserId
+    const toUserId = data.data.toUserId
 
     this.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
 
-//    TODO : JOIN
+    console.log("acceptJoinChannel : " + JSON.stringify(data))
+
+    this.gotoMapWithFriend(fromUserId)
+
+  }
+
+  gotoMapWithFriend = (userId) => {
+      this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP, data: [userId]})
+      this.resetTo("RootStack")
+  }
+
+  resetTo = (route) => {
+      const actionToDispatch = NavigationActions.reset({
+          index: 0,
+          key: null,
+          actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
+      });
+      this.props.navigation.dispatch(actionToDispatch);
   }
 
   rejectJoinChannel = (data) => {
