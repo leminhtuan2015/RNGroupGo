@@ -242,16 +242,16 @@ class MapViewScreen extends React.Component {
     }
   }
 
-	regionFrom1(lat, lon) {
+  regionFrom1(lat, lon) {
 		return result = {
 			latitude: lat,
 			longitude: lon,
 			latitudeDelta: LATITUDE_DELTA,
 			longitudeDelta: LONGITUDE_DELTA,
 		}
-	}
+  }
 
-	regionFrom(lat, lon, distance) {
+  regionFrom(lat, lon, distance) {
 		distance = distance/2
 		const circumference = 40075
 		const oneDegreeOfLatitudeInMeters = 111.32 * 1000
@@ -268,7 +268,7 @@ class MapViewScreen extends React.Component {
 			latitudeDelta,
 			longitudeDelta,
 		}
-	}
+  }
 
   shouldComponentUpdate(){
     return this.reloadComponent
