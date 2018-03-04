@@ -10,6 +10,8 @@ import {
   ImageBackground, 
   ActivityIndicator,
   ListView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 
 import { 
@@ -119,7 +121,7 @@ class ContactViewScreen extends React.Component {
 
   render() {
     return (
-      <View id="container" style={styles.container}>
+      <TouchableWithoutFeedback id="container" style={styles.container} onPress={() => Keyboard.dismiss()}>
         <View id="contentContainer" style={styles.contentContainer}>
           <Indicator />
           <FormInput
@@ -148,7 +150,7 @@ class ContactViewScreen extends React.Component {
               </List>
             </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
