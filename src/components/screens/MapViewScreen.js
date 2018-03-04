@@ -86,17 +86,13 @@ class MapViewScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
 
-		let headerRight = 
+	let headerRight =
       <NavBarItem 
         iconName="location-arrow"
         color="gray"
         onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
 
-		const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>) 
-
-    if(!params.selectedUser){
-      headerRight = <Text></Text>
-    }
+		const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>)
 
     return {
       tabBarLabel: params.label,
@@ -148,7 +144,6 @@ class MapViewScreen extends React.Component {
 
   }
 
-
   getCurrentPosition = () => {
     //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
     // NEED REFACTOR
@@ -186,31 +181,31 @@ class MapViewScreen extends React.Component {
   }
 
   regionFrom1(lat, lon) {
-		return result = {
-			latitude: lat,
-			longitude: lon,
-			latitudeDelta: LATITUDE_DELTA,
-			longitudeDelta: LONGITUDE_DELTA,
-		}
+    return result = {
+        latitude: lat,
+        longitude: lon,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+    }
   }
 
   regionFrom(lat, lon, distance) {
-		distance = distance/2
-		const circumference = 40075
-		const oneDegreeOfLatitudeInMeters = 111.32 * 1000
-		const angularDistance = distance/circumference
+    distance = distance/2
+    const circumference = 40075
+    const oneDegreeOfLatitudeInMeters = 111.32 * 1000
+    const angularDistance = distance/circumference
 
-		const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
-		const longitudeDelta = Math.abs(Math.atan2(
-						Math.sin(angularDistance)*Math.cos(lat),
-						Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
+    const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
+    const longitudeDelta = Math.abs(Math.atan2(
+                    Math.sin(angularDistance)*Math.cos(lat),
+                    Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
 
-		return result = {
-			latitude: lat,
-			longitude: lon,
-			latitudeDelta,
-			longitudeDelta,
-		}
+    return result = {
+        latitude: lat,
+        longitude: lon,
+        latitudeDelta,
+        longitudeDelta,
+    }
   }
 
   shouldComponentUpdate(){

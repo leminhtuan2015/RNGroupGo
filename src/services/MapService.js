@@ -41,7 +41,7 @@ class MapService {
       const actionToDispatch = NavigationActions.reset({
           index: 0,
           key: null,
-          actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
+          actions: [NavigationActions.navigate({routeName: route,})],
       });
       this.component.props.navigation.dispatch(actionToDispatch);
   }

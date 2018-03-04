@@ -16,6 +16,8 @@ let database = firebase.database()
 class FirebaseHelper {
 
   static subscribe(path, callback){
+    FirebaseHelper.unSubscribe(path)
+
     let ref = database.ref(path);
     var willCallBack = false
     ref.on('value', function(snapshot) {
