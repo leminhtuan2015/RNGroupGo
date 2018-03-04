@@ -58,6 +58,7 @@
 		A7112F982003B5CC006D2EFB /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7112F5D2003B5CC006D2EFB /* Zocial.ttf */; };
 		A711D7F220294540004B3621 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A711D7F12029447C004B3621 /* libSQLite.a */; };
 		A711D7FA202955BC004B3621 /* sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A711D7F9202955BC004B3621 /* sqlite */; };
+		A73C4BF5204B86D50052C9F4 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A73C4BC6204B86CE0052C9F4 /* libART.a */; };
 		A75CAA1420216DDE00DDF94F /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75CAA1220216DB300DDF94F /* GoogleMobileAds.framework */; };
 		A77E59962031370800B5555C /* libRNToastNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A77E5993203136EE00B5555C /* libRNToastNative.a */; };
 		A77E59DD20316E9F00B5555C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A77E59DA20316E8F00B5555C /* libRNDeviceInfo.a */; };
@@ -331,6 +332,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSearchBar;
 		};
+		A73C4BC5204B86CE0052C9F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A73C4BC0204B86CD0052C9F4 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
+		A73C4BC7204B86CE0052C9F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A73C4BC0204B86CD0052C9F4 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 323A12871E5F266B004975B8;
+			remoteInfo = "ART-tvOS";
+		};
 		A77E5992203136EE00B5555C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A77E5967203136EE00B5555C /* RNToastNative.xcodeproj */;
@@ -447,6 +462,7 @@
 		A7112F5D2003B5CC006D2EFB /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
 		A711D7C42029447B004B3621 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../node_modules/react-native-sqlite-storage/src/ios/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		A711D7F9202955BC004B3621 /* sqlite */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sqlite; sourceTree = "<group>"; };
+		A73C4BC0204B86CD0052C9F4 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		A75CAA1220216DB300DDF94F /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
 		A77E5967203136EE00B5555C /* RNToastNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNToastNative.xcodeproj; path = "../node_modules/react-native-toast-native/ios/RNToastNative.xcodeproj"; sourceTree = "<group>"; };
 		A77E59D420316E8F00B5555C /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -475,6 +491,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A73C4BF5204B86D50052C9F4 /* libART.a in Frameworks */,
 				A77E59DD20316E9F00B5555C /* libRNDeviceInfo.a in Frameworks */,
 				A75CAA1420216DDE00DDF94F /* GoogleMobileAds.framework in Frameworks */,
 				A77E59962031370800B5555C /* libRNToastNative.a in Frameworks */,
@@ -679,6 +696,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A73C4BC0204B86CD0052C9F4 /* ART.xcodeproj */,
 				A77E59D420316E8F00B5555C /* RNDeviceInfo.xcodeproj */,
 				A77E5967203136EE00B5555C /* RNToastNative.xcodeproj */,
 				A711D7C42029447B004B3621 /* SQLite.xcodeproj */,
@@ -799,6 +817,15 @@
 			isa = PBXGroup;
 			children = (
 				A719D02A2020BED400819DDB /* libRNSearchBar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A73C4BC1204B86CD0052C9F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A73C4BC6204B86CE0052C9F4 /* libART.a */,
+				A73C4BC8204B86CE0052C9F4 /* libART-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -990,6 +1017,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = A73C4BC1204B86CD0052C9F4 /* Products */;
+					ProjectRef = A73C4BC0204B86CD0052C9F4 /* ART.xcodeproj */;
+				},
 				{
 					ProductGroup = A79AD206202304840088B563 /* Products */;
 					ProjectRef = A79AD205202304840088B563 /* LMTRNModule.xcodeproj */;
@@ -1325,6 +1356,20 @@
 			fileType = archive.ar;
 			path = libRNSearchBar.a;
 			remoteRef = A719D0292020BED400819DDB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A73C4BC6204B86CE0052C9F4 /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = A73C4BC5204B86CE0052C9F4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A73C4BC8204B86CE0052C9F4 /* libART-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libART-tvOS.a";
+			remoteRef = A73C4BC7204B86CE0052C9F4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A77E5993203136EE00B5555C /* libRNToastNative.a */ = {

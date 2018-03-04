@@ -26,6 +26,8 @@ import { NavigationActions } from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
 import * as Utils from "../../utils/Utils"
 import NavBarItem from "../views/NavBarItem"
+import Indicator from "../views/Indicator"
+import ContactService from "../../services/ContactService"
 
 const styles = StyleSheet.create({
   container: {
@@ -73,73 +75,11 @@ class ContactViewScreen extends React.Component {
 
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.selectedUser = null
+    this.contactService = new ContactService(this)
 
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
     }
-  }
-
-  resetTo = (route) => {
-    const actionToDispatch = NavigationActions.reset({
-        index: 0,
-        key: null,
-        actions: [NavigationActions.navigate({routeName: route, params: {selectedUser: this.selectedUser}})],
-    });
-    this.props.navigation.dispatch(actionToDispatch);
-}
-
-  subscribe = (path) => {
-    console.log("Subscribe ContactView: " + path)
-
-    callback = (data) => {
-      console.log("callback data : " + JSON.stringify(data))
-
-      const friendResponseStatus = data.users[this.selectedUser.key]
-
-      if(friendResponseStatus == 1){
-        Alert.alert("Accepted")
-        this.gotoMapWithFriend(this.selectedUser.key)
-      } else if(friendResponseStatus == -1){
-        Alert.alert("Rejected")
-        this.unSubscribeChannel(data)
-      }
-
-    }
-
-    this.props.dispatch({type: ActionTypes.SUBSCRIBE,
-      data: {path: path, callback: callback}})
-  }
-
-  createChannel = (userId) => {
-    const channelId = Utils.guid()
-
-    let jsonData = {}
-    jsonData[userId] = 0
-    jsonData[Utils.uniqueId()] = 1
-
-    this.props.dispatch({type: ActionTypes.CREATE_CHANNEL,
-                     data: {jsonData: jsonData, channelId: channelId}})
-
-    return channelId
-  }
-
-  requestLocation = (userId) => {
-
-    const channelId = this.createChannel(userId)
-    this.subscribe("channels/" + channelId)
-
-    this.props.dispatch({type: ActionTypes.REQUEST_LOCATION,
-      data: {fromUserId: Utils.uniqueId(),toUserId: userId, channelId: channelId}})
-  }
-
-  gotoMapWithFriend = (userId) => {
-    this.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP, data: [userId]})
-    this.resetTo("RootStack")
-  }
-
-  unSubscribeChannel = (data) => {
-    console.log("leaveChannel : " + JSON.stringify(data))
-    this.props.dispatch({type: ActionTypes.LEAVE_CHANNEL, data: data})
   }
 
   onPressListItem = (rowData) => {
@@ -148,7 +88,7 @@ class ContactViewScreen extends React.Component {
     this.selectedUser = rowData
     const userId = rowData.key
 
-    this.requestLocation(userId)
+    this.contactService.requestLocation(userId)
   }
 
   onTextChange = (text) => {
@@ -181,6 +121,7 @@ class ContactViewScreen extends React.Component {
     return (
       <View id="container" style={styles.container}>
         <View id="contentContainer" style={styles.contentContainer}>
+          <Indicator />
           <FormInput
             inputStyle={{color: "#2196f3", marginLeft: 20}}
             containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}

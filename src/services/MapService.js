@@ -1,6 +1,20 @@
 import * as ActionTypes from "../constants/ActionTypes"
 import { NavigationActions } from 'react-navigation';
 
+import {
+  Dimensions,
+  StyleSheet,
+  Button,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  Alert,
+} from "react-native"
+
+import * as Utils from "../utils/Utils"
+
 class MapService {
 
   constructor(component){

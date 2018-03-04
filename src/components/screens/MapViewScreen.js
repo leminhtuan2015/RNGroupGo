@@ -172,7 +172,6 @@ class MapViewScreen extends React.Component {
 
   bind = () => {
     this.autoUpdateMyPosition()
-//    this.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
     this.MapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
   }
 
