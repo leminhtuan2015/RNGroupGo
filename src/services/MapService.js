@@ -19,6 +19,12 @@ class MapService {
 
   constructor(component){
     this.component = component
+    this.channelId = ""
+  }
+
+  leaveChannel = (channelId) => {
+    this.component.props.dispatch({type: ActionTypes.LEAVE_CHANNEL,
+      data: {channelId: channelId, userId: Utils.uniqueId(), status: -2}})
   }
 
   acceptJoinChannel = (data) => {
@@ -26,24 +32,12 @@ class MapService {
     const fromUserId = data.data.fromUserId
     const toUserId = data.data.toUserId
 
+    this.channelId = channelId
+
     this.component.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
     console.log("acceptJoinChannel : " + JSON.stringify(data))
     this.gotoMapWithFriend(fromUserId)
-  }
-
-  gotoMapWithFriend = (userId) => {
-      this.component.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP, data: [userId]})
-      this.resetTo("RootStack")
-  }
-
-  resetTo = (route) => {
-      const actionToDispatch = NavigationActions.reset({
-          index: 0,
-          key: null,
-          actions: [NavigationActions.navigate({routeName: route,})],
-      });
-      this.component.props.navigation.dispatch(actionToDispatch);
   }
 
   rejectJoinChannel = (data) => {
@@ -53,16 +47,15 @@ class MapService {
       data: {channelId: channelId, userId: Utils.uniqueId()}})
   }
 
-  subscribeInbox = (path) => {
+    subscribeInbox = (path) => {
     console.log("Subscribe MapView: " + path)
 
     callback = (data) => {
-      console.log("callback data : " + JSON.stringify(data))
-//      Alert.alert("" + JSON.stringify(data))
+      console.log("In Comming Call : " + JSON.stringify(data))
 
       Alert.alert(
-        'In Comming Call',
-        JSON.stringify(data),
+        "In Comming Call",
+        "",
         [
           {text: 'Ask me later', onPress: () => {this.rejectJoinChannel(data)}},
           {text: 'Cancel', onPress: () => {this.rejectJoinChannel(data)}, style: 'cancel'},
@@ -74,7 +67,22 @@ class MapService {
 
     this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,
       data: {path: path, callback: callback}})
-  }
+    }
+
+    gotoMapWithFriend = (userId) => {
+        this.component.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
+        data: {users: [userId], channelId: this.channelId}})
+        this.resetTo("RootStack")
+    }
+
+    resetTo = (route) => {
+        const actionToDispatch = NavigationActions.reset({
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({routeName: route,})],
+        });
+        this.component.props.navigation.dispatch(actionToDispatch);
+    }
 
 }
 

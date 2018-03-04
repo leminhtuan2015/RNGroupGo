@@ -81,6 +81,7 @@ class ContactViewScreen extends React.Component {
 
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
+      isShowingIndicator: false,
     }
   }
 
@@ -90,7 +91,8 @@ class ContactViewScreen extends React.Component {
     this.selectedUser = rowData
     const userId = rowData.key
 
-    this.contactService.requestLocation(userId)
+    this.setState({isShowingIndicator: true})
+    this.contactService.requestFriendLocation(userId)
   }
 
   onTextChange = (text) => {
@@ -123,7 +125,7 @@ class ContactViewScreen extends React.Component {
     return (
       <TouchableWithoutFeedback id="container" style={styles.container} onPress={() => Keyboard.dismiss()}>
         <View id="contentContainer" style={styles.contentContainer}>
-          <Indicator />
+          {this.state.isShowingIndicator && <Indicator/>}
           <FormInput
             inputStyle={{color: "#2196f3", marginLeft: 20}}
             containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}

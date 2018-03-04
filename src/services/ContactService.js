@@ -19,6 +19,7 @@ class ContactService {
 
   constructor(component){
     this.component = component
+    this.channelId = ""
   }
 
   resetTo = (route) => {
@@ -30,11 +31,12 @@ class ContactService {
     this.component.props.navigation.dispatch(actionToDispatch);
   }
 
-  subscribe = (path) => {
+  subscribeToChannel = (path) => {
     console.log("Subscribe ContactView: " + path)
 
     callback = (data) => {
       console.log("callback data : " + JSON.stringify(data))
+      this.component.setState({isShowingIndicator: false})
 
       const friendResponseStatus = data.users[this.component.selectedUser.key]
 
@@ -44,8 +46,9 @@ class ContactService {
       } else if(friendResponseStatus == -1){
         Alert.alert("Rejected")
         this.unSubscribeChannel(data)
-      }
-
+      } else if(friendResponseStatus == -2){
+        Alert.alert("Leaved")
+     }
     }
 
     this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,
@@ -70,17 +73,19 @@ class ContactService {
     return channelId
   }
 
-  requestLocation = (userId) => {
+  requestFriendLocation = (userId) => {
 
     const channelId = this.createChannel(userId)
-    this.subscribe("channels/" + channelId)
+    this.channelId = channelId
+    this.subscribeToChannel("channels/" + channelId)
 
     this.component.props.dispatch({type: ActionTypes.REQUEST_LOCATION,
       data: {fromUserId: Utils.uniqueId(),toUserId: userId, channelId: channelId}})
   }
 
   gotoMapWithFriend = (userId) => {
-    this.component.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP, data: [userId]})
+    this.component.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
+     data: {users: [userId], channelId: this.channelId}})
     this.resetTo("RootStack")
   }
 }

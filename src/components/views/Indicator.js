@@ -32,10 +32,9 @@ class Indicator extends React.Component {
     render() {
         return(
             <View style={styles.center}>
-                <RippleLoader
-                  size={150}
-
-                 />
+                 <RippleLoader
+                   size={150}
+                   />
             </View>
         );
     }

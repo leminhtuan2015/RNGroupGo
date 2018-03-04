@@ -98,9 +98,9 @@ class MapViewScreen extends React.Component {
       tabBarLabel: params.label,
       drawerLabel: params.label,
       headerTitle: headerTitle,
-			headerRight: headerRight,
-		}
+	  headerRight: headerRight,
 	}
+  }
 
   static defaultCoordinate = {
     latitude: 0,
@@ -114,7 +114,7 @@ class MapViewScreen extends React.Component {
       currentCoordinate: MapViewScreen.defaultCoordinate,
     }
 
-    this.MapService = new MapService(this)
+    this.mapService = new MapService(this)
     this.timerId = null
     this.reloadComponent = true
     this.bind()
@@ -137,11 +137,15 @@ class MapViewScreen extends React.Component {
 
 //    Toast.show("Requesting Location", Toast.SHORT, Toast.CENTER, Constant.styleToast);
 
-    leaveMap()
+    this.leaveMap()
   }
 
   leaveMap = () => {
+    console.log("leaveMap")
 
+    const channelId = this.props.store.mapState.channelId
+
+    this.mapService.leaveChannel(channelId)
   }
 
   getCurrentPosition = () => {
@@ -167,7 +171,7 @@ class MapViewScreen extends React.Component {
 
   bind = () => {
     this.autoUpdateMyPosition()
-    this.MapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
+    this.mapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
   }
 
   autoUpdateMyPosition = () => {

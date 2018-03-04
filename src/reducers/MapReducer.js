@@ -20,6 +20,9 @@ export const MapReducer = (state = initialState, action) => {
   case ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE:
     updateLocationToFirebase(data) 
     return state
+  case ActionTypes.LEAVE_CHANNEL:
+    leaveChannel(data)
+    return state
   default:
     return state 
   }
@@ -37,14 +40,22 @@ function getCurrentPlace(state){
 }
 
 function setUsersInMap(state, data){
-  return Object.assign({}, state, {users: data})
+  let {users, channelId} = data
+
+  return Object.assign({}, state, {users: users, channelId: channelId})
 }
 
 function updateLocationToFirebase(data){
-	const uniqueId = Utils.uniqueId();
+  const uniqueId = Utils.uniqueId();
 
   FirebaseHelper.write("users/" + uniqueId +"/coordinate", data)
-} 
+}
+
+function leaveChannel(data){
+  let {userId, channelId, status} = data
+
+  FirebaseHelper.write("channels/" + channelId +"/users/" + userId, status)
+}
 
 export default MapReducer
 
