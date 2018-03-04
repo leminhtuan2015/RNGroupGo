@@ -1,20 +1,20 @@
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import { Marker, AnimatedRegion } from 'react-native-maps';
+import {Marker, AnimatedRegion} from 'react-native-maps';
 import React from 'react';
 import Toast from 'react-native-toast-native';
 import {
-  Dimensions,
-  StyleSheet,
-  Button,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
-  Alert,
+    Dimensions,
+    StyleSheet,
+    Button,
+    Image,
+    Text,
+    View,
+    TouchableOpacity,
+    Platform,
+    Alert,
 } from "react-native"
 
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
@@ -26,293 +26,293 @@ import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
 import MapService from "../../services/MapService"
 
-let { width, height } = Dimensions.get('window');
+let {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.001;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    flex: 0.8,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  tool: {
-    backgroundColor: "transparent",
-    position: 'absolute',
-    flex: 1,
-    alignItems: 'flex-end',
-    right: 10,
-    bottom: 80,
-  },
-  toolbar: {
-    backgroundColor: "white",
-    position: 'absolute',
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    top: 10,
-    right: 30,
-    left: 30,
-  },
-  toolbarContainer: {
-    backgroundColor: "white",
-    position: 'absolute',
-    height: 50,
-    right: 0,
-    left: 0,
-    bottom: 0,
-  }
+    container: {
+        flex: 1,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        flex: 0.8,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    tool: {
+        backgroundColor: "transparent",
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'flex-end',
+        right: 10,
+        bottom: 80,
+    },
+    toolbar: {
+        backgroundColor: "white",
+        position: 'absolute',
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        top: 10,
+        right: 30,
+        left: 30,
+    },
+    toolbarContainer: {
+        backgroundColor: "white",
+        position: 'absolute',
+        height: 50,
+        right: 0,
+        left: 0,
+        bottom: 0,
+    }
 
 });
 
 class MapViewScreen extends React.Component {
 
-  static navigationOptions = ({navigation}) => {
-    const { params = {} } = navigation.state;
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
 
-	let headerRight =
-      <NavBarItem
-        iconName="location-arrow"
-        color="gray"
-        onPress={params.rightButtonOnPress} />
+        let headerRight =
+            <NavBarItem
+                iconName="location-arrow"
+                color="gray"
+                onPress={params.rightButtonOnPress}/>
 
-	const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>)
+        const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name : ""}</Text>)
 
-    return {
-      tabBarLabel: params.label,
-      drawerLabel: params.label,
-      headerTitle: headerTitle,
-	  headerRight: headerRight,
-	}
-  }
-
-  static defaultCoordinate = {
-    latitude: 0,
-    longitude: 0,
-  }
-  
-  constructor(props){
-    super(props)
-
-    this.state = {
-      currentCoordinate: MapViewScreen.defaultCoordinate,
+        return {
+            tabBarLabel: params.label,
+            drawerLabel: params.label,
+            headerTitle: headerTitle,
+            headerRight: headerRight,
+        }
     }
 
-    this.mapService = new MapService(this)
-    this.timerId = null
-    this.reloadComponent = true
-    this.bind()
-  }
+    static defaultCoordinate = {
+        latitude: 0,
+        longitude: 0,
+    }
 
-  componentWillReceiveProps = (newProps) => {
-    console.log("MapView will receive props")
+    constructor(props) {
+        super(props)
 
-    this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
-  }
+        this.state = {
+            currentCoordinate: MapViewScreen.defaultCoordinate,
+        }
 
-  componentDidMount = () => {
-    this.props.navigation
-      .setParams({rightButtonOnPress: this.rightButtonOnPress}); 
-  }
+        this.mapService = new MapService(this)
+        this.timerId = null
+        this.reloadComponent = true
+        this.bind()
+    }
 
-  rightButtonOnPress = () => {
-    console.log("rightButtonOnPress")
-    this.leaveMap()
-  }
+    componentWillReceiveProps = (newProps) => {
+        console.log("MapView will receive props")
 
-  leaveMap = () => {
-    const channelId = this.props.store.mapState.channelId
+        this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
+    }
 
-    console.log("leaveMap : " + channelId)
+    componentDidMount = () => {
+        this.props.navigation
+            .setParams({rightButtonOnPress: this.rightButtonOnPress});
+    }
 
-    this.mapService.leaveChannel(channelId)
-  }
+    rightButtonOnPress = () => {
+        console.log("rightButtonOnPress")
+        this.leaveMap()
+    }
 
-  getCurrentPosition = () => {
-    //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
-    // NEED REFACTOR
-    Utils.getCurrentPosition((region, error) => {
-      console.log("Get Current Position done : " + JSON.stringify(region))
-      console.log("Get Current Position error : " + JSON.stringify(error))
-     
-      if(region) {
-        const text = "lat:" + region.latitude + "\n" + "lon:" + region.longitude
-        //Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
-        this.setState({currentCoordinate: region})
-        this.reloadComponent = false 
+    leaveMap = () => {
+        const channelId = this.props.store.mapState.channelId
 
-        this.props.dispatch({
-          type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE, 
-          data: region
+        console.log("leaveMap : " + channelId)
+
+        this.mapService.leaveChannel(channelId)
+    }
+
+    getCurrentPosition = () => {
+        //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
+        // NEED REFACTOR
+        Utils.getCurrentPosition((region, error) => {
+            console.log("Get Current Position done : " + JSON.stringify(region))
+            console.log("Get Current Position error : " + JSON.stringify(error))
+
+            if (region) {
+                const text = "lat:" + region.latitude + "\n" + "lon:" + region.longitude
+                //Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
+                this.setState({currentCoordinate: region})
+                this.reloadComponent = false
+
+                this.props.dispatch({
+                    type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE,
+                    data: region
+                })
+            }
         })
-      }
-    }) 
-  }
-
-  bind = () => {
-    this.autoUpdateMyPosition()
-    this.mapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
-  }
-
-  autoUpdateMyPosition = () => {
-    this.timerId = setInterval(this.getCurrentPosition, 10 * 1000)
-  }
-
-  stopUpdateMyPosition = () => {
-    if(this.timerId){
-      clearInterval(this.timerId)
     }
-  }
 
-  regionFrom1(lat, lon) {
-    return result = {
-        latitude: lat,
-        longitude: lon,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+    bind = () => {
+        this.autoUpdateMyPosition()
+        this.mapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
     }
-  }
 
-  regionFrom(lat, lon, distance) {
-    distance = distance/2
-    const circumference = 40075
-    const oneDegreeOfLatitudeInMeters = 111.32 * 1000
-    const angularDistance = distance/circumference
-
-    const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
-    const longitudeDelta = Math.abs(Math.atan2(
-                    Math.sin(angularDistance)*Math.cos(lat),
-                    Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
-
-    return result = {
-        latitude: lat,
-        longitude: lon,
-        latitudeDelta,
-        longitudeDelta,
+    autoUpdateMyPosition = () => {
+        this.timerId = setInterval(this.getCurrentPosition, 10 * 1000)
     }
-  }
 
-  shouldComponentUpdate(){
-    return this.reloadComponent
-    //return true 
-  }
-
-  componentWillUnmount(){
-    console.log("will un-mount")
-    this.stopUpdateMyPosition()
-  }
-
-  componentDidMount(){
-    this.getCurrentPosition()
-  }
-
-  renderFriendsMarker = () => {
-
-    let users = this.props.store.mapState.users 
-    //let users = ["709549E2-9BCD-4C27-9A41-C8EB112B4973"]
-    console.log(" renderFriendsMarker : "  + JSON.stringify(users))
-
-    let view = users.map((user) => {
-      console.log(" renderFriendsMarker_ : "  + user)
-      return this.renderMarker(user, "location1") 
-    })
-
-    let meMarker = this.renderMarker(Utils.uniqueId(), "location")
-    
-    if(users){
-      return (
-        <View>
-          {meMarker}
-          {view}
-        </View>
-      )
-    } else {
-      return meMarker
+    stopUpdateMyPosition = () => {
+        if (this.timerId) {
+            clearInterval(this.timerId)
+        }
     }
-  }
 
-  renderMarker = (userId, imageName) => {
-    return (
-      <View key={userId}>
-        <MarkerAnimatedView
-          userId={userId}
-          title="Me"
-          description="Me"
-          imageName={imageName}
-        />
-      </View>
-    )   
-  }
+    regionFrom1(lat, lon) {
+        return result = {
+            latitude: lat,
+            longitude: lon,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+        }
+    }
 
-  render() {
-    const regionOk = this.regionFrom(
-      this.state.currentCoordinate.latitude,
-      this.state.currentCoordinate.longitude,
-      300)
+    regionFrom(lat, lon, distance) {
+        distance = distance / 2
+        const circumference = 40075
+        const oneDegreeOfLatitudeInMeters = 111.32 * 1000
+        const angularDistance = distance / circumference
 
-    return (
-      <View style={styles.container}>
-        <MapView 
-          provider={PROVIDER_GOOGLE}
-          showsCompass={true}
-          style={styles.map}
-          region={regionOk}
-          onRegionChangeComplete = {(region) => {
-            console.log(" region", region)
-          }}
-        >
-          {this.renderFriendsMarker()}
-        </MapView>
-        
-        <View style={styles.tool}>
-          {IconManager.icon("plus-circle", "gray", null)}
-          <Text />
-          {IconManager.icon("minus-circle", "gray", null)}
-          <Text />
-          <Text />
-          <Text />
-          <Text />
-          <Text />
-          {IconManager.icon("map-marker", "gray", null)}
-        </View>
+        const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
+        const longitudeDelta = Math.abs(Math.atan2(
+            Math.sin(angularDistance) * Math.cos(lat),
+            Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
 
-        <View style={styles.toolbarContainer}>
-          <View style={styles.toolbar}>
-            {IconManager.icon("search", "gray", () => {
-              this.props.navigation.navigate("ContactView")
-            }, 30, "gray")}
+        return result = {
+            latitude: lat,
+            longitude: lon,
+            latitudeDelta,
+            longitudeDelta,
+        }
+    }
 
-            {IconManager.icon("user", "gray", () => {
-              this.props.navigation.navigate("FriendView")
-            }, 30, "gray")}
+    shouldComponentUpdate() {
+        return this.reloadComponent
+        //return true
+    }
 
-            {IconManager.icon("users", "gray", () => {
-              this.props.navigation.navigate("GroupView")
-            }, 30, "gray")}
+    componentWillUnmount() {
+        console.log("will un-mount")
+        this.stopUpdateMyPosition()
+    }
 
-            {IconManager.icon("bars", "gray", () => {
-              this.props.navigation.navigate("SettingView")
-            }, 30, "gray")}
+    componentDidMount() {
+        this.getCurrentPosition()
+    }
 
-          </View>
-        </View>
+    renderFriendsMarker = () => {
 
-      </View>
-          );
-  }
+        let users = this.props.store.mapState.users
+        //let users = ["709549E2-9BCD-4C27-9A41-C8EB112B4973"]
+        console.log(" renderFriendsMarker : " + JSON.stringify(users))
+
+        let view = users.map((user) => {
+            console.log(" renderFriendsMarker_ : " + user)
+            return this.renderMarker(user, "location1")
+        })
+
+        let meMarker = this.renderMarker(Utils.uniqueId(), "location")
+
+        if (users) {
+            return (
+                <View>
+                    {meMarker}
+                    {view}
+                </View>
+            )
+        } else {
+            return meMarker
+        }
+    }
+
+    renderMarker = (userId, imageName) => {
+        return (
+            <View key={userId}>
+                <MarkerAnimatedView
+                    userId={userId}
+                    title="Me"
+                    description="Me"
+                    imageName={imageName}
+                />
+            </View>
+        )
+    }
+
+    render() {
+        const regionOk = this.regionFrom(
+            this.state.currentCoordinate.latitude,
+            this.state.currentCoordinate.longitude,
+            300)
+
+        return (
+            <View style={styles.container}>
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    showsCompass={true}
+                    style={styles.map}
+                    region={regionOk}
+                    onRegionChangeComplete={(region) => {
+                        console.log(" region", region)
+                    }}
+                >
+                    {this.renderFriendsMarker()}
+                </MapView>
+
+                <View style={styles.tool}>
+                    {IconManager.icon("plus-circle", "gray", null)}
+                    <Text/>
+                    {IconManager.icon("minus-circle", "gray", null)}
+                    <Text/>
+                    <Text/>
+                    <Text/>
+                    <Text/>
+                    <Text/>
+                    {IconManager.icon("map-marker", "gray", null)}
+                </View>
+
+                <View style={styles.toolbarContainer}>
+                    <View style={styles.toolbar}>
+                        {IconManager.icon("search", "gray", () => {
+                            this.props.navigation.navigate("ContactView")
+                        }, 30, "gray")}
+
+                        {IconManager.icon("user", "gray", () => {
+                            this.props.navigation.navigate("FriendView")
+                        }, 30, "gray")}
+
+                        {IconManager.icon("users", "gray", () => {
+                            this.props.navigation.navigate("GroupView")
+                        }, 30, "gray")}
+
+                        {IconManager.icon("bars", "gray", () => {
+                            this.props.navigation.navigate("SettingView")
+                        }, 30, "gray")}
+
+                    </View>
+                </View>
+
+            </View>
+        );
+    }
 }
 
 export default MapViewScreen
