@@ -27,8 +27,21 @@ class MapService {
 
       callback = (data) => {
         console.log("callback data : " + JSON.stringify(data))
-        let user = this.component.props.store.mapState.users[0]
-        Alert.alert("user : " + user)
+
+        let friendResponseStatus = data.users[this.component.props.store.mapState.users[0]]
+        const meResponseStatus = data.users[Utils.uniqueId()]
+
+      if(meResponseStatus == -2){
+        Alert.alert("You Leaved")
+      } else if(friendResponseStatus == 1){
+        Alert.alert("Friend Accepted")
+        this.gotoMapWithFriend(this.component.selectedUser.key)
+      } else if(friendResponseStatus == -1){
+        Alert.alert("Friend Rejected")
+        this.unSubscribeChannel(data)
+      } else if(friendResponseStatus == -2){
+        Alert.alert("Friend Leaved")
+      }
     }
 
     this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,

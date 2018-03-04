@@ -42,16 +42,16 @@ class ContactService {
       const meResponseStatus = data.users[Utils.uniqueId()]
 
       if(meResponseStatus == -2){
-        Alert.alert("Me Leaved")
+        Alert.alert("You Leaved")
       } else if(friendResponseStatus == 1){
-        Alert.alert("Accepted")
+        Alert.alert("Friend Accepted")
         this.gotoMapWithFriend(this.component.selectedUser.key)
       } else if(friendResponseStatus == -1){
-        Alert.alert("Rejected")
+        Alert.alert("Friend Rejected")
         this.unSubscribeChannel(data)
       } else if(friendResponseStatus == -2){
-        Alert.alert("Leaved")
-     }
+        Alert.alert("Friend Leaved")
+      }
     }
 
     this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,
@@ -59,7 +59,7 @@ class ContactService {
   }
 
     unSubscribeChannel = (data) => {
-      console.log("leaveChannel : " + JSON.stringify(data))
+      console.log("unSubscribeChannel : " + JSON.stringify(data))
       this.component.props.dispatch({type: ActionTypes.UN_SUBSCRIBE_CHANNEL, data: data})
     }
 
