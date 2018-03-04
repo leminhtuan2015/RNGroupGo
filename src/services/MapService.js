@@ -22,6 +22,19 @@ class MapService {
     this.channelId = ""
   }
 
+  subscribeToChannel = (path) => {
+      console.log("Subscribe ContactView: " + path)
+
+      callback = (data) => {
+        console.log("callback data : " + JSON.stringify(data))
+        let user = this.component.props.store.mapState.users[0]
+        Alert.alert("user : " + user)
+    }
+
+    this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,
+      data: {path: path, callback: callback}})
+  }
+
   leaveChannel = (channelId) => {
     this.component.props.dispatch({type: ActionTypes.LEAVE_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId(), status: -2}})
@@ -37,6 +50,7 @@ class MapService {
     this.component.props.dispatch({type: ActionTypes.ACCEPT_JOIN_CHANNEL,
       data: {channelId: channelId, userId: Utils.uniqueId()}})
     console.log("acceptJoinChannel : " + JSON.stringify(data))
+    this.subscribeToChannel("channels/" + channelId)
     this.gotoMapWithFriend(fromUserId)
   }
 
@@ -47,7 +61,7 @@ class MapService {
       data: {channelId: channelId, userId: Utils.uniqueId()}})
   }
 
-    subscribeInbox = (path) => {
+  subscribeInbox = (path) => {
     console.log("Subscribe MapView: " + path)
 
     callback = (data) => {
@@ -67,22 +81,22 @@ class MapService {
 
     this.component.props.dispatch({type: ActionTypes.SUBSCRIBE,
       data: {path: path, callback: callback}})
-    }
+  }
 
-    gotoMapWithFriend = (userId) => {
+  gotoMapWithFriend = (userId) => {
         this.component.props.dispatch({type: ActionTypes.SET_USERS_IN_MAP,
         data: {users: [userId], channelId: this.channelId}})
         this.resetTo("RootStack")
-    }
+  }
 
-    resetTo = (route) => {
+  resetTo = (route) => {
         const actionToDispatch = NavigationActions.reset({
             index: 0,
             key: null,
             actions: [NavigationActions.navigate({routeName: route,})],
         });
         this.component.props.navigation.dispatch(actionToDispatch);
-    }
+  }
 
 }
 

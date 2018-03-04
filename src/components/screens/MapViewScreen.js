@@ -79,20 +79,17 @@ const styles = StyleSheet.create({
 });
 
 class MapViewScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Map',
-  };
 
   static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
 
 	let headerRight =
-      <NavBarItem 
+      <NavBarItem
         iconName="location-arrow"
         color="gray"
-        onPress={params.rightButtonOnPress ? params.rightButtonOnPress : () => null} />
+        onPress={params.rightButtonOnPress} />
 
-		const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>)
+	const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name: ""}</Text>)
 
     return {
       tabBarLabel: params.label,
@@ -126,24 +123,20 @@ class MapViewScreen extends React.Component {
     this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
   }
 
-  componentDidMount(){
+  componentDidMount = () => {
     this.props.navigation
       .setParams({rightButtonOnPress: this.rightButtonOnPress}); 
   }
 
   rightButtonOnPress = () => {
-    console.log("Right button Pressed : " + 
-      JSON.stringify(this.props.store.mapState.users)) 
-
-//    Toast.show("Requesting Location", Toast.SHORT, Toast.CENTER, Constant.styleToast);
-
+    console.log("rightButtonOnPress")
     this.leaveMap()
   }
 
   leaveMap = () => {
-    console.log("leaveMap")
-
     const channelId = this.props.store.mapState.channelId
+
+    console.log("leaveMap : " + channelId)
 
     this.mapService.leaveChannel(channelId)
   }

@@ -39,8 +39,11 @@ class ContactService {
       this.component.setState({isShowingIndicator: false})
 
       const friendResponseStatus = data.users[this.component.selectedUser.key]
+      const meResponseStatus = data.users[Utils.uniqueId()]
 
-      if(friendResponseStatus == 1){
+      if(meResponseStatus == -2){
+        Alert.alert("Me Leaved")
+      } else if(friendResponseStatus == 1){
         Alert.alert("Accepted")
         this.gotoMapWithFriend(this.component.selectedUser.key)
       } else if(friendResponseStatus == -1){
@@ -57,7 +60,7 @@ class ContactService {
 
     unSubscribeChannel = (data) => {
       console.log("leaveChannel : " + JSON.stringify(data))
-      this.component.props.dispatch({type: ActionTypes.LEAVE_CHANNEL, data: data})
+      this.component.props.dispatch({type: ActionTypes.UN_SUBSCRIBE_CHANNEL, data: data})
     }
 
   createChannel = (userId) => {

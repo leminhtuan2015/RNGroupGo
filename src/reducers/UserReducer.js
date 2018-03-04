@@ -27,7 +27,7 @@ export const UserReducer = (state = initialState, action) => {
      return rejectJoinChannel(state, data)
   case ActionTypes.ACCEPT_JOIN_CHANNEL:
      return acceptJoinChannel(state, data)
-  case ActionTypes.LEAVE_CHANNEL:
+  case ActionTypes.UN_SUBSCRIBE_CHANNEL:
      return unSubscribeChannel(state, data)
   default:
     return state 
