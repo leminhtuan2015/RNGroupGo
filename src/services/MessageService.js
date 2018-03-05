@@ -15,7 +15,6 @@ import {
 
 import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper";
-import RequestingLocationScreen from "../components/screens/RequestingLocationScreen";
 
 class MessageService {
 
@@ -61,6 +60,7 @@ class MessageService {
                 this.unSubscribeChannel(data)
             } else if (friendStatus == 1) {
                 Alert.alert("Friend Accepted")
+                this.component.friendAccept()
                 this.gotoMapWithFriend(friendId, channelId)
             }
         }

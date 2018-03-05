@@ -114,6 +114,7 @@ class MapViewScreen extends React.Component {
         this.messageService = new MessageService(this)
         this.timerId = null
         this.reloadComponent = true
+
         this.bind()
     }
 
@@ -125,6 +126,7 @@ class MapViewScreen extends React.Component {
 
     componentDidMount = () => {
         this.getCurrentPosition()
+        this.autoUpdateMyPosition()
 
         this.props.navigation
             .setParams({
@@ -204,7 +206,10 @@ class MapViewScreen extends React.Component {
     }
 
     bind = () => {
-        this.autoUpdateMyPosition()
+        this.subscribeInbox()
+    }
+
+    subscribeInbox = () => {
         this.messageService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
     }
 

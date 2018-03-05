@@ -101,25 +101,24 @@ class RequestingLocationScreen extends Component<> {
         )
     }
 
-    componentDidMount() {
-
-    }
-
     stopCalling = () => {
         this.messageService.unSubscribeChannel({channelId: this.state.channelId})
         this.props.navigation.goBack()
     }
 
     bind = () => {
-        console.log("RequestingLocationScreen 111 : " + userId)
         const userId = this.props.navigation.state.params.userId
-        console.log("userId : " + userId)
+        console.log("RequestingLocationScreen : userId : " + userId)
         let channelId = this.messageService.requestFriendLocation(userId)
         this.setState({userId: userId, channelId: channelId})
 
     }
 
     friendRejected = () => {
+        this.props.navigation.goBack()
+    }
+
+    friendAccept = () => {
         this.props.navigation.goBack()
     }
 }
