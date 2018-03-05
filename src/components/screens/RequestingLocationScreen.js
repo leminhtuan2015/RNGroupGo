@@ -67,11 +67,12 @@ class RequestingLocationScreen extends Component<> {
 
         this.state = {
             isShowingIndicator: true,
-            userId: null,
+            userId: this.props.navigation.state.params.userId,
             channelId: null,
         }
 
         this.messageService = new MessageService(this)
+        this.bind()
     }
 
     render(){
@@ -101,7 +102,7 @@ class RequestingLocationScreen extends Component<> {
     }
 
     componentDidMount() {
-        this.bind()
+
     }
 
     stopCalling = () => {
@@ -110,16 +111,17 @@ class RequestingLocationScreen extends Component<> {
     }
 
     bind = () => {
+        console.log("RequestingLocationScreen 111 : " + userId)
         const userId = this.props.navigation.state.params.userId
         console.log("userId : " + userId)
         let channelId = this.messageService.requestFriendLocation(userId)
         this.setState({userId: userId, channelId: channelId})
+
     }
 
     friendRejected = () => {
         this.props.navigation.goBack()
     }
-
 }
 
 export default RequestingLocationScreen

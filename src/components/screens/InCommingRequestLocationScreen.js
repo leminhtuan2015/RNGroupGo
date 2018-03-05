@@ -69,7 +69,7 @@ class InCommingRequestLocationScreen extends Component<> {
             isShowingIndicator: true,
         }
 
-        this.callback = null
+        this.callback = this.props.navigation.state.params.callback
     }
 
     render(){
@@ -109,7 +109,7 @@ class InCommingRequestLocationScreen extends Component<> {
     }
 
     componentDidMount() {
-        this.callback = this.props.navigation.state.params.callback
+
     }
 
     ok = () => {

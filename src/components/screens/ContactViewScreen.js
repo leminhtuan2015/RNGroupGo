@@ -28,6 +28,7 @@ import {NavigationActions} from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
 import * as Utils from "../../utils/Utils"
 import NavBarItem from "../views/NavBarItem"
+import MessageService from "../../services/MessageService"
 
 const styles = StyleSheet.create({
     container: {
@@ -79,6 +80,8 @@ class ContactViewScreen extends React.Component {
         this.state = {
             dataSource: this.ds.cloneWithRows([]),
         }
+
+        this.messageService = new MessageService(this)
     }
 
     onPressListItem = (rowData) => {
@@ -94,8 +97,7 @@ class ContactViewScreen extends React.Component {
     }
 
     requestShareLocation = (userId) =>{
-        this.props.navigation.navigate("RequestingLocationView",
-            {userId: userId})
+        this.props.navigation.navigate("RequestingLocationView", {userId: userId})
         // this.messageService.requestFriendLocation(userId)
     }
 

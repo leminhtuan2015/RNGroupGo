@@ -27,6 +27,10 @@ class MessageService {
         console.log("Subscribe ContactView: " + path)
 
         callback = (data) => {
+            if(!data){
+                return
+            }
+
             console.log("callback data : " + JSON.stringify(data))
 
             let channelId = data.channelId
