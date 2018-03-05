@@ -1,53 +1,48 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
-import { 
-  TabNavigator, 
-  TabBarBottom,
-  StackNavigator 
+import {
+    TabNavigator,
+    TabBarBottom,
+    StackNavigator
 } from 'react-navigation';
 
-import { 
-  List,
-  Icon,
-} from 'react-native-elements'
-
-import * as Constant from "../../utils/Constant"
-import IconManager from "../../utils/IconManager"
 
 import MapViewContainer from '../../containers/MapViewContainer';
 import ContactViewContainer from '../../containers/ContactViewContainer';
-import GroupViewContainer from '../../containers/GroupViewContainer';
+import RequestingLocationContainer from '../../containers/RequestingLocationContainer';
+
 import FriendViewScreen from './FriendViewScreen';
 import SettingViewScreen from './SettingViewScreen';
-import ChattingViewScreen from './ChattingViewScreen';
+import InCommingRequestLocationScreen from "./InCommingRequestLocationScreen";
 
-const StackNavigatorView =  StackNavigator(
-  {
-    MapView: {
-      screen: MapViewContainer, 
-    },
+const StackNavigatorView = StackNavigator(
+    {
+        MapView: {
+            screen: MapViewContainer,
+        },
 
-    ContactView: {
-      screen: ContactViewContainer,
-    },
- 
-    FriendView: {
-      screen: FriendViewScreen, 
-    },
+        ContactView: {
+            screen: ContactViewContainer,
+        },
 
-    GroupView: {
-      screen: GroupViewContainer, 
-    },
-   
-    SettingView: {
-      screen: SettingViewScreen, 
-    },
+        FriendView: {
+            screen: FriendViewScreen,
+        },
 
+        RequestingLocationView: {
+            screen: RequestingLocationContainer,
+        },
 
-  },
-  {
-    mode: "modal",
-  }
+        InCommingRequestLocationView: {
+            screen: InCommingRequestLocationScreen,
+        },
+
+        SettingView: {
+            screen: SettingViewScreen,
+        },
+    },
+    {
+        mode: "modal",
+    }
 );
 
 export default StackNavigatorView

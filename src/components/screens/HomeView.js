@@ -37,7 +37,7 @@ import {styleStackHeader} from "../../utils/Constant.js"
 import LMTRN from "../../native_modules/LMTRN"
 import SqliteHelper from "../../helpers/SqliteHelper"
 
-class HomeView extends Component<{}> {
+class HomeView extends Component<> {
     static headerRight = null
 
     state = {isSaving: false}

@@ -37,7 +37,7 @@ var styles = StyleSheet.create({
     }
 });
 
-class ChattingScreen extends Component<{}> {
+class ChattingScreen extends Component<> {
 
     static navigationOptions = ({navigation}) => {
         const {params = {}} = navigation.state;

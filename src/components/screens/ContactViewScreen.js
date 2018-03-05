@@ -28,8 +28,6 @@ import {NavigationActions} from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
 import * as Utils from "../../utils/Utils"
 import NavBarItem from "../views/NavBarItem"
-import Indicator from "../views/Indicator"
-import MessageService from "../../services/MessageService"
 
 const styles = StyleSheet.create({
     container: {
@@ -80,23 +78,25 @@ class ContactViewScreen extends React.Component {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: this.ds.cloneWithRows([]),
-            isShowingIndicator: false,
         }
-
-        this.messageService = new MessageService(this)
     }
 
     onPressListItem = (rowData) => {
         //this.props.navigation.goBack()
         //this.props.navigation.navigate("MapView")
         const userId = rowData.key
-        this.setState({isShowingIndicator: true})
-        this.messageService.requestFriendLocation(userId)
+        this.requestShareLocation(userId)
     }
 
     onTextChange = (text) => {
         console.log("dispatch filter user..........")
         this.props.dispatch({type: ActionTypes.FIREBASE_FILTER_USER, data: text})
+    }
+
+    requestShareLocation = (userId) =>{
+        this.props.navigation.navigate("RequestingLocationView",
+            {userId: userId})
+        // this.messageService.requestFriendLocation(userId)
     }
 
     renderRow = (rowData, sectionID) => {
@@ -126,7 +126,6 @@ class ContactViewScreen extends React.Component {
         return (
             <TouchableWithoutFeedback id="container" style={styles.container} onPress={() => Keyboard.dismiss()}>
                 <View id="contentContainer" style={styles.contentContainer}>
-                    {this.state.isShowingIndicator && <Indicator/>}
                     <FormInput
                         inputStyle={{color: "#2196f3", marginLeft: 20}}
                         containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}

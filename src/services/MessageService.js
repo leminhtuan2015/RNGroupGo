@@ -15,6 +15,7 @@ import {
 
 import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper";
+import RequestingLocationScreen from "../components/screens/RequestingLocationScreen";
 
 class MessageService {
 
@@ -52,6 +53,7 @@ class MessageService {
                 this.goToHome()
             } else if (friendStatus == -1) {
                 Alert.alert("Friend Rejected")
+                this.component.friendRejected()
                 this.unSubscribeChannel(data)
             } else if (friendStatus == 1) {
                 Alert.alert("Friend Accepted")
@@ -112,23 +114,34 @@ class MessageService {
         callback = (data) => {
             console.log("In Comming Request Share Location:" + JSON.stringify(data))
 
-            Alert.alert(
-                "In Comming Request Share Location",
-                "",
-                [
-                    {
-                        text: "OK", onPress: () => {
-                            this.acceptJoinChannel(data)
-                        }
-                    },
-                    {
-                        text: "Cancel", onPress: () => {
-                            this.rejectJoinChannel(data)
-                        }, style: 'cancel'
-                    },
-                ],
-                {cancelable: false}
-            )
+            callbackConfirmIncomming = (status) => {
+                if(status){
+                    this.acceptJoinChannel(data)
+                } else {
+                    this.rejectJoinChannel(data)
+                }
+            }
+
+            this.component.props.navigation
+                .navigate("InCommingRequestLocationView", {callback: callbackConfirmIncomming})
+
+            // Alert.alert(
+            //     "In Comming Request Share Location",
+            //     "",
+            //     [
+            //         {
+            //             text: "OK", onPress: () => {
+            //                 this.acceptJoinChannel(data)
+            //             }
+            //         },
+            //         {
+            //             text: "Cancel", onPress: () => {
+            //                 this.rejectJoinChannel(data)
+            //             }, style: 'cancel'
+            //         },
+            //     ],
+            //     {cancelable: false}
+            // )
         }
 
         this.component.props.dispatch({
@@ -161,6 +174,8 @@ class MessageService {
             type: ActionTypes.REQUEST_LOCATION,
             data: {fromUserId: Utils.uniqueId(), toUserId: userId, channelId: channelId}
         })
+
+        return channelId
     }
 
     goToHome = () => {
