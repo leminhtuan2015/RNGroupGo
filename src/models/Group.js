@@ -1,9 +1,9 @@
 class Group {
-  constructor(){
-    this.id = ""
-    this.name = ""
-    this.userIds = [] 
-  }
+    constructor() {
+        this.id = ""
+        this.name = ""
+        this.userIds = []
+    }
 }
 
 export default Group

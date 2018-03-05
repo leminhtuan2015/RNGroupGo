@@ -1,31 +1,31 @@
 import React from 'react';
 import {
-  Dimensions,
-  StyleSheet,
-  Button,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
+    Dimensions,
+    StyleSheet,
+    Button,
+    Image,
+    Text,
+    View,
+    TouchableOpacity,
+    Platform,
 } from "react-native"
 
-import { 
-  Icon,
+import {
+    Icon,
 } from 'react-native-elements'
 
 class ProfileViewScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Profile',
-  };
+    static navigationOptions = {
+        drawerLabel: 'Profile',
+    };
 
-  render() {
-    return (
-      <View>
+    render() {
+        return (
+            <View>
 
-      </View>
-    );
-  }
+            </View>
+        );
+    }
 }
 
 export default ProfileViewScreen

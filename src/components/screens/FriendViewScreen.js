@@ -1,32 +1,32 @@
 import React from 'react';
 import {
-  Dimensions,
-  StyleSheet,
-  Button,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
+    Dimensions,
+    StyleSheet,
+    Button,
+    Image,
+    Text,
+    View,
+    TouchableOpacity,
+    Platform,
 } from "react-native"
 
-import { 
-  Icon,
+import {
+    Icon,
 } from 'react-native-elements'
 
 class FriendViewScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Friends',
-    tabBarLabel: 'Friends',
-  };
+    static navigationOptions = {
+        drawerLabel: 'Friends',
+        tabBarLabel: 'Friends',
+    };
 
-  render() {
-    return (
-      <View>
+    render() {
+        return (
+            <View>
 
-      </View>
-    );
-  }
+            </View>
+        );
+    }
 }
 
 export default FriendViewScreen

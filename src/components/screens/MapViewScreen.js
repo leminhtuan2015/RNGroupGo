@@ -127,8 +127,10 @@ class MapViewScreen extends React.Component {
         this.getCurrentPosition()
 
         this.props.navigation
-            .setParams({rightButtonOnPress: this.rightButtonOnPress,
-                channelId: this.props.store.mapState.channelId});
+            .setParams({
+                rightButtonOnPress: this.rightButtonOnPress,
+                channelId: this.props.store.mapState.channelId
+            });
     }
 
     rightButtonOnPress = () => {
@@ -241,7 +243,7 @@ class MapViewScreen extends React.Component {
 
         let userIds = []
 
-        if(userId){
+        if (userId) {
             userIds.push(userId)
         }
 
@@ -333,7 +335,7 @@ class MapViewScreen extends React.Component {
                     region={regionOk}
                     onRegionChangeComplete={(region) => {
                         console.log(" region", region)
-                    }} >
+                    }}>
 
                     {this.renderFriendsMarker()}
                 </MapView>

@@ -1,4 +1,4 @@
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
 import RootNavigatorView from './RootNavigatorView';
 
 const initialState = RootNavigatorView.router.getStateForAction(NavigationActions.init());
