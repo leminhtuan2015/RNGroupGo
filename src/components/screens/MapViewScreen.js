@@ -145,6 +145,25 @@ class MapViewScreen extends React.Component {
             [
                 {
                     text: "Leave This Map", onPress: () => {
+                        this.confirmLeaveMap()
+                    }
+                },
+                {
+                    text: "Cancel", onPress: () => {
+                    }, style: 'cancel'
+                },
+            ],
+            {cancelable: false}
+        )
+    }
+
+    confirmLeaveMap = () => {
+        Alert.alert(
+            "Confirm Leave This Map",
+            "",
+            [
+                {
+                    text: "Leave", onPress: () => {
                         this.leaveMap()
                     }
                 },
@@ -287,12 +306,12 @@ class MapViewScreen extends React.Component {
                         this.props.navigation.navigate("ContactView")
                     }, 30, "gray")}
 
-                    {IconManager.icon("user", "gray", () => {
+                    {IconManager.icon("history", "gray", () => {
                         this.props.navigation.navigate("FriendView")
                     }, 30, "gray")}
 
-                    {IconManager.icon("users", "gray", () => {
-                        this.props.navigation.navigate("GroupView")
+                    {IconManager.icon("user-circle", "gray", () => {
+                        this.props.navigation.navigate("FriendView")
                     }, 30, "gray")}
 
                     {IconManager.icon("bars", "gray", () => {

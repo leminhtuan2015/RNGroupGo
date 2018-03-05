@@ -110,19 +110,19 @@ class MessageService {
         console.log("Subscribe MapView: " + path)
 
         callback = (data) => {
-            console.log("In Comming Call : " + JSON.stringify(data))
+            console.log("In Comming Request Share Location:" + JSON.stringify(data))
 
             Alert.alert(
-                "In Comming Call",
+                "In Comming Request Share Location",
                 "",
                 [
                     {
-                        text: 'OK', onPress: () => {
+                        text: "OK", onPress: () => {
                             this.acceptJoinChannel(data)
                         }
                     },
                     {
-                        text: 'Cancel', onPress: () => {
+                        text: "Cancel", onPress: () => {
                             this.rejectJoinChannel(data)
                         }, style: 'cancel'
                     },
