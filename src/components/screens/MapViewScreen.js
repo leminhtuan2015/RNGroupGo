@@ -24,7 +24,7 @@ import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import ImageManager from "../../utils/ImageManager"
-import MapService from "../../services/MapService"
+import MessageService from "../../services/MessageService"
 
 let {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height
@@ -85,17 +85,17 @@ class MapViewScreen extends React.Component {
 
         let headerRight =
             <NavBarItem
-                iconName="location-arrow"
+                iconName="bars"
                 color="gray"
                 onPress={params.rightButtonOnPress}/>
 
-        const headerTitle = (<Text>{params.selectedUser ? params.selectedUser.name : ""}</Text>)
+        const headerTitle = (<Text>{params.channelId ? params.channelId : ""}</Text>)
 
         return {
             tabBarLabel: params.label,
             drawerLabel: params.label,
             headerTitle: headerTitle,
-            headerRight: headerRight,
+            headerRight: params.channelId ? headerRight : null,
         }
     }
 
@@ -111,7 +111,7 @@ class MapViewScreen extends React.Component {
             currentCoordinate: MapViewScreen.defaultCoordinate,
         }
 
-        this.mapService = new MapService(this)
+        this.messageService = new MessageService(this)
         this.timerId = null
         this.reloadComponent = true
         this.bind()
@@ -124,21 +124,41 @@ class MapViewScreen extends React.Component {
     }
 
     componentDidMount = () => {
+        this.getCurrentPosition()
+
         this.props.navigation
-            .setParams({rightButtonOnPress: this.rightButtonOnPress});
+            .setParams({rightButtonOnPress: this.rightButtonOnPress,
+                channelId: this.props.store.mapState.channelId});
     }
 
     rightButtonOnPress = () => {
         console.log("rightButtonOnPress")
-        this.leaveMap()
+        this.showOptions()
+    }
+
+    showOptions = () => {
+        Alert.alert(
+            "Options",
+            "",
+            [
+                {
+                    text: "Leave This Map", onPress: () => {
+                        this.leaveMap()
+                    }
+                },
+                {
+                    text: "Cancel", onPress: () => {
+                    }, style: 'cancel'
+                },
+            ],
+            {cancelable: false}
+        )
     }
 
     leaveMap = () => {
         const channelId = this.props.store.mapState.channelId
-
         console.log("leaveMap : " + channelId)
-
-        this.mapService.leaveChannel(channelId)
+        this.messageService.leaveChannel(channelId)
     }
 
     getCurrentPosition = () => {
@@ -164,7 +184,7 @@ class MapViewScreen extends React.Component {
 
     bind = () => {
         this.autoUpdateMyPosition()
-        this.mapService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
+        this.messageService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
     }
 
     autoUpdateMyPosition = () => {
@@ -215,24 +235,24 @@ class MapViewScreen extends React.Component {
         this.stopUpdateMyPosition()
     }
 
-    componentDidMount() {
-        this.getCurrentPosition()
-    }
-
     renderFriendsMarker = () => {
+        let userId = this.props.store.mapState.userId
+        console.log(" renderFriendsMarker : " + JSON.stringify(userId))
 
-        let users = this.props.store.mapState.users
-        //let users = ["709549E2-9BCD-4C27-9A41-C8EB112B4973"]
-        console.log(" renderFriendsMarker : " + JSON.stringify(users))
+        let userIds = []
 
-        let view = users.map((user) => {
-            console.log(" renderFriendsMarker_ : " + user)
-            return this.renderMarker(user, "location1")
+        if(userId){
+            userIds.push(userId)
+        }
+
+        let view = userIds.map((userId) => {
+            console.log(" renderFriendsMarker_ : " + userId)
+            return this.renderMarker(userId, "location1")
         })
 
         let meMarker = this.renderMarker(Utils.uniqueId(), "location")
 
-        if (users) {
+        if (userIds.length) {
             return (
                 <View>
                     {meMarker}
@@ -257,6 +277,47 @@ class MapViewScreen extends React.Component {
         )
     }
 
+    renderBottomBar = () => {
+        return (
+            <View style={styles.toolbarContainer}>
+                <View style={styles.toolbar}>
+                    {IconManager.icon("search", "gray", () => {
+                        this.props.navigation.navigate("ContactView")
+                    }, 30, "gray")}
+
+                    {IconManager.icon("user", "gray", () => {
+                        this.props.navigation.navigate("FriendView")
+                    }, 30, "gray")}
+
+                    {IconManager.icon("users", "gray", () => {
+                        this.props.navigation.navigate("GroupView")
+                    }, 30, "gray")}
+
+                    {IconManager.icon("bars", "gray", () => {
+                        this.props.navigation.navigate("SettingView")
+                    }, 30, "gray")}
+
+                </View>
+            </View>
+        )
+    }
+
+    renderTools = () => {
+        return (
+            <View style={styles.tool}>
+                {IconManager.icon("plus-circle", "gray", null)}
+                <Text/>
+                {IconManager.icon("minus-circle", "gray", null)}
+                <Text/>
+                <Text/>
+                <Text/>
+                <Text/>
+                <Text/>
+                {IconManager.icon("map-marker", "gray", null)}
+            </View>
+        )
+    }
+
     render() {
         const regionOk = this.regionFrom(
             this.state.currentCoordinate.latitude,
@@ -272,43 +333,13 @@ class MapViewScreen extends React.Component {
                     region={regionOk}
                     onRegionChangeComplete={(region) => {
                         console.log(" region", region)
-                    }}
-                >
+                    }} >
+
                     {this.renderFriendsMarker()}
                 </MapView>
 
-                <View style={styles.tool}>
-                    {IconManager.icon("plus-circle", "gray", null)}
-                    <Text/>
-                    {IconManager.icon("minus-circle", "gray", null)}
-                    <Text/>
-                    <Text/>
-                    <Text/>
-                    <Text/>
-                    <Text/>
-                    {IconManager.icon("map-marker", "gray", null)}
-                </View>
-
-                <View style={styles.toolbarContainer}>
-                    <View style={styles.toolbar}>
-                        {IconManager.icon("search", "gray", () => {
-                            this.props.navigation.navigate("ContactView")
-                        }, 30, "gray")}
-
-                        {IconManager.icon("user", "gray", () => {
-                            this.props.navigation.navigate("FriendView")
-                        }, 30, "gray")}
-
-                        {IconManager.icon("users", "gray", () => {
-                            this.props.navigation.navigate("GroupView")
-                        }, 30, "gray")}
-
-                        {IconManager.icon("bars", "gray", () => {
-                            this.props.navigation.navigate("SettingView")
-                        }, 30, "gray")}
-
-                    </View>
-                </View>
+                {this.renderTools()}
+                {!this.props.store.mapState.channelId && this.renderBottomBar()}
 
             </View>
         );
