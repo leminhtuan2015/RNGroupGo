@@ -316,7 +316,7 @@ class MapViewScreen extends React.Component {
                     }, 30, "gray")}
 
                     {IconManager.icon("user-circle", "gray", () => {
-                        this.props.navigation.navigate("FriendView")
+                        this.props.navigation.navigate("ProfileView")
                     }, 30, "gray")}
 
                     {IconManager.icon("bars", "gray", () => {

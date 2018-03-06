@@ -1,44 +1,28 @@
 import React from 'react';
 import {
-    TabNavigator,
-    TabBarBottom,
     StackNavigator
 } from 'react-navigation';
 
 
 import MapViewContainer from '../../containers/MapViewContainer';
 import ContactViewContainer from '../../containers/ContactViewContainer';
-import RequestingLocationContainer from '../../containers/RequestingLocationContainer';
-
 import FriendViewScreen from './FriendViewScreen';
+import ProfileViewScreen from './ProfileViewScreen';
 import SettingViewScreen from './SettingViewScreen';
+
+import RequestingLocationContainer from '../../containers/RequestingLocationContainer';
 import InCommingRequestLocationScreen from "./InCommingRequestLocationScreen";
 
 const StackNavigatorView = StackNavigator(
     {
-        MapView: {
-            screen: MapViewContainer,
-        },
+        MapView: {screen: MapViewContainer},
+        ContactView: {screen: ContactViewContainer},
+        FriendView: {screen: FriendViewScreen},
+        ProfileView: {screen: ProfileViewScreen},
+        SettingView: {screen: SettingViewScreen,},
 
-        ContactView: {
-            screen: ContactViewContainer,
-        },
-
-        FriendView: {
-            screen: FriendViewScreen,
-        },
-
-        RequestingLocationView: {
-            screen: RequestingLocationContainer,
-        },
-
-        InCommingRequestLocationView: {
-            screen: InCommingRequestLocationScreen,
-        },
-
-        SettingView: {
-            screen: SettingViewScreen,
-        },
+        RequestingLocationView: {screen: RequestingLocationContainer},
+        InCommingRequestLocationView: {screen: InCommingRequestLocationScreen},
     },
     {
         mode: "modal",
