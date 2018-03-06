@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native';
 
-import { Button } from 'react-native-elements'
+import {Button} from 'react-native-elements'
 
 import Indicator from "../views/Indicator"
 
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom:10,
+        marginBottom: 10,
     },
 
     titleText: {
@@ -62,7 +62,7 @@ class InCommingRequestLocationScreen extends Component<> {
         }
     };
 
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -72,9 +72,9 @@ class InCommingRequestLocationScreen extends Component<> {
         this.callback = this.props.navigation.state.params.callback
     }
 
-    render(){
-        return(
-            <View style={styles.container} >
+    render() {
+        return (
+            <View style={styles.container}>
                 <View style={styles.top}>
                     <Text style={styles.titleText}>In Comming Call</Text>
                 </View>
@@ -85,7 +85,9 @@ class InCommingRequestLocationScreen extends Component<> {
                     <Button
                         raised={true}
                         rounded={true}
-                        onPress={() => {this.rejected()}}
+                        onPress={() => {
+                            this.rejected()
+                        }}
                         title="Cancel"
                         borderRadius={5}
                         color="white"
@@ -96,7 +98,9 @@ class InCommingRequestLocationScreen extends Component<> {
                     <Button
                         raised={true}
                         rounded={true}
-                        onPress={() => {this.ok()}}
+                        onPress={() => {
+                            this.ok()
+                        }}
                         title="OK"
                         borderRadius={5}
                         color="white"

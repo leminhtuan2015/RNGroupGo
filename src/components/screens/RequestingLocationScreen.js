@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native';
 
-import { Button } from 'react-native-elements'
+import {Button} from 'react-native-elements'
 
 import Indicator from "../views/Indicator"
 import MessageService from "../../services/MessageService"
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flex: 0.3,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom:10,
+        marginBottom: 10,
     },
 
     titleText: {
@@ -62,7 +62,7 @@ class RequestingLocationScreen extends Component<> {
         }
     };
 
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -72,12 +72,11 @@ class RequestingLocationScreen extends Component<> {
         }
 
         this.messageService = new MessageService(this)
-        this.bind()
     }
 
-    render(){
-        return(
-            <View style={styles.container} >
+    render() {
+        return (
+            <View style={styles.container}>
                 <View style={styles.top}>
                     <Text style={styles.titleText}>Calling</Text>
                     <Text>{this.state.userId}</Text>
@@ -89,7 +88,9 @@ class RequestingLocationScreen extends Component<> {
                     <Button
                         raised={true}
                         rounded={true}
-                        onPress={() => {this.stopCalling()}}
+                        onPress={() => {
+                            this.stopCalling()
+                        }}
                         title="Cancel"
                         borderRadius={5}
                         color="white"
@@ -99,6 +100,10 @@ class RequestingLocationScreen extends Component<> {
                 </View>
             </View>
         )
+    }
+
+    componentDidMount = () => {
+        this.bind()
     }
 
     stopCalling = () => {

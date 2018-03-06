@@ -26,7 +26,7 @@ class MessageService {
         console.log("Subscribe ContactView: " + path)
 
         callback = (data) => {
-            if(!data){
+            if (!data) {
                 return
             }
 
@@ -40,7 +40,7 @@ class MessageService {
             let friendId = null
             let friendStatus = null
 
-            if(hostId == myId){
+            if (hostId == myId) {
                 friendId = data.friendId
                 friendStatus = data.users[friendId]
             } else {
@@ -119,7 +119,7 @@ class MessageService {
             console.log("In Comming Request Share Location:" + JSON.stringify(data))
 
             callbackConfirmIncomming = (status) => {
-                if(status){
+                if (status) {
                     this.acceptJoinChannel(data)
                 } else {
                     this.rejectJoinChannel(data)
@@ -163,8 +163,10 @@ class MessageService {
 
         this.component.props.dispatch({
             type: ActionTypes.CREATE_CHANNEL,
-            data: {jsonData: jsonData, channelId: channelId,
-                hostId: Utils.uniqueId(), friendId: friendId}
+            data: {
+                jsonData: jsonData, channelId: channelId,
+                hostId: Utils.uniqueId(), friendId: friendId
+            }
         })
 
         return channelId

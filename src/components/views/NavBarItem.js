@@ -20,7 +20,6 @@ class NavBarItem extends Component {
 
 NavBarItem.propTypes = {
     iconName: PropTypes.string.isRequired,
-    onPress: PropTypes.func.isRequired,
 };
 
 export default NavBarItem;

@@ -1728,6 +1728,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leminhtuan.locationsharing.test;
 				PRODUCT_NAME = demo_react_native;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1758,6 +1759,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leminhtuan.locationsharing.test;
 				PRODUCT_NAME = demo_react_native;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
