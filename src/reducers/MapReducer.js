@@ -13,16 +13,18 @@ export const MapReducer = (state = initialState, action) => {
     const {type, data} = action
 
     switch (type) {
-        case ActionTypes.GET_CURRENT_PLACE:
+        case ActionTypes.MAP_GET_CURRENT_PLACE:
             return getCurrentPlace(state)
-        case ActionTypes.SET_USER_IN_MAP:
+        case ActionTypes.MAP_SET_USER_IN_MAP:
             return setUserInMap(state, data)
-        case ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE:
+        case ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE:
             updateLocationToFirebase(data)
             return state
-        case ActionTypes.LEAVE_CHANNEL:
+        case ActionTypes.MAP_LEAVE_CHANNEL:
             leaveChannel(data)
             return state
+        case ActionTypes.MAP_REDUCER_TEST:
+            return Object.assign({}, state, {map: "mapxxx"})
         default:
             return state
     }

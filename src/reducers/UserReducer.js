@@ -13,21 +13,21 @@ export const UserReducer = (state = initialState, action) => {
     const {type, data} = action
 
     switch (type) {
-        case ActionTypes.SET_FILTER_USERS:
+        case ActionTypes.USER_SET_FILTER_USERS:
             return setFilterUsers(state, data)
-        case ActionTypes.ADD_FRIEND:
+        case ActionTypes.USER_ADD_FRIEND:
             return addFriend(state, data)
-        case ActionTypes.SUBSCRIBE:
+        case ActionTypes.USER_SUBSCRIBE:
             return subscribe(state, data)
-        case ActionTypes.REQUEST_LOCATION:
+        case ActionTypes.USER_REQUEST_LOCATION:
             return requestLocation(state, data)
-        case ActionTypes.CREATE_CHANNEL:
+        case ActionTypes.USER_CREATE_CHANNEL:
             return createChannel(state, data)
-        case ActionTypes.REJECT_JOIN_CHANNEL:
+        case ActionTypes.USER_REJECT_JOIN_CHANNEL:
             return rejectJoinChannel(state, data)
-        case ActionTypes.ACCEPT_JOIN_CHANNEL:
+        case ActionTypes.USER_ACCEPT_JOIN_CHANNEL:
             return acceptJoinChannel(state, data)
-        case ActionTypes.UN_SUBSCRIBE_CHANNEL:
+        case ActionTypes.USER_UN_SUBSCRIBE_CHANNEL:
             return unSubscribeChannel(state, data)
         default:
             return state

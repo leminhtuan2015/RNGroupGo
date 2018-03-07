@@ -119,7 +119,7 @@ class MapViewScreen extends React.Component {
     }
 
     componentWillReceiveProps = (newProps) => {
-        console.log("MapView will receive props")
+        console.log("MapView will receive props : " + JSON.stringify(newProps))
 
         this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
     }
@@ -185,7 +185,7 @@ class MapViewScreen extends React.Component {
     }
 
     getCurrentPosition = () => {
-        //this.props.dispatch({type: ActionTypes.GET_CURRENT_PLACE})
+        //this.props.dispatch({type: ActionTypes.MAP_GET_CURRENT_PLACE})
         // NEED REFACTOR
         Utils.getCurrentPosition((region, error) => {
             console.log("Get Current Position done : " + JSON.stringify(region))
@@ -198,7 +198,7 @@ class MapViewScreen extends React.Component {
                 this.reloadComponent = false
 
                 this.props.dispatch({
-                    type: ActionTypes.UPDATE_CURRENT_PLACE_TO_FIREBASE,
+                    type: ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE,
                     data: region
                 })
             }
@@ -346,7 +346,7 @@ class MapViewScreen extends React.Component {
 
     render() {
 
-        console.log("render MapViewScreen")
+        console.log("render_x MapViewScreen")
 
         const regionOk = this.regionFrom(
             this.state.currentCoordinate.latitude,

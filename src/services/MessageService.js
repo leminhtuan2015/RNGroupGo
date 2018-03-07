@@ -66,7 +66,7 @@ class MessageService {
         }
 
         this.component.props.dispatch({
-            type: ActionTypes.SUBSCRIBE,
+            type: ActionTypes.USER_SUBSCRIBE,
             data: {path: path, callback: callback}
         })
 
@@ -75,12 +75,12 @@ class MessageService {
 
     unSubscribeChannel = (data) => {
         console.log("unSubscribeChannel : " + JSON.stringify(data))
-        this.component.props.dispatch({type: ActionTypes.UN_SUBSCRIBE_CHANNEL, data: data})
+        this.component.props.dispatch({type: ActionTypes.USER_UN_SUBSCRIBE_CHANNEL, data: data})
     }
 
     leaveChannel = (channelId) => {
         // this.component.props.dispatch({
-        //     type: ActionTypes.LEAVE_CHANNEL,
+        //     type: ActionTypes.MAP_LEAVE_CHANNEL,
         //     data: {channelId: channelId, userId: Utils.uniqueId(), status: -2}
         // })
 
@@ -94,7 +94,7 @@ class MessageService {
         const toUserId = data.data.toUserId
 
         this.component.props.dispatch({
-            type: ActionTypes.ACCEPT_JOIN_CHANNEL,
+            type: ActionTypes.USER_ACCEPT_JOIN_CHANNEL,
             data: {channelId: channelId, userId: Utils.uniqueId()}
         })
 
@@ -107,7 +107,7 @@ class MessageService {
         const channelId = data.data.channelId
 
         this.component.props.dispatch({
-            type: ActionTypes.REJECT_JOIN_CHANNEL,
+            type: ActionTypes.USER_REJECT_JOIN_CHANNEL,
             data: {channelId: channelId, userId: Utils.uniqueId()}
         })
     }
@@ -149,7 +149,7 @@ class MessageService {
         }
 
         this.component.props.dispatch({
-            type: ActionTypes.SUBSCRIBE,
+            type: ActionTypes.USER_SUBSCRIBE,
             data: {path: path, callback: callback}
         })
     }
@@ -162,7 +162,7 @@ class MessageService {
         jsonData[Utils.uniqueId()] = 1
 
         this.component.props.dispatch({
-            type: ActionTypes.CREATE_CHANNEL,
+            type: ActionTypes.USER_CREATE_CHANNEL,
             data: {
                 jsonData: jsonData, channelId: channelId,
                 hostId: Utils.uniqueId(), friendId: friendId
@@ -177,7 +177,7 @@ class MessageService {
         this.subscribeToChannel("channels/" + channelId)
 
         this.component.props.dispatch({
-            type: ActionTypes.REQUEST_LOCATION,
+            type: ActionTypes.USER_REQUEST_LOCATION,
             data: {fromUserId: Utils.uniqueId(), toUserId: userId, channelId: channelId}
         })
 
@@ -190,7 +190,7 @@ class MessageService {
 
     gotoMapWithFriend = (userId, channelId) => {
         this.component.props.dispatch({
-            type: ActionTypes.SET_USER_IN_MAP,
+            type: ActionTypes.MAP_SET_USER_IN_MAP,
             data: {userId: userId, channelId: channelId}
         })
 

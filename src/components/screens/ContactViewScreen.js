@@ -93,7 +93,7 @@ class ContactViewScreen extends React.Component {
 
     onTextChange = (text) => {
         console.log("dispatch filter user..........")
-        this.props.dispatch({type: ActionTypes.FIREBASE_FILTER_USER, data: text})
+        this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: text})
     }
 
     requestShareLocation = (userId) =>{

@@ -1,5 +1,6 @@
 import * as ActionTypes from "../constants/ActionTypes"
 import StatusTypes from "../constants/StatusTypes";
+import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper"
 
 const initialState = {
     currentUser: null

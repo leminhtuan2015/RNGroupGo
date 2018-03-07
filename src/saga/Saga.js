@@ -17,7 +17,7 @@ export function* firebaseFilterUser(action) {
     delete users["679152F5-79BE-4158-9180-EBCF97005512"]
     console.log("users filtered ok: " + JSON.stringify(users))
     let userData = FirebaseHelper.snapshotToArray(users)
-    yield put({type: ActionTypes.SET_FILTER_USERS, data: userData})
+    yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: userData})
 }
 
 export function* facebookLogin() {
@@ -70,7 +70,7 @@ export function* logout(){
 
 
 export default function* rootSaga() {
-    yield takeEvery(ActionTypes.FIREBASE_FILTER_USER, firebaseFilterUser)
+    yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
     yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin)
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
 }

@@ -9,7 +9,6 @@ import {
 } from "react-native-elements"
 
 import * as ActionTypes from "../../constants/ActionTypes"
-import FirebaseAuthHelper from "../../helpers/FirebaseAuthHelper";
 
 class ProfileViewScreen extends React.Component {
 
@@ -54,7 +53,7 @@ class ProfileViewScreen extends React.Component {
     }
 
     render = () => {
-        console.log("render ProfileViewScreen")
+        console.log("render_x ProfileViewScreen")
 
         return (
             <View style={styles.container}>
@@ -67,6 +66,7 @@ class ProfileViewScreen extends React.Component {
 
     componentDidMount = () => {
         this.props.dispatch({type: ActionTypes.PROFILE_GET_CURRENT_USER})
+        this.props.dispatch({type: ActionTypes.MAP_REDUCER_TEST})
     }
 }
 
