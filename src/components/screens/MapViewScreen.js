@@ -345,6 +345,9 @@ class MapViewScreen extends React.Component {
     }
 
     render() {
+
+        console.log("render MapViewScreen")
+
         const regionOk = this.regionFrom(
             this.state.currentCoordinate.latitude,
             this.state.currentCoordinate.longitude,

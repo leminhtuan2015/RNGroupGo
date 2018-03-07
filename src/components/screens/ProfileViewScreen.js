@@ -54,6 +54,8 @@ class ProfileViewScreen extends React.Component {
     }
 
     render = () => {
+        console.log("render ProfileViewScreen")
+
         return (
             <View style={styles.container}>
                 {(this.props.store.profileState.currentUser != null) ?
