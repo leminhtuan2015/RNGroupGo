@@ -7,36 +7,11 @@ const {
     GraphRequestManager
 } = FBSDK;
 
+import StatusTypes from "../constants/StatusTypes"
+
 class FacebookLoginHelper {
 
-    static login = (callback) => {
-        FacebookLoginHelper.getCurrentAccessToken((accessToken) => {
-            if(accessToken){
-                // LoggedIn
-                // alert("LoggedIn : " + accessToken)
-                callback(accessToken)
-            } else {
-                FacebookLoginHelper.loginWithPermissions((accessToken) => {
-                    // alert("accessToken : " + accessToken)
-                    callback(accessToken)
-                })
-            }
-        })
-    }
-
-    static getCurrentAccessToken = (callback) => {
-        AccessToken.getCurrentAccessToken().then(
-            (data) => {
-                if(data){
-                    callback(data.accessToken)
-                } else {
-                    callback(null)
-                }
-            }
-        )
-    }
-
-    static getCurrentAccessTokenSaga = () => {
+    static getCurrentAccessToken = () => {
         return AccessToken.getCurrentAccessToken().then(
             (data) => {
                 if(data){
@@ -48,44 +23,72 @@ class FacebookLoginHelper {
         )
     }
 
-    static loginWithPermissions = (callback) => {
-        LoginManager.logInWithReadPermissions(['public_profile']).then(
+    static login = () => {
+        return LoginManager.logInWithReadPermissions(['public_profile']).then(
             (result) => {
                 if (result.isCancelled) {
-                    alert('Login cancelled');
+                    return StatusTypes.CANCELED
                 } else {
-                    FacebookLoginHelper.getCurrentAccessToken(callback)
+                    return StatusTypes.SUCCESS
                 }
             },
             function(error) {
-                alert('Login fail with error: ' + error);
+                StatusTypes.FAILED
             }
         );
     }
 
     static logOut = () => {
-        LoginManager.logOut()
+        return LoginManager.logOut()
     }
 
-    static getUserInfomation = (callback) => {
-        const infoRequest = new GraphRequest("/me?fields=name,picture",
-            null,
-            (error, result) => {
-                if (error) {
-                    callback(null, null)
-                } else {
-                    const imageUrl = result.picture.data.url
-                    const userName = result.name
+    static getUserInfomation = () => {
+        // const infoRequest = new GraphRequest("/me?fields=name,picture", null,
+        //     (error, result) => {
+        //         if (error) {
+        //             console.log("getUserInfomation Failed : " + JSON.stringify(error))
+        //             return null
+        //         } else {
+        //             const imageUrl = result.picture.data.url
+        //             const userName = result.name
+        //
+        //             console.log("userName : " + userName)
+        //             console.log("imageUrl : " + imageUrl)
+        //
+        //             return {userName: userName, imageUrl: imageUrl}
+        //         }
+        //     }
+        // )
+        //
+        // return (new GraphRequestManager().addRequest(infoRequest).start())
 
-                    console.log("userName : " + userName)
-                    console.log("imageUrl : " + imageUrl)
+        const facebookParams = "id,name,email,picture.width(600).height(800)";
 
-                    callback(userName, imageUrl)
+        return new Promise((resolve, reject) => {
+            const profileInfoCallback = (error, profileInfo) => {
+                if (error){
+                    reject(error);
                 }
-            }
-        )
 
-        new GraphRequestManager().addRequest(infoRequest).start();
+                const userInfomation = {userName: profileInfo.name, imageUrl: profileInfo.picture.data.url}
+
+                resolve(userInfomation)
+            };
+
+            const profileInfoRequest = new GraphRequest(
+                "/me",
+                {
+                    parameters: {
+                        fields: {
+                            string: facebookParams
+                        }
+                    }
+                },
+                profileInfoCallback
+            );
+
+            new GraphRequestManager().addRequest(profileInfoRequest).start();
+        });
     }
 }
 

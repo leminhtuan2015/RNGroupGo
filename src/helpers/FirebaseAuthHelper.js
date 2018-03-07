@@ -1,55 +1,47 @@
 import FacebookLoginHelper from "./FacebookLoginHelper";
+import StatusTypes from "../constants/StatusTypes";
 
 var firebase = require("firebase");
 
 class FirebaseAuthHelper {
 
-    static facebookLogin = () => {
-        let facebookLoginCallback = (accessToken) => {
-            FirebaseAuthHelper.facebookAuth(accessToken, (userId) => {
-                console.log("User ID : " + userId)
-            })
-        }
-
-        FacebookLoginHelper.login(facebookLoginCallback)
-    }
-
-    static facebookAuth = (accessToken, callback) => {
+    static facebookAuth = (accessToken) => {
         var credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
 
-        firebase.auth().signInWithCredential(credential)
+        return firebase.auth().signInWithCredential(credential)
             .then((user) => {
                 console.log("User id : " +user.uid )
 
-                FirebaseAuthHelper.facebookUpdateUserInfo(user)
-
-                callback(user.uid)
+                return user
 
             }).catch((err) => {
             console.error('User signin error', err);
-            callback(null)
+
+            return null
         });
     }
 
-    static facebookUpdateUserInfo = (user) => {
-        FacebookLoginHelper.getUserInfomation((userName, imageUrl) => {
-            user.updateProfile({
-                displayName: userName,
-                photoURL: imageUrl
-            }).then(function() {
-                // Update successful.
-            }).catch(function(error) {
-                // An error happened.
-            });
-        })
+    static updateUserInfo = (user, userInfo) => {
+        return user.updateProfile({
+            displayName: userInfo.userName,
+            photoURL: userInfo.imageUrl
+        }).then(function() {
+            // Update successful.
+            return user
+        }).catch(function(error) {
+            // An error happened.
+            return null
+        });
     }
 
     static logout = () => {
-        firebase.auth().signOut().then(function() {
+        return firebase.auth().signOut().then(function() {
             // Sign-out successful.
             FacebookLoginHelper.logOut()
+            return StatusTypes.SUCCESS
         }, function(error) {
             // An error happened.
+            return StatusTypes.FAILED
         });
     }
 

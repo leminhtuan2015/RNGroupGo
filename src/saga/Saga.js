@@ -5,6 +5,8 @@ import * as ActionTypes from "../constants/ActionTypes"
 import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
+import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper";
+import StatusTypes from "../constants/StatusTypes";
 
 export function* firebaseFilterUser(action) {
     let {data} = action
@@ -18,17 +20,59 @@ export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.SET_FILTER_USERS, data: userData})
 }
 
-export function* facebookGetAccessToken() {
-    const accessToken = yield call(FacebookLoginHelper.getCurrentAccessTokenSaga)
+export function* facebookLogin() {
+    const loginStatus = yield call(FacebookLoginHelper.login)
 
-    console.log("getCurrentAccessTokenSaga : " + accessToken)
+    if(loginStatus == StatusTypes.SUCCESS){
+        const accessToken = yield call(FacebookLoginHelper.getCurrentAccessToken)
+        if(accessToken){
+            const user = yield call(FirebaseAuthHelper.facebookAuth, accessToken)
+            if(user){
+                console.log("facebookLogin user: " + JSON.stringify(user))
+                const userInfo = yield call(FacebookLoginHelper.getUserInfomation)
+
+                console.log("facebookLogin userInfo: " + JSON.stringify(userInfo))
+                if(userInfo){
+                    const userDetail = yield call(FirebaseAuthHelper.updateUserInfo, user, userInfo)
+                    if(userDetail){
+                        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                            data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}})
+                    } else {
+                        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                            data: {status: StatusTypes.FAILED, message: "userDetail failed"}})
+                    }
+                } else {
+                    yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                        data: {status: StatusTypes.FAILED, message: "userInfo failed"}})
+                }
+            } else {
+                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                    data: {status: StatusTypes.FAILED, message: "user failed"}})
+            }
+        } else {
+            yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                data: {status: StatusTypes.FAILED, message: "accessToken failed"}})
+        }
+    } else {
+        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+            data: {status: loginStatus, message: "login not ok"}})
+    }
+
+    console.log("loginStatus : " + loginStatus)
+}
+
+export function* logout(){
+    const statusType = yield call(FirebaseAuthHelper.logout)
+
+    yield put({type: ActionTypes.PROFILE_USER_LOGOUT, data: {status: statusType}})
+
 }
 
 
 export default function* rootSaga() {
-
     yield takeEvery(ActionTypes.FIREBASE_FILTER_USER, firebaseFilterUser)
-    yield takeEvery(ActionTypes.SAGA_FACEBOOK_GET_ACCESS_TOKEN, facebookGetAccessToken)
+    yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin)
+    yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
 }
 
 

@@ -12,23 +12,16 @@ import * as ActionTypes from "../../constants/ActionTypes"
 import FirebaseAuthHelper from "../../helpers/FirebaseAuthHelper";
 
 class ProfileViewScreen extends React.Component {
-    static navigationOptions = {
-        drawerLabel: 'Profile',
-    };
 
     constructor(props) {
         super(props)
-
-        this.state = {
-            isLoggedIn: FirebaseAuthHelper.isLoggedIn()
-        }
     }
 
     renderLoginButtons = () => {
         return (
             <View>
                 <Button
-                    onPress={() => {FirebaseAuthHelper.facebookLogin()}}
+                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_LOGIN})}}
                     raised
                     backgroundColor="#385691"
                     icon={{name: "facebook", type: "font-awesome"}}
@@ -48,9 +41,10 @@ class ProfileViewScreen extends React.Component {
     renderUser = () => {
         return(
             <View>
-                <Text>{FirebaseAuthHelper.currentUser().displayName}</Text>
+                <Text>{this.props.store.profileState.currentUser.displayName}</Text>
+                <Text />
                 <Button
-                    onPress={() => {FirebaseAuthHelper.logout()}}
+                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})}}
                     raised
                     backgroundColor="#DB4D40"
                     title="Logout" />
@@ -59,19 +53,18 @@ class ProfileViewScreen extends React.Component {
 
     }
 
-    render() {
+    render = () => {
         return (
             <View style={styles.container}>
-                {!this.state.isLoggedIn && this.renderLoginButtons()}
-                {this.state.isLoggedIn && this.renderUser()}
-
-                <Button
-                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_GET_ACCESS_TOKEN})}}
-                    raised
-                    backgroundColor="#DB4D40"
-                    title="TOKEN" />
+                {(this.props.store.profileState.currentUser != null) ?
+                    this.renderUser() : this.renderLoginButtons()
+                }
             </View>
         )
+    }
+
+    componentDidMount = () => {
+        this.props.dispatch({type: ActionTypes.PROFILE_GET_CURRENT_USER})
     }
 }
 
