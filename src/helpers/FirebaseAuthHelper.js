@@ -7,7 +7,7 @@ class FirebaseAuthHelper {
     static facebookLogin = () => {
         let facebookLoginCallback = (accessToken) => {
             FirebaseAuthHelper.facebookAuth(accessToken, (userId) => {
-                alert("User ID : " + userId)
+                console.log("User ID : " + userId)
             })
         }
 
@@ -20,11 +20,28 @@ class FirebaseAuthHelper {
         firebase.auth().signInWithCredential(credential)
             .then((user) => {
                 console.log("User id : " +user.uid )
+
+                FirebaseAuthHelper.facebookUpdateUserInfo(user)
+
                 callback(user.uid)
+
             }).catch((err) => {
             console.error('User signin error', err);
             callback(null)
         });
+    }
+
+    static facebookUpdateUserInfo = (user) => {
+        FacebookLoginHelper.getUserInfomation((userName, imageUrl) => {
+            user.updateProfile({
+                displayName: userName,
+                photoURL: imageUrl
+            }).then(function() {
+                // Update successful.
+            }).catch(function(error) {
+                // An error happened.
+            });
+        })
     }
 
     static logout = () => {

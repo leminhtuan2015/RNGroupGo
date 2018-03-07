@@ -1,10 +1,14 @@
 import React from 'react';
 import {
     View,
-    Button
+    Text, StyleSheet,
 } from "react-native"
 
-import FacebookLoginHelper from "../../helpers/FacebookLoginHelper"
+import {
+    Button
+} from "react-native-elements"
+
+import * as ActionTypes from "../../constants/ActionTypes"
 import FirebaseAuthHelper from "../../helpers/FirebaseAuthHelper";
 
 class ProfileViewScreen extends React.Component {
@@ -20,39 +24,65 @@ class ProfileViewScreen extends React.Component {
         }
     }
 
-    render() {
+    renderLoginButtons = () => {
         return (
             <View>
                 <Button
                     onPress={() => {FirebaseAuthHelper.facebookLogin()}}
-                    title="FB Login"
-                    color="#841584"
-                />
+                    raised
+                    backgroundColor="#385691"
+                    icon={{name: "facebook", type: "font-awesome"}}
+                    title="Login With Facebook" />
 
-                {this.state.isLoggedIn &&
-                (<Button
-                    onPress={() => {
-                        FirebaseAuthHelper.logout()}}
-                    title="FB Logout"
-                    color="#841584"
-                />)}
+                <Text />
 
                 <Button
-                    onPress={() => {
-                        const currentUser = FirebaseAuthHelper.currentUser()
-                        if(currentUser){
-                            alert("User ID : " + currentUser.uid)
-                        } else {
-                            alert("Not Logged in")
-                        }
-                    }}
-                    title="Current User"
-                    color="#841584"
-                />
+                    raised
+                    backgroundColor="#DB4D40"
+                    icon={{name: "google", type: "font-awesome"}}
+                    title="Login With Google" />
+            </View>
+        )
+    }
+
+    renderUser = () => {
+        return(
+            <View>
+                <Text>{FirebaseAuthHelper.currentUser().displayName}</Text>
+                <Button
+                    onPress={() => {FirebaseAuthHelper.logout()}}
+                    raised
+                    backgroundColor="#DB4D40"
+                    title="Logout" />
+            </View>
+        )
+
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                {!this.state.isLoggedIn && this.renderLoginButtons()}
+                {this.state.isLoggedIn && this.renderUser()}
+
+                <Button
+                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_GET_ACCESS_TOKEN})}}
+                    raised
+                    backgroundColor="#DB4D40"
+                    title="TOKEN" />
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: 20,
+        alignItems: 'center',
+    },
+
+});
 
 export default ProfileViewScreen
 

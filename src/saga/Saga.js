@@ -4,18 +4,7 @@ import {delay} from 'redux-saga'
 import * as ActionTypes from "../constants/ActionTypes"
 import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
-
-export function* hello() {
-    yield delay(1000)
-    console.log('HELLO')
-    //yield put({type: 'INCREMENT'})
-}
-
-export function* bye() {
-    console.log("BYE")
-    yield
-    console.log("bye 123")
-}
+import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
 
 export function* firebaseFilterUser(action) {
     let {data} = action
@@ -29,15 +18,17 @@ export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.SET_FILTER_USERS, data: userData})
 }
 
+export function* facebookGetAccessToken() {
+    const accessToken = yield call(FacebookLoginHelper.getCurrentAccessTokenSaga)
 
-// notice how we now only export the rootSaga
-// single entry point to start all Sagas at once
+    console.log("getCurrentAccessTokenSaga : " + accessToken)
+}
+
+
 export default function* rootSaga() {
-    // REGISTER actions
-    yield takeEvery('HELLO', hello)
-    yield takeEvery('BYE', bye)
 
     yield takeEvery(ActionTypes.FIREBASE_FILTER_USER, firebaseFilterUser)
+    yield takeEvery(ActionTypes.SAGA_FACEBOOK_GET_ACCESS_TOKEN, facebookGetAccessToken)
 }
 
 

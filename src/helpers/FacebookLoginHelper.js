@@ -2,7 +2,9 @@ const FBSDK = require('react-native-fbsdk');
 const {
     LoginButton,
     AccessToken,
-    LoginManager
+    LoginManager,
+    GraphRequest,
+    GraphRequestManager
 } = FBSDK;
 
 class FacebookLoginHelper {
@@ -30,7 +32,18 @@ class FacebookLoginHelper {
                 } else {
                     callback(null)
                 }
+            }
+        )
+    }
 
+    static getCurrentAccessTokenSaga = () => {
+        return AccessToken.getCurrentAccessToken().then(
+            (data) => {
+                if(data){
+                    return data.accessToken
+                } else {
+                    return null
+                }
             }
         )
     }
@@ -52,6 +65,27 @@ class FacebookLoginHelper {
 
     static logOut = () => {
         LoginManager.logOut()
+    }
+
+    static getUserInfomation = (callback) => {
+        const infoRequest = new GraphRequest("/me?fields=name,picture",
+            null,
+            (error, result) => {
+                if (error) {
+                    callback(null, null)
+                } else {
+                    const imageUrl = result.picture.data.url
+                    const userName = result.name
+
+                    console.log("userName : " + userName)
+                    console.log("imageUrl : " + imageUrl)
+
+                    callback(userName, imageUrl)
+                }
+            }
+        )
+
+        new GraphRequestManager().addRequest(infoRequest).start();
     }
 }
 
