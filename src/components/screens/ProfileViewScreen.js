@@ -1,7 +1,9 @@
 import React from 'react';
 import {
     View,
-    Text, StyleSheet,
+    Text,
+    StyleSheet,
+    Image,
 } from "react-native"
 
 import {
@@ -42,6 +44,12 @@ class ProfileViewScreen extends React.Component {
             <View>
                 <Text>{this.props.store.profileState.currentUser.displayName}</Text>
                 <Text />
+
+                <Image
+                    style={{width: 66, height: 58}}
+                    source={{uri: this.props.store.profileState.currentUser.photoURL}}
+                />
+
                 <Button
                     onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})}}
                     raised
@@ -66,7 +74,6 @@ class ProfileViewScreen extends React.Component {
 
     componentDidMount = () => {
         this.props.dispatch({type: ActionTypes.PROFILE_GET_CURRENT_USER})
-        this.props.dispatch({type: ActionTypes.MAP_REDUCER_TEST})
     }
 }
 
