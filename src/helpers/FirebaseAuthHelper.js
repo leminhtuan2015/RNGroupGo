@@ -1,13 +1,27 @@
 import FacebookLoginHelper from "./FacebookLoginHelper";
 import StatusTypes from "../constants/StatusTypes";
+import GoogleLoginHelper from "./GoogleLoginHelper";
 
 var firebase = require("firebase");
 
 class FirebaseAuthHelper {
 
-    static facebookAuth = (accessToken) => {
-        var credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+    static phoneNumberAuth = (phoneNumber) => {
+    }
 
+    static facebookAuth = (accessToken) => {
+        const credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+
+        return FirebaseAuthHelper.auth(credential)
+    }
+
+    static googleAuth = (idToken, accessToken) => {
+        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+
+        return FirebaseAuthHelper.auth(credential)
+    }
+
+    static auth = (credential) => {
         return firebase.auth().signInWithCredential(credential)
             .then((user) => {
                 console.log("User id : " +user.uid )
@@ -15,10 +29,10 @@ class FirebaseAuthHelper {
                 return user
 
             }).catch((err) => {
-            console.error('User signin error', err);
+                console.error('User signin error', err);
 
-            return null
-        });
+                return null
+            });
     }
 
     static updateUserInfo = (user, userInfo) => {
@@ -38,6 +52,8 @@ class FirebaseAuthHelper {
         return firebase.auth().signOut().then(function() {
             // Sign-out successful.
             FacebookLoginHelper.logOut()
+            GoogleLoginHelper.logout()
+
             return StatusTypes.SUCCESS
         }, function(error) {
             // An error happened.

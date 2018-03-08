@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <RNGoogleSignin/RNGoogleSignin.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -31,10 +31,24 @@ class ProfileViewScreen extends React.Component {
                 <Text />
 
                 <Button
+                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_GOOGLE_LOGIN})}}
                     raised
                     backgroundColor="#DB4D40"
                     icon={{name: "google", type: "font-awesome"}}
                     title="Login With Google" />
+
+                <Button
+                    onPress={() => {
+                        this.props.dispatch(
+                            {type: ActionTypes.SAGA_PHONE_NUMBER_LOGIN,
+                                phoneNumber: "+841629715498",
+                            })
+                        }
+                    }
+                    raised
+                    backgroundColor="#DB4D40"
+                    icon={{name: "google", type: "font-awesome"}}
+                    title="Login With Phone" />
             </View>
         )
     }

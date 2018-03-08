@@ -5,6 +5,7 @@ import * as ActionTypes from "../constants/ActionTypes"
 import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
+import GoogleLoginHelper from "../helpers/GoogleLoginHelper";
 import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper";
 import StatusTypes from "../constants/StatusTypes";
 
@@ -61,17 +62,62 @@ export function* facebookLogin() {
     console.log("loginStatus : " + loginStatus)
 }
 
+export function* googleLogin() {
+    const configStatus = yield call(GoogleLoginHelper.config)
+    const data = yield call(GoogleLoginHelper.login)
+    const {status} = data
+
+    console.log("gg login status : " + status)
+
+    if(status == StatusTypes.SUCCESS){
+        const {googleUser} = data
+        const gooleUserInfomation = {userName: googleUser.name, imageUrl: googleUser.photo}
+        const accessToken = googleUser.accessToken
+        const idToken = googleUser.idToken
+        const firebaseUser = yield call(FirebaseAuthHelper.googleAuth, idToken, accessToken)
+
+        if(firebaseUser){
+            const firebaseUserDetail = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, gooleUserInfomation)
+            if(firebaseUserDetail){
+                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                    data: {status: StatusTypes.SUCCESS, user: firebaseUserDetail, message: "Login Success"}})
+            } else {
+                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
+                        message: "updateUserInfo failed"}})
+            }
+        } else {
+            yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
+                    message: "googleAuth failed"}})
+        }
+    } else {
+        const {message} = data
+        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: loginStatus, message: message}})
+    }
+
+    console.log("gg loginStatus : " + status)
+}
+
+export function* phoneLogin(action) {
+    const phoneNumber = action.phoneNumber
+
+    console.log("phoneLogin : " + phoneNumber)
+
+    // const status = yield call(FirebaseAuthHelper.phoneNumberAuth, phoneNumber)
+
+}
+
 export function* logout(){
     const statusType = yield call(FirebaseAuthHelper.logout)
 
     yield put({type: ActionTypes.PROFILE_USER_LOGOUT, data: {status: statusType}})
-
 }
 
 
 export default function* rootSaga() {
-    yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
-    yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin)
+    yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser);
+    yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin);
+    yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin);
+    yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin);
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
 }
 

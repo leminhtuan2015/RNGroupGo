@@ -3,6 +3,7 @@ package com.demo_react_native;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.sbugert.rnadmob.RNAdMobPackage;
 import com.facebook.react.ReactNativeHost;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+            new RNGoogleSigninPackage(),
             new FBSDKPackage(),
         new RNAdMobPackage(),
         new SQLitePluginPackage(),
