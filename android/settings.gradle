@@ -1,8 +1,5 @@
 rootProject.name = 'demo_react_native'
-include ':react-native-google-signin'
-project(':react-native-google-signin').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-signin/android')
-include ':react-native-fbsdk'
-project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk/android')
+
 
 // Include Modules in to Project
 include ':app'
@@ -13,6 +10,9 @@ include ':react-native-sqlite-storage'
 include ':react-native-maps'
 include ':react-native-toast-native'
 
+include ':react-native-google-signin'
+include ':react-native-fbsdk'
+
 
 // Library Project AAR path
 project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
@@ -21,3 +21,5 @@ project(':react-native-vector-icons').projectDir = new File(rootProject.projectD
 project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/src/android')
 project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/lib/android')
 project(':react-native-toast-native').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-toast-native/android')
+project(':react-native-google-signin').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-signin/android')
+project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk/android')
