@@ -27,7 +27,9 @@ class GoogleLoginHelper {
                 })
                 .catch((err) => {
                     console.log('WRONG SIGNIN', err);
-                    reject({status: StatusTypes.FAILED, err: err});
+                    resolve({status: StatusTypes.FAILED, googleUser: null})
+
+                    // reject({status: StatusTypes.FAILED, err: err});
                     // return {status: StatusTypes.FAILED, err: err}
                 })
                 .done();

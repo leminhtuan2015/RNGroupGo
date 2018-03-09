@@ -42,11 +42,14 @@ function userLogout(state, data) {
 
 function userLoginDone(state, data) {
 
-    const {status, user, message} = data
+    const {status, message} = data
 
     console.log("status : " + status + "message userLoginDone: " + message)
 
     if(status == StatusTypes.SUCCESS){
+
+        const {user} = data
+
         return Object.assign({}, state, {currentUser: user})
     } else {
         return state

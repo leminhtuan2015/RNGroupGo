@@ -36,33 +36,25 @@ class ProfileViewScreen extends React.Component {
                     backgroundColor="#DB4D40"
                     icon={{name: "google", type: "font-awesome"}}
                     title="Login With Google" />
-
-                <Button
-                    onPress={() => {
-                        this.props.dispatch(
-                            {type: ActionTypes.SAGA_PHONE_NUMBER_LOGIN,
-                                phoneNumber: "+841629715498",
-                            })
-                        }
-                    }
-                    raised
-                    backgroundColor="#DB4D40"
-                    icon={{name: "google", type: "font-awesome"}}
-                    title="Login With Phone" />
             </View>
         )
     }
 
     renderUser = () => {
         return(
-            <View>
-                <Text>{this.props.store.profileState.currentUser.displayName}</Text>
-                <Text />
-
+            <View style={styles.container}>
                 <Image
-                    style={{width: 66, height: 58}}
+                    style={styles.roundImage}
                     source={{uri: this.props.store.profileState.currentUser.photoURL}}
                 />
+
+                <Text />
+
+                <Text style={styles.userName}>
+                    {this.props.store.profileState.currentUser.displayName}
+                </Text>
+
+                <Text />
 
                 <Button
                     onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})}}
@@ -96,6 +88,16 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
         alignItems: 'center',
+    },
+
+    roundImage: {
+        height: 160,
+        width: 160,
+        borderRadius: 80,
+    },
+
+    userName: {
+        fontSize: 30,
     },
 
 });

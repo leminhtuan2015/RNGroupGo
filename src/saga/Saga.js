@@ -90,8 +90,7 @@ export function* googleLogin() {
                     message: "googleAuth failed"}})
         }
     } else {
-        const {message} = data
-        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: loginStatus, message: message}})
+        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: status, message: "Login Failed"}})
     }
 
     console.log("gg loginStatus : " + status)
