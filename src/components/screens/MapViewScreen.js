@@ -265,13 +265,14 @@ class MapViewScreen extends React.Component {
     componentWillReceiveProps = (newProps) => {
         console.log("MapView componentWillReceiveProps newProps: " + JSON.stringify(newProps))
         console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
+
+        this.subscribeInbox()
     }
 
     componentDidMount = () => {
         console.log("MapView componentDidMount")
 
         this.getCurrentUser()
-        this.subscribeInbox()
         this.getCurrentPosition()
         this.autoUpdateMyPosition()
 
