@@ -10,49 +10,6 @@ import {Button} from 'react-native-elements'
 import Indicator from "../views/Indicator"
 import MessageService from "../../services/MessageService"
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: 'transparent',
-    },
-
-    contentContainer: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        marginTop: 5,
-    },
-
-    center: {
-        flex: 1,
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    top: {
-        flex: 0.3,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    bottom: {
-        flex: 0.3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 10,
-    },
-
-    titleText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    }
-})
-
 class RequestingLocationScreen extends Component<> {
 
     static navigationOptions = ({navigation}) => {
@@ -129,3 +86,46 @@ class RequestingLocationScreen extends Component<> {
 }
 
 export default RequestingLocationScreen
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
+    },
+
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        marginTop: 5,
+    },
+
+    center: {
+        flex: 1,
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    top: {
+        flex: 0.3,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    bottom: {
+        flex: 0.3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+    },
+
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    }
+})

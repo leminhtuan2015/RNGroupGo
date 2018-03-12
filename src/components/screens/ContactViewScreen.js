@@ -1,32 +1,20 @@
 import React from 'react';
 import {
-    Alert,
-    Platform,
     StyleSheet,
     Text,
     View,
-    TouchableHighlight,
-    ScrollView,
-    ImageBackground,
-    ActivityIndicator,
     ListView,
     TouchableWithoutFeedback,
     Keyboard,
 } from 'react-native';
 
 import {
-    Icon,
-    Divider,
-    FormLabel,
     FormInput,
-    FormValidationMessage,
     List,
     ListItem,
 } from 'react-native-elements'
 
-import {NavigationActions} from 'react-navigation';
 import * as ActionTypes from "../../constants/ActionTypes"
-import * as Utils from "../../utils/Utils"
 import NavBarItem from "../views/NavBarItem"
 import MessageService from "../../services/MessageService"
 

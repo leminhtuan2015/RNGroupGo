@@ -128,24 +128,6 @@ class MessageService {
 
             this.component.props.navigation
                 .navigate("InCommingRequestLocationView", {callback: callbackConfirmIncomming})
-
-            // Alert.alert(
-            //     "In Comming Request Share Location",
-            //     "",
-            //     [
-            //         {
-            //             text: "OK", onPress: () => {
-            //                 this.acceptJoinChannel(data)
-            //             }
-            //         },
-            //         {
-            //             text: "Cancel", onPress: () => {
-            //                 this.rejectJoinChannel(data)
-            //             }, style: 'cancel'
-            //         },
-            //     ],
-            //     {cancelable: false}
-            // )
         }
 
         this.component.props.dispatch({
