@@ -2,7 +2,6 @@ import MapView, {PROVIDER_GOOGLE, Marker, AnimatedRegion} from 'react-native-map
 import React from 'react';
 import Toast from 'react-native-toast-native';
 import {
-    Dimensions,
     StyleSheet,
     Text,
     View,
@@ -17,11 +16,6 @@ import * as Constant from "../../utils/Constant"
 import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import MessageService from "../../services/MessageService"
-
-let {width, height} = Dimensions.get('window');
-const ASPECT_RATIO = width / height
-const LATITUDE_DELTA = 0.001;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 class MapViewScreen extends React.Component {
 
@@ -54,7 +48,6 @@ class MapViewScreen extends React.Component {
 
         this.state = {
             currentCoordinate: MapViewScreen.defaultCoordinate,
-            userId1: null,
         }
 
         this.messageService = new MessageService(this)
@@ -140,15 +133,6 @@ class MapViewScreen extends React.Component {
     }
 
 
-    regionFrom1(lat, lon) {
-        return result = {
-            latitude: lat,
-            longitude: lon,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-        }
-    }
-
     regionFrom(lat, lon, distance) {
         distance = distance / 2
         const circumference = 40075
@@ -168,27 +152,23 @@ class MapViewScreen extends React.Component {
         }
     }
 
-    renderFriendsMarker = () => {
+    renderUsersMarker = () => {
         let userId = this.props.store.mapState.userId
-        let userId1 = this.state.userId1
         console.log(" renderFriendsMarker : " + JSON.stringify(userId))
-
         let userIds = [Utils.uniqueId()]
-
         if (userId) {userIds.push(userId)}
-        if (userId1) {userIds.push(userId1)}
 
         let view = userIds.map((userId) => {
             console.log(" renderFriendsMarker userId: " + userId)
             let imageName = userId == Utils.uniqueId() ? "location" : "location1"
 
-            return this.renderMarker(userId, imageName)
+            return this.renderMarkerView(userId, imageName)
         })
 
         return view
     }
 
-    renderMarker = (userId, imageName) => {
+    renderMarkerView = (userId, imageName) => {
 
         console.log("renderFriendsMarker : 222" + userId)
 
@@ -234,7 +214,6 @@ class MapViewScreen extends React.Component {
             <View style={styles.tool}>
                 {IconManager.icon("plus-circle", "gray", () => {
                     console.log("+ press")
-                    this.setState({userId1: "2F30A26F-AC5D-4644-80FE-EB7A3D4E7E3E"})
                 })}
                 <Text/>
                 {IconManager.icon("minus-circle", "gray", null)}
@@ -264,7 +243,7 @@ class MapViewScreen extends React.Component {
                     console.log(" region", region)
                 }}>
 
-                {this.renderFriendsMarker()}
+                {this.renderUsersMarker()}
             </MapView>
         )
     }
@@ -277,7 +256,6 @@ class MapViewScreen extends React.Component {
                 {this.renderMapView()}
                 {this.renderTools()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
-
             </View>
         );
     }
