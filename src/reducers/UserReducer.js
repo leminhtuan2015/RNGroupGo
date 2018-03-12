@@ -119,6 +119,10 @@ function userLoginDone(state, data) {
 
         const {user} = data
 
+        console.log("userLoginDone : " + JSON.stringify(user))
+
+        FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
+
         return Object.assign({}, state, {currentUser: user})
     } else {
         return state
