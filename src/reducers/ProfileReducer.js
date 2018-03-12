@@ -11,8 +11,6 @@ export const ProfileReducer = (state = initialState, action) => {
     const {type, data} = action
 
     switch (type) {
-        case ActionTypes.PROFILE_GET_CURRENT_USER:
-            return getCurrentUser(state, data)
         case ActionTypes.PROFILE_USER_LOGOUT:
             return userLogout(state, data)
         case ActionTypes.PROFILE_USER_LOGIN_DONE:
@@ -20,14 +18,6 @@ export const ProfileReducer = (state = initialState, action) => {
         default:
             return state
     }
-}
-
-function getCurrentUser(state, data) {
-    const currentUser = FirebaseAuthHelper.currentUser()
-
-    console.log("getCurrentUser : " + JSON.stringify(currentUser))
-
-    return Object.assign({}, state, {currentUser: currentUser})
 }
 
 function userLogout(state, data) {

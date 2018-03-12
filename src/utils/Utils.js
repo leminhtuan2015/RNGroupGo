@@ -1,4 +1,5 @@
 import DeviceInfo from 'react-native-device-info';
+import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper";
 
 export function log(message) {
     console.log("Logger : " + message)
@@ -42,5 +43,9 @@ export function getCurrentPosition(callback) {
 };
 
 export function uniqueId() {
+    if(FirebaseAuthHelper.isLoggedIn()){
+        return FirebaseAuthHelper.currentUser().uid
+    }
+
     return DeviceInfo.getUniqueID()
 }

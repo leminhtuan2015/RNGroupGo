@@ -45,13 +45,13 @@ class ProfileViewScreen extends React.Component {
             <View style={styles.container}>
                 <Image
                     style={styles.roundImage}
-                    source={{uri: this.props.store.profileState.currentUser.photoURL}}
+                    source={{uri: this.props.store.userState.currentUser.photoURL}}
                 />
 
                 <Text />
 
                 <Text style={styles.userName}>
-                    {this.props.store.profileState.currentUser.displayName}
+                    {this.props.store.userState.currentUser.displayName}
                 </Text>
 
                 <Text />
@@ -66,12 +66,16 @@ class ProfileViewScreen extends React.Component {
 
     }
 
+    componentWillReceiveProps = (newProps) => {
+        console.log("ProfileView will receive props : " + JSON.stringify(newProps))
+    }
+
     render = () => {
         console.log("render_x ProfileViewScreen")
 
         return (
             <View style={styles.container}>
-                {(this.props.store.profileState.currentUser != null) ?
+                {(this.props.store.userState.currentUser != null) ?
                     this.renderUser() : this.renderLoginButtons()
                 }
             </View>
@@ -79,7 +83,9 @@ class ProfileViewScreen extends React.Component {
     }
 
     componentDidMount = () => {
-        this.props.dispatch({type: ActionTypes.PROFILE_GET_CURRENT_USER})
+        console.log("PROFILE componentDidMount")
+
+        this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_USER})
     }
 }
 

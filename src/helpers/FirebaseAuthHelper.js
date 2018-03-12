@@ -61,6 +61,20 @@ class FirebaseAuthHelper {
         });
     }
 
+    static user = () => {
+        return new Promise((resolve, reject) => {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    resolve(user)
+                } else {
+                    // No user is signed in.
+                    resolve(user)
+                }
+            });
+        })
+    }
+
     static currentUser = () => {
         const user = firebase.auth().currentUser
 

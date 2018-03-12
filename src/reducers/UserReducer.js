@@ -6,6 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 
 const initialState = {
     filterUsers: [],
+    currentUser: null,
 }
 
 export const UserReducer = (state = initialState, action) => {
@@ -29,6 +30,8 @@ export const UserReducer = (state = initialState, action) => {
             return acceptJoinChannel(state, data)
         case ActionTypes.USER_UN_SUBSCRIBE_CHANNEL:
             return unSubscribeChannel(state, data)
+        case ActionTypes.USER_SET_CURRENT_USER:
+            return setCurrentUser(state, data)
         default:
             return state
     }
@@ -91,6 +94,14 @@ function unSubscribeChannel(state, data) {
     FirebaseHelper.unSubscribe("channels/" + channelId)
 
     return state
+}
+
+function setCurrentUser(state, data) {
+    const {user} = data
+
+    console.log("User Reducer setCurrentUser" + JSON.stringify(user))
+
+    return Object.assign({}, state, {currentUser: user})
 }
 
 export default UserReducer

@@ -105,18 +105,28 @@ export function* phoneLogin(action) {
 
 }
 
+export function* getCurrentUser(){
+    const user = yield call(FirebaseAuthHelper.user)
+
+    console.log("getCurrentUser saga 2: " + JSON.stringify(user))
+
+    yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
+
+    console.log("getCurrentUser saga 3: " + JSON.stringify(user))
+}
+
 export function* logout(){
     const statusType = yield call(FirebaseAuthHelper.logout)
 
     yield put({type: ActionTypes.PROFILE_USER_LOGOUT, data: {status: statusType}})
 }
 
-
 export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser);
     yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin);
     yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin);
     yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin);
+    yield takeEvery(ActionTypes.SAGA_GET_CURRENT_USER, getCurrentUser);
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
 }
 
