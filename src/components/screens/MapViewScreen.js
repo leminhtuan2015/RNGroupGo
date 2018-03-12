@@ -13,7 +13,6 @@ import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
 
 import * as Constant from "../../utils/Constant"
-import * as Utils from "../../utils/Utils"
 import * as ActionTypes from "../../constants/ActionTypes"
 import MessageService from "../../services/MessageService"
 
@@ -45,11 +44,7 @@ class MapViewScreen extends React.Component {
 
     constructor(props) {
         super(props)
-
-        this.state = {
-            currentCoordinate: MapViewScreen.defaultCoordinate,
-        }
-
+        this.currentDraggedRegion = null
         this.messageService = new MessageService(this)
     }
 
@@ -103,35 +98,39 @@ class MapViewScreen extends React.Component {
     }
 
     getCurrentPosition = () => {
-        //this.props.dispatch({type: ActionTypes.MAP_GET_CURRENT_PLACE})
-        // NEED REFACTOR
-        Utils.getCurrentPosition((region, error) => {
+        this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_PLACE})
+    }
 
-            if (region) {
-                const text =
-                    "UID:" + Utils.uniqueId() +
-                    "lat:" + region.latitude + "\n" +
-                    "lon:" + region.longitude
+    updateCurrentPosition = () => {
+        if(this.props.store.userState.currentUser){
+            this.props.dispatch({
+                type: ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE,
+                data: {
+                    currentCoordinate: this.props.store.mapState.currentCoordinate,
+                    uid: this.props.store.userState.currentUser.uid
+                }
+            })
 
-                Toast.show(text, Toast.SHORT, Toast.TOP, Constant.styleToast);
-                this.setState({currentCoordinate: region})
-
-                this.props.dispatch({
-                    type: ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE,
-                    data: region
-                })
-            }
-        })
+            Toast.show(JSON.stringify(this.props.store.mapState.currentCoordinate) + "",
+                Toast.SHORT, Toast.TOP, Constant.styleToast);
+        }
     }
 
     subscribeInbox = () => {
-        this.messageService.subscribeInbox("users/" + Utils.uniqueId() + "/inbox")
+        if(this.props.store.userState.currentUser){
+            this.messageService.subscribeInbox("users/" +
+                this.props.store.userState.currentUser.uid + "/inbox")
+        }
     }
 
     autoUpdateMyPosition = () => {
         setInterval(this.getCurrentPosition, 10 * 1000)
+        setInterval(this.updateCurrentPosition, 10 * 1000)
     }
 
+    getCurrentUser = () => {
+        this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_USER})
+    }
 
     regionFrom(lat, lon, distance) {
         distance = distance / 2
@@ -153,14 +152,15 @@ class MapViewScreen extends React.Component {
     }
 
     renderUsersMarker = () => {
-        let userId = this.props.store.mapState.userId
-        console.log(" renderFriendsMarker : " + JSON.stringify(userId))
-        let userIds = [Utils.uniqueId()]
-        if (userId) {userIds.push(userId)}
+        let userIds = []
+        if (this.props.store.mapState.userId) {userIds.push(this.props.store.mapState.userId)}
+        if (this.props.store.userState.currentUser) {userIds.push(this.props.store.userState.currentUser.uid)}
+
+        console.log("renderUsersMarker userIds: " + JSON.stringify(userIds))
 
         let view = userIds.map((userId) => {
             console.log(" renderFriendsMarker userId: " + userId)
-            let imageName = userId == Utils.uniqueId() ? "location" : "location1"
+            let imageName = (userId == this.props.store.userState.currentUser.uid ? "location" : "location1")
 
             return this.renderMarkerView(userId, imageName)
         })
@@ -169,8 +169,7 @@ class MapViewScreen extends React.Component {
     }
 
     renderMarkerView = (userId, imageName) => {
-
-        console.log("renderFriendsMarker : 222" + userId)
+        console.log("renderMarkerView" + userId)
 
         return (
             <View key={userId}>
@@ -228,10 +227,14 @@ class MapViewScreen extends React.Component {
     }
 
     renderMapView = () => {
-        const regionOk = this.regionFrom(
-            this.state.currentCoordinate.latitude,
-            this.state.currentCoordinate.longitude,
+        let regionOk = this.regionFrom(
+            this.props.store.mapState.currentCoordinate.latitude,
+            this.props.store.mapState.currentCoordinate.longitude,
             300)
+
+        if(this.currentDraggedRegion){
+            regionOk = this.currentDraggedRegion
+        }
 
         return (
             <MapView
@@ -240,7 +243,8 @@ class MapViewScreen extends React.Component {
                 style={styles.map}
                 region={regionOk}
                 onRegionChangeComplete={(region) => {
-                    console.log(" region", region)
+                    console.log("onRegionChangeComplete region", region)
+                    this.currentDraggedRegion = region
                 }}>
 
                 {this.renderUsersMarker()}
@@ -249,8 +253,6 @@ class MapViewScreen extends React.Component {
     }
 
     render() {
-        console.log("render_x MapViewScreen : " + this.props.store.userState.currentUser)
-
         return (
             <View style={styles.container}>
                 {this.renderMapView()}
@@ -261,12 +263,14 @@ class MapViewScreen extends React.Component {
     }
 
     componentWillReceiveProps = (newProps) => {
-        console.log("MapView componentWillReceiveProps: " + JSON.stringify(newProps))
-
-        // this.setState({currentCoordinate: newProps.store.mapState.currentCoordinate})
+        console.log("MapView componentWillReceiveProps newProps: " + JSON.stringify(newProps))
+        console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
     }
 
     componentDidMount = () => {
+        console.log("MapView componentDidMount")
+
+        this.getCurrentUser()
         this.subscribeInbox()
         this.getCurrentPosition()
         this.autoUpdateMyPosition()
@@ -276,10 +280,6 @@ class MapViewScreen extends React.Component {
                 rightButtonOnPress: this.rightButtonOnPress,
                 channelId: this.props.store.mapState.channelId
             });
-
-        console.log("MapView componentDidMount")
-
-        // this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_USER})
     }
 
     componentWillUnmount() {

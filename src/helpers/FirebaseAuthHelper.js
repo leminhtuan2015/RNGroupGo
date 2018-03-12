@@ -6,9 +6,6 @@ var firebase = require("firebase");
 
 class FirebaseAuthHelper {
 
-    static phoneNumberAuth = (phoneNumber) => {
-    }
-
     static facebookAuth = (accessToken) => {
         const credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
 
@@ -69,7 +66,7 @@ class FirebaseAuthHelper {
                     resolve(user)
                 } else {
                     // No user is signed in.
-                    resolve(user)
+                    resolve(null)
                 }
             });
         })

@@ -8,6 +8,7 @@ import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
 import GoogleLoginHelper from "../helpers/GoogleLoginHelper";
 import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper";
 import StatusTypes from "../constants/StatusTypes";
+import LocationHelper from "../helpers/LocationHelper";
 
 export function* firebaseFilterUser(action) {
     let {data} = action
@@ -36,26 +37,26 @@ export function* facebookLogin() {
                 if(userInfo){
                     const userDetail = yield call(FirebaseAuthHelper.updateUserInfo, user, userInfo)
                     if(userDetail){
-                        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                             data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}})
                     } else {
-                        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                             data: {status: StatusTypes.FAILED, message: "userDetail failed"}})
                     }
                 } else {
-                    yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                    yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                         data: {status: StatusTypes.FAILED, message: "userInfo failed"}})
                 }
             } else {
-                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                     data: {status: StatusTypes.FAILED, message: "user failed"}})
             }
         } else {
-            yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+            yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                 data: {status: StatusTypes.FAILED, message: "accessToken failed"}})
         }
     } else {
-        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
             data: {status: loginStatus, message: "login not ok"}})
     }
 
@@ -79,18 +80,18 @@ export function* googleLogin() {
         if(firebaseUser){
             const firebaseUserDetail = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, gooleUserInfomation)
             if(firebaseUserDetail){
-                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE,
+                yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                     data: {status: StatusTypes.SUCCESS, user: firebaseUserDetail, message: "Login Success"}})
             } else {
-                yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
+                yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
                         message: "updateUserInfo failed"}})
             }
         } else {
-            yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
+            yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
                     message: "googleAuth failed"}})
         }
     } else {
-        yield put({type: ActionTypes.PROFILE_USER_LOGIN_DONE, data: {status: status, message: "Login Failed"}})
+        yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: status, message: "Login Failed"}})
     }
 
     console.log("gg loginStatus : " + status)
@@ -102,7 +103,6 @@ export function* phoneLogin(action) {
     console.log("phoneLogin : " + phoneNumber)
 
     // const status = yield call(FirebaseAuthHelper.phoneNumberAuth, phoneNumber)
-
 }
 
 export function* getCurrentUser(){
@@ -118,7 +118,15 @@ export function* getCurrentUser(){
 export function* logout(){
     const statusType = yield call(FirebaseAuthHelper.logout)
 
-    yield put({type: ActionTypes.PROFILE_USER_LOGOUT, data: {status: statusType}})
+    yield put({type: ActionTypes.USER_USER_LOGOUT_DONE, data: {status: statusType}})
+}
+
+export function* getCurrentPlace(){
+    const region = yield call(LocationHelper.getCurrentPosition)
+
+    console.log("saga getCurrentPlace : " + region)
+
+    yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE, data: {region: region}})
 }
 
 export default function* rootSaga() {
@@ -128,6 +136,7 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin);
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_USER, getCurrentUser);
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
+    yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
 }
 
 

@@ -13,8 +13,8 @@ export const MapReducer = (state = initialState, action) => {
     const {type, data} = action
 
     switch (type) {
-        case ActionTypes.MAP_GET_CURRENT_PLACE:
-            return getCurrentPlace(state)
+        case ActionTypes.MAP_SET_CURRENT_PLACE:
+            return setCurrentPlace(state, data)
         case ActionTypes.MAP_SET_USER_IN_MAP:
             return setUserInMap(state, data)
         case ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE:
@@ -30,15 +30,9 @@ export const MapReducer = (state = initialState, action) => {
     }
 }
 
-function getCurrentPlace(state) {
-    Utils.getCurrentPosition((region, error) => {
-        console.log("Get Current Position done" + JSON.stringify(region))
-        console.log("Get Current Position error" + JSON.stringify(error))
-
-        return Object.assign({}, state, {currentCoordinate: region})
-    })
-
-    return state
+function setCurrentPlace(state, data) {
+    const {region} = data
+    return Object.assign({}, state, {currentCoordinate: region})
 }
 
 function setUserInMap(state, data) {
@@ -48,9 +42,9 @@ function setUserInMap(state, data) {
 }
 
 function updateLocationToFirebase(data) {
-    const uniqueId = Utils.uniqueId();
+    const {uid, currentCoordinate} = data
 
-    FirebaseHelper.write("users/" + uniqueId + "/coordinate", data)
+    FirebaseHelper.write("users/" + uid + "/coordinate", currentCoordinate)
 }
 
 function leaveChannel(data) {

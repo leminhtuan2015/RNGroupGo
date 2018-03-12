@@ -5,7 +5,6 @@ import createSagaMiddleware from 'redux-saga'
 import RootNavigatorReducer from '../navigator/RootNavigatorReducer'
 import MapReducer from '../reducers/MapReducer'
 import UserReducer from '../reducers/UserReducer'
-import ProfileReducer from '../reducers/ProfileReducer'
 
 import rootSaga from '../saga/Saga'
 
@@ -13,7 +12,6 @@ const reducers = combineReducers({
     nav: RootNavigatorReducer,
     mapState: MapReducer,
     userState: UserReducer,
-    profileState: ProfileReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware()
