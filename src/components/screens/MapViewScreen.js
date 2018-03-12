@@ -111,8 +111,8 @@ class MapViewScreen extends React.Component {
                 }
             })
 
-            Toast.show(JSON.stringify(this.props.store.mapState.currentCoordinate) + "",
-                Toast.SHORT, Toast.TOP, Constant.styleToast);
+            // Toast.show(JSON.stringify(this.props.store.mapState.currentCoordinate) + "",
+            //     Toast.SHORT, Toast.TOP, Constant.styleToast);
         }
     }
 
@@ -149,6 +149,17 @@ class MapViewScreen extends React.Component {
             latitudeDelta,
             longitudeDelta,
         }
+    }
+
+    isLoggedIn = () => {
+        if(!this.props.store.userState.currentUser){
+            Toast.show("You Must Login First",
+                Toast.SHORT, Toast.TOP, Constant.styleToast);
+
+            return false
+        }
+
+        return true
     }
 
     renderUsersMarker = () => {
@@ -188,7 +199,14 @@ class MapViewScreen extends React.Component {
             <View style={styles.toolbarContainer}>
                 <View style={styles.toolbar}>
                     {IconManager.icon("search", "gray", () => {
-                        this.props.navigation.navigate("ContactView")
+                        const isLoggedIn = this.isLoggedIn()
+
+                        if(isLoggedIn){
+                            this.props.navigation.navigate("ContactView")
+                        } else {
+                            this.props.navigation.navigate("ProfileView")
+                        }
+
                     }, 30, "gray")}
 
                     {IconManager.icon("history", "gray", () => {
