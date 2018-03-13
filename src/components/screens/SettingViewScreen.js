@@ -13,12 +13,9 @@ import {
 import {
     Icon,
 } from 'react-native-elements'
+import BaseViewScreen from "./BaseViewScreen";
 
-class SettingViewScreen extends React.Component {
-    static navigationOptions = {
-        drawerLabel: 'Setting',
-        tabBarLabel: 'Setting',
-    };
+class SettingViewScreen extends BaseViewScreen {
 
     render() {
         return (

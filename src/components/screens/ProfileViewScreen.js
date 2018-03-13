@@ -11,8 +11,9 @@ import {
 } from "react-native-elements"
 
 import * as ActionTypes from "../../constants/ActionTypes"
+import BaseViewScreen from "./BaseViewScreen";
 
-class ProfileViewScreen extends React.Component {
+class ProfileViewScreen extends BaseViewScreen {
 
     constructor(props) {
         super(props)

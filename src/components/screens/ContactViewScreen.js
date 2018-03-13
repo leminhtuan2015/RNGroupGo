@@ -15,26 +15,9 @@ import {
 } from 'react-native-elements'
 
 import * as ActionTypes from "../../constants/ActionTypes"
-import NavBarItem from "../views/NavBarItem"
+import BaseViewScreen from "./BaseViewScreen"
 
-class ContactViewScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        const {params = {}} = navigation.state;
-
-        const headerLeft =
-            <NavBarItem
-                iconName="times"
-                color="gray"
-                onPress={() => {
-                    navigation.goBack()
-                }}/>
-
-        return {
-            drawerLabel: 'Contacts',
-            tabBarLabel: 'Contacts',
-            headerLeft: headerLeft,
-        }
-    };
+class ContactViewScreen extends BaseViewScreen {
 
     constructor(props) {
         super(props)
@@ -93,7 +76,7 @@ class ContactViewScreen extends React.Component {
                 <View id="contentContainer" style={styles.contentContainer}>
                     <FormInput
                         inputStyle={{color: "#2196f3", marginLeft: 20}}
-                        containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
+                        // containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
                         ref={(input) => {
                             this.input = input
                         }}
@@ -139,7 +122,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         justifyContent: 'flex-start',
-        marginTop: 5,
+        marginTop: 20,
     },
 
     button: {
