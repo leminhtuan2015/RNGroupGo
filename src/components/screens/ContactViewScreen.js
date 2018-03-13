@@ -74,7 +74,7 @@ class ContactViewScreen extends React.Component {
                 titleStyle={{color: "green", fontSize: 24}}
                 subtitleStyle={{color: "blue", fontSize: 16}}
                 title={rowData.name}
-                subtitle={rowData.id}
+                subtitle={rowData.name}
             />
         )
     }
