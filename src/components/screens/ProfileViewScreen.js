@@ -3,65 +3,129 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
+    Image, ListView,
 } from "react-native"
 
 import {
-    Button
-} from "react-native-elements"
+    Button,
+    FormInput,
+    List,
+    ListItem,
+} from 'react-native-elements'
 
 import * as ActionTypes from "../../constants/ActionTypes"
 import BaseViewScreen from "./BaseViewScreen";
+import IconManager from "../../utils/IconManager";
 
 class ProfileViewScreen extends BaseViewScreen {
 
     constructor(props) {
         super(props)
+
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.tableData = [
+            {title: "Name", value: "name"},
+            {title: "Nickname", value: "nick"},
+            {title: "Logout", value: " "}
+        ]
+        this.tableDataIcon = [
+            (IconManager.icon("user-circle", "#009688")),
+            (IconManager.icon("star", "#448AFF")),
+            (IconManager.icon("sign-out", "#F44336")),
+        ]
+
+        this.state = {
+            userInfoDataSource: this.ds.cloneWithRows(this.tableData),
+        }
+    }
+
+    onPressListItem = (rowData) => {
+        const title = rowData.title
+
+        if (title == "Logout") {
+            this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})
+        }
     }
 
     renderLoginButtons = () => {
         return (
             <View>
                 <Button
-                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_LOGIN})}}
+                    onPress={() => {
+                        this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_LOGIN})
+                    }}
                     raised
                     backgroundColor="#385691"
                     icon={{name: "facebook", type: "font-awesome"}}
-                    title="Login With Facebook" />
+                    title="Login With Facebook"/>
 
-                <Text />
+                <Text/>
 
                 <Button
-                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_GOOGLE_LOGIN})}}
+                    onPress={() => {
+                        this.props.dispatch({type: ActionTypes.SAGA_GOOGLE_LOGIN})
+                    }}
                     raised
                     backgroundColor="#DB4D40"
                     icon={{name: "google", type: "font-awesome"}}
-                    title="Login With Google" />
+                    title="Login With Google"/>
             </View>
         )
     }
 
+    renderRow = (rowData, sectionID, rowID, higlightRow) => {
+
+        console.log(" renderRow : " + rowID)
+
+        return (
+            <ListItem
+                onPress={() => {
+                    this.onPressListItem(rowData)
+                }}
+
+                roundAvatar
+                // avatar={{uri: rowData.icon}}
+                avatar={this.tableDataIcon[rowID]}
+                underlayColor="#bdbdbd"
+                title={rowData.title}
+                rightTitle={rowData.value}
+
+                titleStyle={{color: "#263238", fontSize: 16}}
+                rightTitleStyle={{color: "gray", fontSize: 14}}
+                subtitleStyle={{color: "blue", fontSize: 12}}
+            />
+        )
+    }
+
     renderUser = () => {
-        return(
+        return (
             <View style={styles.container}>
-                <Image
-                    style={styles.roundImage}
-                    source={{uri: this.props.store.userState.currentUser.photoURL}}
-                />
+                <View style={styles.top}>
+                    <Image
+                        style={styles.roundImage}
+                        source={{uri: this.props.store.userState.currentUser.photoURL}}
+                    />
 
-                <Text />
+                    <Text style={styles.userName}>
+                        {this.props.store.userState.currentUser.displayName}
+                    </Text>
+                </View>
 
-                <Text style={styles.userName}>
-                    {this.props.store.userState.currentUser.displayName}
-                </Text>
-
-                <Text />
-
-                <Button
-                    onPress={() => {this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})}}
-                    raised
-                    backgroundColor="#DB4D40"
-                    title="Logout" />
+                <View style={{flex: 1}}>
+                    <List
+                        style={{flex: 1,}}
+                        enableEmptySections={true}
+                        containerStyle={{
+                            borderBottomColor: "#ffffff",
+                            borderBottomWidth: 0,
+                            borderTopWidth: 1,
+                        }}>
+                        <ListView
+                            enableEmptySections={true}
+                            renderRow={this.renderRow}
+                            dataSource={this.state.userInfoDataSource}/>
+                    </List>
+                </View>
             </View>
         )
 
@@ -78,8 +142,8 @@ class ProfileViewScreen extends BaseViewScreen {
             <View style={styles.container}>
                 {
                     this.props.store.userState.currentUser ?
-                    this.renderUser() :
-                    this.renderLoginButtons()
+                        this.renderUser() :
+                        this.renderLoginButtons()
                 }
             </View>
         )
@@ -95,7 +159,12 @@ class ProfileViewScreen extends BaseViewScreen {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+        justifyContent: 'flex-start',
+        marginTop: 15,
+    },
+
+    top: {
+        marginTop: 0,
         alignItems: 'center',
     },
 
@@ -106,6 +175,8 @@ const styles = StyleSheet.create({
     },
 
     userName: {
+        marginTop: 10,
+        marginLeft: 10,
         fontSize: 30,
     },
 

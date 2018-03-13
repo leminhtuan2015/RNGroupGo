@@ -29,8 +29,6 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     onPressListItem = (rowData) => {
-        //this.props.navigation.goBack()
-        //this.props.navigation.navigate("MapView")
         const friendUserId = rowData.key
         this.requestShareLocation(friendUserId)
     }
@@ -83,7 +81,8 @@ class ContactViewScreen extends BaseViewScreen {
                         onChangeText={(text) => {
                             this.onTextChange(text)
                         }}
-                        placeholder="Name"
+                        placeholder="Search"
+                        autoFocus = {true}
                         autoCorrect={false}
                         defaultValue=""/>
 
