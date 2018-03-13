@@ -113,16 +113,13 @@ function setCurrentUser(state, data) {
 function userLoginDone(state, data) {
 
     const {status, message} = data
-
     console.log("status : " + status + "message userLoginDone: " + message)
 
     if(status == StatusTypes.SUCCESS){
-
         const {user} = data
-
         console.log("userLoginDone : " + JSON.stringify(user))
-
         FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
+        FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
 
         return Object.assign({}, state, {currentUser: user})
     } else {

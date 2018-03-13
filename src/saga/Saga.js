@@ -15,10 +15,8 @@ export function* firebaseFilterUser(action) {
     console.log("Saga Firebase Filter User : " + data)
     let users = yield call(FirebaseHelper.filter, data, "users", "name")
     console.log("users filtered: " + JSON.stringify(users))
-    const uniqueId = Utils.uniqueId();
-    delete users["679152F5-79BE-4158-9180-EBCF97005512"]
-    console.log("users filtered ok: " + JSON.stringify(users))
     let userData = FirebaseHelper.snapshotToArray(users)
+
     yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: userData})
 }
 

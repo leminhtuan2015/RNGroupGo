@@ -41,7 +41,7 @@ class ContactViewScreen extends React.Component {
 
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: this.ds.cloneWithRows([]),
+            userDataSource: this.ds.cloneWithRows([]),
         }
     }
 
@@ -67,6 +67,9 @@ class ContactViewScreen extends React.Component {
                 onPress={() => {
                     this.onPressListItem(rowData)
                 }}
+
+                roundAvatar
+                avatar={{uri: rowData.photoURL}}
                 underlayColor="#bdbdbd"
                 titleStyle={{color: "green", fontSize: 24}}
                 subtitleStyle={{color: "blue", fontSize: 16}}
@@ -80,7 +83,7 @@ class ContactViewScreen extends React.Component {
         console.log("Contact will receive props :" + JSON.stringify(this.props))
 
         this.setState({
-            dataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
+            userDataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
         })
     }
 
@@ -115,7 +118,7 @@ class ContactViewScreen extends React.Component {
                             <ListView
                                 enableEmptySections={true}
                                 renderRow={this.renderRow}
-                                dataSource={this.state.dataSource}/>
+                                dataSource={this.state.userDataSource}/>
                         </List>
                     </View>
                 </View>
