@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
     View,
     Text,
@@ -13,9 +13,10 @@ import {
     ListItem,
 } from 'react-native-elements'
 
+import DialogBox from "react-native-dialogbox"
 import * as ActionTypes from "../../constants/ActionTypes"
-import BaseViewScreen from "./BaseViewScreen";
-import IconManager from "../../utils/IconManager";
+import BaseViewScreen from "./BaseViewScreen"
+import IconManager from "../../utils/IconManager"
 
 class ProfileViewScreen extends BaseViewScreen {
 
@@ -37,13 +38,42 @@ class ProfileViewScreen extends BaseViewScreen {
         this.state = {
             userInfoDataSource: this.ds.cloneWithRows(this.tableData),
         }
+
+        this.dialogbox = null
+    }
+
+    handleLogoutPressed = () => {
+
+        this.dialogbox.confirm({
+            title: "Would you like to logout?",
+            content: [""],
+            ok: {
+                text: "Yes",
+                style: {
+                    color: "red"
+                },
+                callback: () => {
+                    // this.dialogbox.alert("Good!");
+                    this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})
+                },
+            },
+            cancel: {
+                text: "No",
+                style: {
+                    color: "blue"
+                },
+                callback: () => {
+                    // this.dialogbox.alert('Hurry up！');
+                },
+            },
+        });
     }
 
     onPressListItem = (rowData) => {
         const title = rowData.title
 
         if (title == "Logout") {
-            this.props.dispatch({type: ActionTypes.SAGA_USER_LOGOUT})
+            this.handleLogoutPressed()
         }
     }
 
@@ -111,7 +141,7 @@ class ProfileViewScreen extends BaseViewScreen {
                     </Text>
                 </View>
 
-                <View style={{flex: 1}}>
+                <View>
                     <List
                         style={{flex: 1,}}
                         enableEmptySections={true}
@@ -126,6 +156,10 @@ class ProfileViewScreen extends BaseViewScreen {
                             dataSource={this.state.userInfoDataSource}/>
                     </List>
                 </View>
+
+                <DialogBox ref={dialogbox => {
+                    this.dialogbox = dialogbox
+                }}/>
             </View>
         )
 

@@ -8,6 +8,7 @@ import {
     Alert,
 } from "react-native"
 
+import DialogBox from "react-native-dialogbox"
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
@@ -46,6 +47,7 @@ class MapViewScreen extends React.Component {
     constructor(props) {
         super(props)
         this.currentDraggedRegion = null
+        this.dialogbox = null
     }
 
     rightButtonOnPress = () => {
@@ -138,15 +140,21 @@ class MapViewScreen extends React.Component {
         }
     }
 
-    isLoggedIn = () => {
+    handleGoToContactView = () => {
         if (!this.props.store.userState.currentUser) {
-            Toast.show("You Must Login First",
-                Toast.SHORT, Toast.TOP, Constant.styleToast);
-
-            return false
+            this.dialogbox.tip({
+                title: "Please Login First!",
+                content: "",
+                btn: {
+                    text: "OK",
+                    callback: () => {
+                        this.props.navigation.navigate("ProfileView")
+                    },
+                },
+            });
+        } else {
+            this.props.navigation.navigate("ContactView")
         }
-
-        return true
     }
 
     renderUsersMarker = () => {
@@ -190,14 +198,7 @@ class MapViewScreen extends React.Component {
             <View style={styles.toolbarContainer}>
                 <View style={styles.toolbar}>
                     {IconManager.icon("search", "gray", () => {
-                        const isLoggedIn = this.isLoggedIn()
-
-                        if (isLoggedIn) {
-                            this.props.navigation.navigate("ContactView")
-                        } else {
-                            this.props.navigation.navigate("ProfileView")
-                        }
-
+                        this.handleGoToContactView()
                     }, 30, "gray")}
 
                     {IconManager.icon("history", "gray", () => {
@@ -267,6 +268,7 @@ class MapViewScreen extends React.Component {
                 {this.renderMapView()}
                 {this.renderTools()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
+                <DialogBox ref={dialogbox => { this.dialogbox = dialogbox }}/>
             </View>
         );
     }
