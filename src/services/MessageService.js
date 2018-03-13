@@ -70,7 +70,7 @@ class MessageService {
             data: {path: path, callback: callback}
         })
 
-        // FirebaseHelper.subscribe(path, callback)
+        FirebaseHelper.subscribe(path, callback)
     }
 
     unSubscribeChannel = (data) => {

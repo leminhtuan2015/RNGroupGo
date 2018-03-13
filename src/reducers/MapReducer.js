@@ -21,9 +21,9 @@ export const MapReducer = (state = initialState, action) => {
             updateLocationToFirebase(data)
             return state
         case ActionTypes.MAP_LEAVE_CHANNEL:
-            leaveChannel(data)
-            return state
+            return leaveChannel(state, data)
         case ActionTypes.MAP_REDUCER_TEST:
+            console.log("MAP_REDUCER_TEST")
             return Object.assign({}, state, {map: "mapxxx"})
         default:
             return state
@@ -47,10 +47,12 @@ function updateLocationToFirebase(data) {
     FirebaseHelper.write("users/" + uid + "/coordinate", currentCoordinate)
 }
 
-function leaveChannel(data) {
+function leaveChannel(state, data) {
     let {userId, channelId, status} = data
 
     FirebaseHelper.write("channels/" + channelId + "/users/" + userId, status)
+
+    return state
 }
 
 export default MapReducer

@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import {Button} from 'react-native-elements'
-
 import Indicator from "../views/Indicator"
 
 const styles = StyleSheet.create({
@@ -65,10 +64,6 @@ class InCommingRequestLocationScreen extends Component<> {
     constructor(props) {
         super(props)
 
-        this.state = {
-            isShowingIndicator: true,
-        }
-
         this.callback = this.props.navigation.state.params.callback
     }
 
@@ -79,7 +74,7 @@ class InCommingRequestLocationScreen extends Component<> {
                     <Text style={styles.titleText}>In Comming Call</Text>
                 </View>
 
-                {this.state.isShowingIndicator && <Indicator style={styles.center}/>}
+                <Indicator style={styles.center}/>
 
                 <View style={styles.bottom}>
                     <Button
@@ -99,7 +94,7 @@ class InCommingRequestLocationScreen extends Component<> {
                         raised={true}
                         rounded={true}
                         onPress={() => {
-                            this.ok()
+                            this.accepted()
                         }}
                         title="OK"
                         borderRadius={5}
@@ -112,12 +107,9 @@ class InCommingRequestLocationScreen extends Component<> {
         )
     }
 
-    componentDidMount() {
-
-    }
-
-    ok = () => {
+    accepted = () => {
         this.callback(true)
+        this.props.navigation.goBack()
     }
 
     rejected = () => {

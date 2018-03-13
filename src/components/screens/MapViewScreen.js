@@ -11,10 +11,11 @@ import {
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
-
 import * as Constant from "../../utils/Constant"
 import * as ActionTypes from "../../constants/ActionTypes"
-import MessageService from "../../services/MessageService"
+import MessageTypes from "../../constants/MessageTypes";
+import NavigationHelper from "../views/NavigationHelper";
+import FirebaseHelper from "../../helpers/FirebaseHelper";
 
 class MapViewScreen extends React.Component {
 
@@ -45,7 +46,6 @@ class MapViewScreen extends React.Component {
     constructor(props) {
         super(props)
         this.currentDraggedRegion = null
-        this.messageService = new MessageService(this)
     }
 
     rightButtonOnPress = () => {
@@ -91,18 +91,12 @@ class MapViewScreen extends React.Component {
         )
     }
 
-    leaveMap = () => {
-        const channelId = this.props.store.mapState.channelId
-        console.log("leaveMap : " + channelId)
-        this.messageService.leaveChannel(channelId)
-    }
-
     getCurrentPosition = () => {
         this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_PLACE})
     }
 
     updateCurrentPosition = () => {
-        if(this.props.store.userState.currentUser){
+        if (this.props.store.userState.currentUser) {
             this.props.dispatch({
                 type: ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE,
                 data: {
@@ -113,13 +107,6 @@ class MapViewScreen extends React.Component {
 
             // Toast.show(JSON.stringify(this.props.store.mapState.currentCoordinate) + "",
             //     Toast.SHORT, Toast.TOP, Constant.styleToast);
-        }
-    }
-
-    subscribeInbox = () => {
-        if(this.props.store.userState.currentUser){
-            this.messageService.subscribeInbox("users/" +
-                this.props.store.userState.currentUser.uid + "/inbox")
         }
     }
 
@@ -152,7 +139,7 @@ class MapViewScreen extends React.Component {
     }
 
     isLoggedIn = () => {
-        if(!this.props.store.userState.currentUser){
+        if (!this.props.store.userState.currentUser) {
             Toast.show("You Must Login First",
                 Toast.SHORT, Toast.TOP, Constant.styleToast);
 
@@ -164,8 +151,12 @@ class MapViewScreen extends React.Component {
 
     renderUsersMarker = () => {
         let userIds = []
-        if (this.props.store.mapState.userId) {userIds.push(this.props.store.mapState.userId)}
-        if (this.props.store.userState.currentUser) {userIds.push(this.props.store.userState.currentUser.uid)}
+        if (this.props.store.mapState.userId) {
+            userIds.push(this.props.store.mapState.userId)
+        }
+        if (this.props.store.userState.currentUser) {
+            userIds.push(this.props.store.userState.currentUser.uid)
+        }
 
         console.log("renderUsersMarker userIds: " + JSON.stringify(userIds))
 
@@ -201,7 +192,7 @@ class MapViewScreen extends React.Component {
                     {IconManager.icon("search", "gray", () => {
                         const isLoggedIn = this.isLoggedIn()
 
-                        if(isLoggedIn){
+                        if (isLoggedIn) {
                             this.props.navigation.navigate("ContactView")
                         } else {
                             this.props.navigation.navigate("ProfileView")
@@ -250,7 +241,7 @@ class MapViewScreen extends React.Component {
             this.props.store.mapState.currentCoordinate.longitude,
             300)
 
-        if(this.currentDraggedRegion){
+        if (this.currentDraggedRegion) {
             regionOk = this.currentDraggedRegion
         }
 
@@ -294,6 +285,10 @@ class MapViewScreen extends React.Component {
         this.getCurrentPosition()
         this.autoUpdateMyPosition()
 
+        this.navigationSetParams()
+    }
+
+    navigationSetParams = () => {
         this.props.navigation
             .setParams({
                 rightButtonOnPress: this.rightButtonOnPress,
@@ -303,6 +298,151 @@ class MapViewScreen extends React.Component {
 
     componentWillUnmount() {
         console.log("MapView componentWillUnmount: ")
+    }
+
+    //----------------------- MESSAGE LISTENING----------------------
+
+    leaveMap = () => {
+        let currentUser = this.props.store.userState.currentUser
+        const channelId = this.props.store.mapState.channelId
+
+        // WHY
+        // console.log("leaveMap : " + channelId)
+        // const data = {userId: currentUser.uid, channelId: channelId, status: -2}
+        // this.props.dispatch({type: ActionTypes.MAP_LEAVE_CHANNEL, data: data})
+
+        FirebaseHelper.write("channels/" + channelId + "/users/" + currentUser.uid, -2)
+        this.unSubscribeChannel(channelId)
+    }
+
+    gotoMapWithFriend = (channelId, friendId) => {
+        this.props.dispatch({
+            type: ActionTypes.MAP_SET_USER_IN_MAP,
+            data: {userId: friendId, channelId: channelId}
+        })
+
+        NavigationHelper.resetTo(this, "RootStack")
+    }
+
+    goToHome = () => {
+        this.props.dispatch({
+            type: ActionTypes.MAP_SET_USER_IN_MAP,
+            data: {userId: null, channelId: null}
+        })
+
+        NavigationHelper.resetTo(this, "RootStack")
+    }
+
+    acceptedJoinMap = (channelId, myUserId) => {
+        this.props.dispatch({
+            type: ActionTypes.USER_ACCEPT_JOIN_CHANNEL,
+            data: {channelId: channelId, userId: myUserId}
+        })
+    }
+
+    rejectedJoinMap = (channelId, myUserId) => {
+        this.props.dispatch({
+            type: ActionTypes.USER_REJECT_JOIN_CHANNEL,
+            data: {channelId: channelId, userId: myUserId}
+        })
+    }
+
+    openIncomingCallScreen = (message) => {
+        let channelId = message.data.channelId
+        let myUserId = message.data.toUserId
+        let friendId = message.data.fromUserId
+
+        this.props.navigation
+            .navigate("InCommingRequestLocationView", {
+                callback: (isAccepted) => {
+                    if(isAccepted){
+                        this.subscribeChannel(channelId)
+                        this.acceptedJoinMap(channelId, myUserId)
+                        this.gotoMapWithFriend(channelId,friendId)
+                    } else {
+                        this.rejectedJoinMap(channelId, myUserId)
+                    }
+                }
+            })
+    }
+
+    onInboxReceiveMessage = (message) => {
+        console.log("RECEIVE MESSAGE : " + JSON.stringify(message))
+        const messageType = message.data.type
+
+        if (messageType == MessageTypes.IN_COMMING_CALL) {
+            this.openIncomingCallScreen(message)
+        } else if (messageType == null) {
+
+        }
+    }
+
+    subscribeInbox = () => {
+        let currentUser = this.props.store.userState.currentUser
+
+        if (currentUser) {
+            let path = "users/" + currentUser.uid + "/inbox"
+
+            this.props.dispatch({
+                type: ActionTypes.USER_SUBSCRIBE,
+                data: {
+                    path: path,
+                    callback: (message) => {
+                        this.onInboxReceiveMessage(message)
+                    }
+                }
+            })
+        }
+    }
+
+    subscribeChannel = (channelId) => {
+        let callback = (message) => {
+            this.onChannelReceiveMessage(message)
+        }
+
+        this.props.dispatch({
+            type: ActionTypes.USER_SUBSCRIBE,
+            data: {
+                path: "channels/" + channelId, callback: callback
+            }
+        })
+    }
+
+    unSubscribeChannel = (channelId) => {
+        console.log("unSubscribeChannel channelId: " + channelId)
+        this.props.dispatch({
+            type: ActionTypes.USER_UN_SUBSCRIBE_CHANNEL,
+            data: {channelId: channelId}
+        })
+    }
+
+    onChannelReceiveMessage = (message) => {
+        console.log("Map onChannelReceiveMessage : " + JSON.stringify(message))
+
+        const currentUserId = this.props.store.userState.currentUser.uid
+
+        if (!message) {return}
+
+        let hostId = message.hostId
+        let myStatus = message.users[currentUserId]
+        let friendId = null
+        let friendStatus = null
+
+        if (hostId == currentUserId) {
+            friendId = message.friendId
+            friendStatus = message.users[friendId]
+        } else {
+            friendId = message.hostId
+            friendStatus = message.users[friendId]
+        }
+
+        if (myStatus == -2) {
+            Alert.alert("You Leaved Map")
+            this.goToHome()
+        } else if (friendStatus == -2) {
+            Alert.alert("Friend Leaved Map")
+            this.goToHome()
+        }
     }
 }
 

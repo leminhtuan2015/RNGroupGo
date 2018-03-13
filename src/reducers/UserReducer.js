@@ -57,6 +57,7 @@ function createChannel(state, data) {
         hostId,
         friendId
     } = data
+
     FirebaseHelper.write("channels/" + channelId,
         {users: jsonData, channelId: channelId, hostId: hostId, friendId: friendId})
 

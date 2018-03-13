@@ -16,31 +16,6 @@ import {
 
 import * as ActionTypes from "../../constants/ActionTypes"
 import NavBarItem from "../views/NavBarItem"
-import MessageService from "../../services/MessageService"
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: 'transparent',
-    },
-
-    contentContainer: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        marginTop: 5,
-    },
-
-    button: {
-        alignItems: 'center',
-    },
-
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-})
 
 class ContactViewScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -68,15 +43,13 @@ class ContactViewScreen extends React.Component {
         this.state = {
             dataSource: this.ds.cloneWithRows([]),
         }
-
-        this.messageService = new MessageService(this)
     }
 
     onPressListItem = (rowData) => {
         //this.props.navigation.goBack()
         //this.props.navigation.navigate("MapView")
-        const userId = rowData.key
-        this.requestShareLocation(userId)
+        const friendUserId = rowData.key
+        this.requestShareLocation(friendUserId)
     }
 
     onTextChange = (text) => {
@@ -84,9 +57,8 @@ class ContactViewScreen extends React.Component {
         this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: text})
     }
 
-    requestShareLocation = (userId) =>{
-        this.props.navigation.navigate("RequestingLocationView", {userId: userId})
-        // this.messageService.requestFriendLocation(userId)
+    requestShareLocation = (friendUserId) =>{
+        this.props.navigation.navigate("RequestingLocationView", {friendUserId: friendUserId})
     }
 
     renderRow = (rowData, sectionID) => {
@@ -154,4 +126,27 @@ class ContactViewScreen extends React.Component {
 
 export default ContactViewScreen
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
+    },
+
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        marginTop: 5,
+    },
+
+    button: {
+        alignItems: 'center',
+    },
+
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+    },
+})
 
