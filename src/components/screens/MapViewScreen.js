@@ -324,8 +324,8 @@ class MapViewScreen extends React.Component {
 
     gotoMapWithFriend = (channelId, friendId) => {
         this.props.dispatch({
-            type: ActionTypes.MAP_SET_USER_IN_MAP,
-            data: {userId: friendId, channelId: channelId}
+            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
+            data: {friendId: friendId, channelId: channelId}
         })
 
         NavigationHelper.resetTo(this, "RootStack")
@@ -333,8 +333,8 @@ class MapViewScreen extends React.Component {
 
     goToHome = () => {
         this.props.dispatch({
-            type: ActionTypes.MAP_SET_USER_IN_MAP,
-            data: {userId: null, channelId: null}
+            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
+            data: {friendId: null, channelId: null}
         })
 
         NavigationHelper.resetTo(this, "RootStack")

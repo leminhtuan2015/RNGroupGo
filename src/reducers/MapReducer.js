@@ -6,6 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 const initialState = {
     currentCoordinate: {latitude: 0, longitude: 0},
     friendId: null,
+    friendData: null,
     channelId: null,
 }
 
@@ -16,8 +17,8 @@ export const MapReducer = (state = initialState, action) => {
     switch (type) {
         case ActionTypes.MAP_SET_CURRENT_PLACE:
             return setCurrentPlace(state, data)
-        case ActionTypes.MAP_SET_USER_IN_MAP:
-            return setUserInMap(state, data)
+        case ActionTypes.MAP_SET_FRIEND_IN_MAP:
+            return setFriendInMap(state, data)
         case ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE:
             updateLocationToFirebase(data)
             return state
@@ -36,10 +37,10 @@ function setCurrentPlace(state, data) {
     return Object.assign({}, state, {currentCoordinate: region})
 }
 
-function setUserInMap(state, data) {
-    let {userId, channelId} = data
+function setFriendInMap(state, data) {
+    let {friendId, channelId} = data
 
-    return Object.assign({}, state, {friendId: userId, channelId: channelId})
+    return Object.assign({}, state, {friendId: friendId, channelId: channelId})
 }
 
 function updateLocationToFirebase(data) {
