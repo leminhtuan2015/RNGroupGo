@@ -17,6 +17,7 @@ import DialogBox from "react-native-dialogbox"
 import * as ActionTypes from "../../constants/ActionTypes"
 import BaseViewScreen from "./BaseViewScreen"
 import IconManager from "../../utils/IconManager"
+import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
 
 class ProfileViewScreen extends BaseViewScreen {
 
@@ -140,6 +141,12 @@ class ProfileViewScreen extends BaseViewScreen {
         )
     }
 
+    renderIndicator = () => {
+        return(
+            <ActivityIndicatorCustom />
+        )
+    }
+
     renderUser = () => {
         return (
             <View style={styles.container}>
@@ -180,17 +187,13 @@ class ProfileViewScreen extends BaseViewScreen {
 
     }
 
-    componentWillReceiveProps = (newProps) => {
-        console.log("ProfileView will receive props : " + JSON.stringify(newProps))
-
-        this.updateTableData(newProps.store.userState.currentUser)
-    }
-
     render = () => {
         console.log("render_x ProfileViewScreen")
 
         return (
             <View style={styles.container}>
+                {!this.props.store.userState.isLoginDone && this.renderIndicator()}
+
                 {
                     this.props.store.userState.currentUser ?
                         this.renderUser() :
@@ -198,6 +201,12 @@ class ProfileViewScreen extends BaseViewScreen {
                 }
             </View>
         )
+    }
+
+    componentWillReceiveProps = (newProps) => {
+        console.log("ProfileView will receive props : " + JSON.stringify(newProps))
+
+        this.updateTableData(newProps.store.userState.currentUser)
     }
 
     componentDidMount = () => {

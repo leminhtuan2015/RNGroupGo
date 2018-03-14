@@ -1,18 +1,11 @@
 import {CirclesLoader, RippleLoader} from 'react-native-indicator';
 import React from 'react';
 import {
-    Dimensions,
     StyleSheet,
-    Button,
-    Image,
-    Text,
     View,
-    TouchableOpacity,
-    Platform,
-    Alert,
 } from "react-native"
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     center: {
         position: 'absolute',
         left: 0,

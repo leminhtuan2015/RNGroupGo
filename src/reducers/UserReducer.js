@@ -8,6 +8,7 @@ import StatusTypes from "../constants/StatusTypes";
 const initialState = {
     filterUsers: [],
     currentUser: null,
+    isLoginDone: false
 }
 
 export const UserReducer = (state = initialState, action) => {
@@ -37,6 +38,8 @@ export const UserReducer = (state = initialState, action) => {
             return userLoginDone(state, data)
         case ActionTypes.USER_USER_LOGOUT_DONE:
             return userLogoutDone(state, data)
+        case ActionTypes.USER_SET_LOGIN_STATUS:
+            return setLoginStatus(state, data)
         default:
             return state
     }
@@ -107,7 +110,7 @@ function setCurrentUser(state, data) {
 
     console.log("User Reducer setCurrentUser" + JSON.stringify(user))
 
-    return Object.assign({}, state, {currentUser: user})
+    return Object.assign({}, state, {currentUser: user, isLoginDone: true})
 }
 
 function userLoginDone(state, data) {
@@ -121,9 +124,9 @@ function userLoginDone(state, data) {
         FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
         FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
 
-        return Object.assign({}, state, {currentUser: user})
+        return Object.assign({}, state, {currentUser: user, isLoginDone: true})
     } else {
-        return state
+        return Object.assign({}, state, {isLoginDone: true})
     }
 }
 
@@ -135,6 +138,11 @@ function userLogoutDone(state, data) {
     } else {
         return state
     }
+}
+
+function setLoginStatus(state, data) {
+    const {isLoginDone} = data
+    return Object.assign({}, state, {isLoginDone: isLoginDone})
 }
 
 export default UserReducer

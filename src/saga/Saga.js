@@ -21,6 +21,8 @@ export function* firebaseFilterUser(action) {
 }
 
 export function* facebookLogin() {
+    yield put({type: ActionTypes.USER_SET_LOGIN_STATUS, data: {isLoginDone: false}})
+
     const loginStatus = yield call(FacebookLoginHelper.login)
 
     if(loginStatus == StatusTypes.SUCCESS){
@@ -62,6 +64,8 @@ export function* facebookLogin() {
 }
 
 export function* googleLogin() {
+    yield put({type: ActionTypes.USER_SET_LOGIN_STATUS, data: {isLoginDone: false}})
+
     const configStatus = yield call(GoogleLoginHelper.config)
     const data = yield call(GoogleLoginHelper.login)
     const {status} = data
