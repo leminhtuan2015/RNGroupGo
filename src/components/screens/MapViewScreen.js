@@ -75,22 +75,27 @@ class MapViewScreen extends React.Component {
     }
 
     confirmLeaveMap = () => {
-        Alert.alert(
-            "Confirm Leave This Map",
-            "",
-            [
-                {
-                    text: "Leave", onPress: () => {
-                        this.leaveMap()
-                    }
+        this.dialogbox.confirm({
+            title: "Would you like to leave?",
+            content: [""],
+            ok: {
+                text: "Yes",
+                style: {
+                    color: "red"
                 },
-                {
-                    text: "Cancel", onPress: () => {
-                    }, style: 'cancel'
+                callback: () => {
+                    this.leaveMap()
                 },
-            ],
-            {cancelable: false}
-        )
+            },
+            cancel: {
+                text: "No",
+                style: {
+                    color: "green"
+                },
+                callback: () => {
+                },
+            },
+        });
     }
 
     getCurrentPosition = () => {
@@ -429,6 +434,7 @@ class MapViewScreen extends React.Component {
         let myStatus = message.users[currentUserId]
         let friendId = null
         let friendStatus = null
+        let dialogTitle = ""
 
         if (hostId == currentUserId) {
             friendId = message.friendId
@@ -439,12 +445,14 @@ class MapViewScreen extends React.Component {
         }
 
         if (myStatus == -2) {
-            Alert.alert("You Leaved Map")
+            dialogTitle = "You Leaved Map"
             this.goToHome()
         } else if (friendStatus == -2) {
-            Alert.alert("Friend Leaved Map")
+            dialogTitle = "Friend Leaved Map"
             this.goToHome()
         }
+
+        Alert.alert(dialogTitle)
     }
 }
 
