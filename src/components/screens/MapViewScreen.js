@@ -367,6 +367,7 @@ class MapViewScreen extends React.Component {
                         this.acceptedJoinMap(channelId, myUserId)
                         this.gotoMapWithFriend(channelId,friendId)
                     } else {
+                        this.unSubscribeChannel(channelId)
                         this.rejectedJoinMap(channelId, myUserId)
                     }
                 }

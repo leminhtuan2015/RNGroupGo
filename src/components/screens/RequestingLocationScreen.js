@@ -14,6 +14,7 @@ import * as Utils from "../../utils/Utils";
 import MessageTypes from "../../constants/MessageTypes";
 import MessageService from "../../services/MessageService";
 import NavigationHelper from "../views/NavigationHelper";
+import FirebaseHelper from "../../helpers/FirebaseHelper";
 
 class RequestingLocationScreen extends Component<> {
 
@@ -63,6 +64,7 @@ class RequestingLocationScreen extends Component<> {
             this.myUserId = this.props.store.userState.currentUser.uid
 
             const channelId = this.createChannel(this.myUserId, this.friendUserId)
+            this.channelId = channelId
 
             const data = {
                 fromUserId: this.myUserId,
