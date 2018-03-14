@@ -363,11 +363,11 @@ class MapViewScreen extends React.Component {
             .navigate("InCommingRequestLocationView", {
                 callback: (isAccepted) => {
                     if(isAccepted){
+                        this.unSubscribeChannel(this.props.store.mapState.channelId)
                         this.subscribeChannel(channelId)
                         this.acceptedJoinMap(channelId, myUserId)
                         this.gotoMapWithFriend(channelId,friendId)
                     } else {
-                        this.unSubscribeChannel(channelId)
                         this.rejectedJoinMap(channelId, myUserId)
                     }
                 }
