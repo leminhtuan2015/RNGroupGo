@@ -192,7 +192,7 @@ class ProfileViewScreen extends BaseViewScreen {
 
         return (
             <View style={styles.container}>
-                {!this.props.store.userState.isLoginDone && this.renderIndicator()}
+                {this.props.store.userState.isBusy && this.renderIndicator()}
 
                 {
                     this.props.store.userState.currentUser ?

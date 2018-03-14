@@ -11,17 +11,20 @@ import StatusTypes from "../constants/StatusTypes";
 import LocationHelper from "../helpers/LocationHelper";
 
 export function* firebaseFilterUser(action) {
+    yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
+
     let {data} = action
     console.log("Saga Firebase Filter User : " + data)
     let users = yield call(FirebaseHelper.filter, data, "users", "name")
     console.log("users filtered: " + JSON.stringify(users))
     let userData = FirebaseHelper.snapshotToArray(users)
 
-    yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: userData})
+    yield put({type: ActionTypes.USER_SET_FILTER_USERS,
+        data: {userData: userData, isBusy: false}})
 }
 
 export function* facebookLogin() {
-    yield put({type: ActionTypes.USER_SET_LOGIN_STATUS, data: {isLoginDone: false}})
+    yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
 
     const loginStatus = yield call(FacebookLoginHelper.login)
 
@@ -64,7 +67,7 @@ export function* facebookLogin() {
 }
 
 export function* googleLogin() {
-    yield put({type: ActionTypes.USER_SET_LOGIN_STATUS, data: {isLoginDone: false}})
+    yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
 
     const configStatus = yield call(GoogleLoginHelper.config)
     const data = yield call(GoogleLoginHelper.login)

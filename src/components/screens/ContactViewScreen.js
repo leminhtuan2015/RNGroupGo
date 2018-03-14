@@ -14,6 +14,8 @@ import {
     ListItem,
 } from 'react-native-elements'
 
+import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
+
 import * as ActionTypes from "../../constants/ActionTypes"
 import BaseViewScreen from "./BaseViewScreen"
 
@@ -71,6 +73,50 @@ class ContactViewScreen extends BaseViewScreen {
         })
     }
 
+    renderListView = () => {
+        return (
+            <View style={{flex: 1}}>
+                <List
+                    style={{flex: 1,}}
+                    enableEmptySections={true}
+                    containerStyle={{
+                        borderBottomColor: "#ffffff",
+                        borderBottomWidth: 0,
+                        borderTopWidth: 0,
+                    }}>
+                    <ListView
+                        enableEmptySections={true}
+                        renderRow={this.renderRow}
+                        dataSource={this.state.userDataSource}/>
+                </List>
+            </View>
+        )
+    }
+
+    renderTopView = () => {
+        return (
+            <FormInput
+                inputStyle={{color: "#2196f3", marginLeft: 10}}
+                // containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
+                ref={(input) => {
+                    this.input = input
+                }}
+                onChangeText={(text) => {
+                    this.onTextChange(text)
+                }}
+                placeholder="Search"
+                autoFocus={true}
+                autoCorrect={false}
+                defaultValue=""/>
+        )
+    }
+
+    renderIndicator = () => {
+        return(
+            <ActivityIndicatorCustom />
+        )
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback
@@ -79,37 +125,9 @@ class ContactViewScreen extends BaseViewScreen {
                 onPress={() => Keyboard.dismiss()}>
 
                 <View id="contentContainer" style={styles.contentContainer}>
-                    <FormInput
-                        inputStyle={{color: "#2196f3", marginLeft: 10}}
-                        // containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
-                        ref={(input) => {
-                            this.input = input
-                        }}
-                        onChangeText={(text) => {
-                            this.onTextChange(text)
-                        }}
-                        placeholder="Search"
-                        autoFocus={true}
-                        autoCorrect={false}
-                        defaultValue=""/>
-
-                    <Text/>
-
-                    <View style={{flex: 1}}>
-                        <List
-                            style={{flex: 1,}}
-                            enableEmptySections={true}
-                            containerStyle={{
-                                borderBottomColor: "#ffffff",
-                                borderBottomWidth: 0,
-                                borderTopWidth: 0,
-                            }}>
-                            <ListView
-                                enableEmptySections={true}
-                                renderRow={this.renderRow}
-                                dataSource={this.state.userDataSource}/>
-                        </List>
-                    </View>
+                    {this.props.store.userState.isBusy && this.renderIndicator()}
+                    {this.renderTopView()}
+                    {this.renderListView()}
                 </View>
             </TouchableWithoutFeedback>
         );

@@ -8,7 +8,7 @@ import StatusTypes from "../constants/StatusTypes";
 const initialState = {
     filterUsers: [],
     currentUser: null,
-    isLoginDone: false
+    isBusy: false
 }
 
 export const UserReducer = (state = initialState, action) => {
@@ -38,15 +38,16 @@ export const UserReducer = (state = initialState, action) => {
             return userLoginDone(state, data)
         case ActionTypes.USER_USER_LOGOUT_DONE:
             return userLogoutDone(state, data)
-        case ActionTypes.USER_SET_LOGIN_STATUS:
-            return setLoginStatus(state, data)
+        case ActionTypes.USER_SET_IS_BUSY:
+            return setBusyStatus(state, data)
         default:
             return state
     }
 }
 
 function setFilterUsers(state, data) {
-    return Object.assign({}, state, {filterUsers: data})
+    const {userData, isBusy} = data
+    return Object.assign({}, state, {filterUsers: userData, isBusy: isBusy})
 }
 
 function addFriend(state, data) {
@@ -110,7 +111,7 @@ function setCurrentUser(state, data) {
 
     console.log("User Reducer setCurrentUser" + JSON.stringify(user))
 
-    return Object.assign({}, state, {currentUser: user, isLoginDone: true})
+    return Object.assign({}, state, {currentUser: user, isBusy: false})
 }
 
 function userLoginDone(state, data) {
@@ -124,9 +125,9 @@ function userLoginDone(state, data) {
         FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
         FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
 
-        return Object.assign({}, state, {currentUser: user, isLoginDone: true})
+        return Object.assign({}, state, {currentUser: user, isBusy: false})
     } else {
-        return Object.assign({}, state, {isLoginDone: true})
+        return Object.assign({}, state, {isBusy: false})
     }
 }
 
@@ -140,9 +141,9 @@ function userLogoutDone(state, data) {
     }
 }
 
-function setLoginStatus(state, data) {
-    const {isLoginDone} = data
-    return Object.assign({}, state, {isLoginDone: isLoginDone})
+function setBusyStatus(state, data) {
+    const {isBusy} = data
+    return Object.assign({}, state, {isBusy: isBusy})
 }
 
 export default UserReducer
