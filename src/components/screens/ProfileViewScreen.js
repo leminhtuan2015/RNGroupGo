@@ -4,11 +4,11 @@ import {
     Text,
     StyleSheet,
     Image, ListView,
+    ScrollView,
 } from "react-native"
 
 import {
     Button,
-    FormInput,
     List,
     ListItem,
 } from 'react-native-elements'
@@ -25,13 +25,17 @@ class ProfileViewScreen extends BaseViewScreen {
 
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.tableData = [
-            {title: "Name", value: "name"},
-            {title: "Nickname", value: "nick"},
+            {title: "Name", value: " "},
+            {title: "Nickname", value: " "},
+            {title: "Email", value: " "},
+            {title: "Phone", value: " "},
             {title: "Logout", value: " "}
         ]
         this.tableDataIcon = [
             (IconManager.icon("user-circle", "#009688")),
             (IconManager.icon("star", "#448AFF")),
+            (IconManager.icon("envelope-square", "#FFD600")),
+            (IconManager.icon("phone-square", "#311B92")),
             (IconManager.icon("sign-out", "#F44336")),
         ]
 
@@ -40,6 +44,15 @@ class ProfileViewScreen extends BaseViewScreen {
         }
 
         this.dialogbox = null
+    }
+
+    updateTableData = (user) => {
+        if(!user){return}
+
+        this.tableData[0]["value"] = user.displayName
+        this.tableData[1]["value"] = user.nickname
+        this.tableData[2]["value"] = user.email
+        this.tableData[3]["value"] = user.phoneNumber
     }
 
     handleLogoutPressed = () => {
@@ -60,7 +73,7 @@ class ProfileViewScreen extends BaseViewScreen {
             cancel: {
                 text: "No",
                 style: {
-                    color: "blue"
+                    color: "green"
                 },
                 callback: () => {
                     // this.dialogbox.alert('Hurry up！');
@@ -79,7 +92,7 @@ class ProfileViewScreen extends BaseViewScreen {
 
     renderLoginButtons = () => {
         return (
-            <View>
+            <View style={styles.loginButtons}>
                 <Button
                     onPress={() => {
                         this.props.dispatch({type: ActionTypes.SAGA_FACEBOOK_LOGIN})
@@ -122,7 +135,7 @@ class ProfileViewScreen extends BaseViewScreen {
 
                 titleStyle={{color: "#263238", fontSize: 16}}
                 rightTitleStyle={{color: "gray", fontSize: 14}}
-                subtitleStyle={{color: "blue", fontSize: 12}}
+                subtitleStyle={{color: "gray", fontSize: 12}}
             />
         )
     }
@@ -130,32 +143,34 @@ class ProfileViewScreen extends BaseViewScreen {
     renderUser = () => {
         return (
             <View style={styles.container}>
-                <View style={styles.top}>
-                    <Image
-                        style={styles.roundImage}
-                        source={{uri: this.props.store.userState.currentUser.photoURL}}
-                    />
+                <ScrollView contentContainerStyle={styles.contentContainer}>
+                    <View style={styles.top}>
+                        <Image
+                            style={styles.roundImage}
+                            source={{uri: this.props.store.userState.currentUser.photoURL}}
+                        />
 
-                    <Text style={styles.userName}>
-                        {this.props.store.userState.currentUser.displayName}
-                    </Text>
-                </View>
+                        <Text style={styles.userName}>
+                            {this.props.store.userState.currentUser.displayName}
+                        </Text>
+                    </View>
 
-                <View>
-                    <List
-                        style={{flex: 1,}}
-                        enableEmptySections={true}
-                        containerStyle={{
-                            borderBottomColor: "#ffffff",
-                            borderBottomWidth: 0,
-                            borderTopWidth: 1,
-                        }}>
-                        <ListView
+                    <View>
+                        <List
+                            style={{flex: 1,}}
                             enableEmptySections={true}
-                            renderRow={this.renderRow}
-                            dataSource={this.state.userInfoDataSource}/>
-                    </List>
-                </View>
+                            containerStyle={{
+                                borderBottomColor: "#ffffff",
+                                borderBottomWidth: 0,
+                                borderTopWidth: 1,
+                            }}>
+                            <ListView
+                                enableEmptySections={true}
+                                renderRow={this.renderRow}
+                                dataSource={this.state.userInfoDataSource}/>
+                        </List>
+                    </View>
+                </ScrollView>
 
                 <DialogBox ref={dialogbox => {
                     this.dialogbox = dialogbox
@@ -167,6 +182,8 @@ class ProfileViewScreen extends BaseViewScreen {
 
     componentWillReceiveProps = (newProps) => {
         console.log("ProfileView will receive props : " + JSON.stringify(newProps))
+
+        this.updateTableData(newProps.store.userState.currentUser)
     }
 
     render = () => {
@@ -194,12 +211,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        marginTop: 15,
+        marginTop: 0,
     },
 
     top: {
-        marginTop: 0,
+        marginTop: 15,
         alignItems: 'center',
+    },
+
+    loginButtons: {
+        marginTop: 15,
+        marginLeft: 40,
+        marginRight: 40,
+        justifyContent: 'flex-start',
     },
 
     roundImage: {
@@ -212,6 +236,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 10,
         fontSize: 30,
+    },
+
+    contentContainer: {
+        paddingVertical: 10,
+        paddingBottom: 60
     },
 
 });

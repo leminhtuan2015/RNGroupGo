@@ -38,7 +38,7 @@ class ContactViewScreen extends BaseViewScreen {
         this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: text})
     }
 
-    requestShareLocation = (friendUserId) =>{
+    requestShareLocation = (friendUserId) => {
         this.props.navigation.navigate("RequestingLocationView", {friendUserId: friendUserId})
     }
 
@@ -52,8 +52,11 @@ class ContactViewScreen extends BaseViewScreen {
                 roundAvatar
                 avatar={{uri: rowData.photoURL}}
                 underlayColor="#bdbdbd"
-                titleStyle={{color: "green", fontSize: 24}}
-                subtitleStyle={{color: "blue", fontSize: 16}}
+
+                titleStyle={{color: "#263238", fontSize: 16}}
+                rightTitleStyle={{color: "gray", fontSize: 14}}
+                subtitleStyle={{color: "gray", fontSize: 12}}
+
                 title={rowData.name}
                 subtitle={rowData.name}
             />
@@ -70,10 +73,14 @@ class ContactViewScreen extends BaseViewScreen {
 
     render() {
         return (
-            <TouchableWithoutFeedback id="container" style={styles.container} onPress={() => Keyboard.dismiss()}>
+            <TouchableWithoutFeedback
+                id="container"
+                style={styles.container}
+                onPress={() => Keyboard.dismiss()}>
+
                 <View id="contentContainer" style={styles.contentContainer}>
                     <FormInput
-                        inputStyle={{color: "#2196f3", marginLeft: 20}}
+                        inputStyle={{color: "#2196f3", marginLeft: 10}}
                         // containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
                         ref={(input) => {
                             this.input = input
@@ -82,7 +89,7 @@ class ContactViewScreen extends BaseViewScreen {
                             this.onTextChange(text)
                         }}
                         placeholder="Search"
-                        autoFocus = {true}
+                        autoFocus={true}
                         autoCorrect={false}
                         defaultValue=""/>
 
@@ -95,7 +102,7 @@ class ContactViewScreen extends BaseViewScreen {
                             containerStyle={{
                                 borderBottomColor: "#ffffff",
                                 borderBottomWidth: 0,
-                                borderTopWidth: 1,
+                                borderTopWidth: 0,
                             }}>
                             <ListView
                                 enableEmptySections={true}
