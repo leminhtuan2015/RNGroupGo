@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Image,
 } from 'react-native';
 
 import {Button} from 'react-native-elements'
@@ -27,6 +28,8 @@ class RequestingLocationScreen extends Component<> {
         super(props)
 
         this.friendUserId = this.props.navigation.state.params.friendUserId
+        this.friendData = this.props.navigation.state.params.friendData
+
         this.myUserId = null
         this.channelId = null
     }
@@ -36,10 +39,17 @@ class RequestingLocationScreen extends Component<> {
             <View style={styles.container}>
                 <View style={styles.top}>
                     <Text style={styles.titleText}>Calling</Text>
-                    <Text>{this.myUserId}</Text>
+                    <Text>{this.friendData.name}</Text>
                 </View>
 
-                <Indicator style={styles.center}/>
+                <View style={styles.center}>
+                    <Image
+                        style={[styles.roundImage]}
+                        source={{uri: this.friendData.photoURL}}
+                    />
+
+                    <Indicator style={styles.center}/>
+                </View>
 
                 <View style={styles.bottom}>
                     <Button
@@ -194,18 +204,20 @@ export default RequestingLocationScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
         backgroundColor: 'transparent',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     },
 
-    contentContainer: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        marginTop: 5,
+    top: {
+        flex: 0.2,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     center: {
-        flex: 1,
+        flex: 0.8,
+        position: 'absolute',
         left: 0,
         right: 0,
         top: 0,
@@ -214,14 +226,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    top: {
-        flex: 0.3,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
     bottom: {
-        flex: 0.3,
+        flex: 0.2,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10,
@@ -231,5 +237,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
-    }
+    },
+
+    roundImage: {
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+    },
 })

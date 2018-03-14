@@ -164,8 +164,8 @@ class MapViewScreen extends React.Component {
 
     renderUsersMarker = () => {
         let userIds = []
-        if (this.props.store.mapState.userId) {
-            userIds.push(this.props.store.mapState.userId)
+        if (this.props.store.mapState.friendId) {
+            userIds.push(this.props.store.mapState.friendId)
         }
         if (this.props.store.userState.currentUser) {
             userIds.push(this.props.store.userState.currentUser.uid)
@@ -361,6 +361,7 @@ class MapViewScreen extends React.Component {
 
         this.props.navigation
             .navigate("InCommingRequestLocationView", {
+                friendId: friendId,
                 callback: (isAccepted) => {
                     if(isAccepted){
                         this.unSubscribeChannel(this.props.store.mapState.channelId)

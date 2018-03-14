@@ -31,8 +31,10 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     onPressListItem = (rowData) => {
+        console.log("Contact onPressListItem user : " + JSON.stringify(rowData))
+
         const friendUserId = rowData.key
-        this.requestShareLocation(friendUserId)
+        this.requestShareLocation(friendUserId, rowData)
     }
 
     onTextChange = (text) => {
@@ -40,8 +42,9 @@ class ContactViewScreen extends BaseViewScreen {
         this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: text})
     }
 
-    requestShareLocation = (friendUserId) => {
-        this.props.navigation.navigate("RequestingLocationView", {friendUserId: friendUserId})
+    requestShareLocation = (friendUserId, friendData) => {
+        this.props.navigation.navigate("RequestingLocationView",
+            {friendUserId: friendUserId, friendData: friendData})
     }
 
     renderRow = (rowData, sectionID) => {

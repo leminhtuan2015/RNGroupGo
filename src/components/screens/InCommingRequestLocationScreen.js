@@ -3,6 +3,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Image,
 } from 'react-native';
 
 import {Button} from 'react-native-elements'
@@ -21,6 +22,14 @@ class InCommingRequestLocationScreen extends Component<> {
         super(props)
 
         this.callback = this.props.navigation.state.params.callback
+        this.friendId = this.props.navigation.state.params.friendId
+
+
+    }
+
+    componentDidMount = () => {
+        console.log("InCommingRequestLocationScreen componentDidMount")
+
     }
 
     render() {
@@ -28,9 +37,17 @@ class InCommingRequestLocationScreen extends Component<> {
             <View style={styles.container}>
                 <View style={styles.top}>
                     <Text style={styles.titleText}>In Comming Call</Text>
+                    <Text>{this.friendId}</Text>
                 </View>
 
-                <Indicator style={styles.center}/>
+                <View style={styles.center}>
+                    <Image
+                        style={[styles.roundImage]}
+                        source={{uri: "https://static.pexels.com/photos/658687/pexels-photo-658687.jpeg"}}
+                    />
+
+                    <Indicator style={styles.center}/>
+                </View>
 
                 <View style={styles.bottom}>
                     <Button
@@ -79,8 +96,8 @@ export default InCommingRequestLocationScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
         backgroundColor: 'transparent',
+        justifyContent: 'space-between',
     },
 
     contentContainer: {
@@ -89,8 +106,15 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
 
+    top: {
+        flex: 0.2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     center: {
-        flex: 1,
+        flex: 0.8,
+        position: 'absolute',
         left: 0,
         right: 0,
         top: 0,
@@ -99,14 +123,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    top: {
-        flex: 0.3,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
     bottom: {
-        flex: 0.3,
+        flex: 0.2,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -117,5 +135,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
-    }
+    },
+
+    roundImage: {
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+    },
 })
