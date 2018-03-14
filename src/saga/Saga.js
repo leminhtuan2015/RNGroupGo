@@ -134,14 +134,26 @@ export function* getCurrentPlace(){
     yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE, data: {region: region}})
 }
 
+export function* getFriendData(action){
+
+    const {friendId} = action
+    const path = "users/" + friendId
+    const data = yield call(FirebaseHelper.read, path)
+
+    console.log("saga getFriendData : " + JSON.stringify(data))
+
+    yield put({type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP, data: {friendData: data}})
+}
+
 export default function* rootSaga() {
-    yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser);
-    yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin);
-    yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin);
-    yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin);
-    yield takeEvery(ActionTypes.SAGA_GET_CURRENT_USER, getCurrentUser);
+    yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
+    yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin)
+    yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin)
+    yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin)
+    yield takeEvery(ActionTypes.SAGA_GET_CURRENT_USER, getCurrentUser)
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
+    yield takeEvery(ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, getFriendData)
 }
 
 

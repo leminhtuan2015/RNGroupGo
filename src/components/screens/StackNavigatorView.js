@@ -4,15 +4,15 @@ import {
 } from 'react-navigation';
 
 
-import MapViewContainer from '../../containers/MapViewContainer';
-import ContactViewContainer from '../../containers/ContactViewContainer';
-import ProfileViewContainer from '../../containers/ProfileViewContainer';
+import MapViewContainer from '../../containers/MapViewContainer'
+import ContactViewContainer from '../../containers/ContactViewContainer'
+import ProfileViewContainer from '../../containers/ProfileViewContainer'
 
-import FriendViewScreen from './FriendViewScreen';
-import SettingViewScreen from './SettingViewScreen';
+import FriendViewScreen from './FriendViewScreen'
+import SettingViewScreen from './SettingViewScreen'
 
-import RequestingLocationContainer from '../../containers/RequestingLocationContainer';
-import InCommingRequestLocationScreen from "./InCommingRequestLocationScreen";
+import RequestingLocationContainer from '../../containers/RequestingLocationContainer'
+import InCommingRequestLocationContainer from "../../containers/InCommingRequestLocationContainer"
 
 const StackNavigatorView = StackNavigator(
     {
@@ -21,9 +21,8 @@ const StackNavigatorView = StackNavigator(
         FriendView: {screen: FriendViewScreen},
         ProfileView: {screen: ProfileViewContainer},
         SettingView: {screen: SettingViewScreen,},
-
         RequestingLocationView: {screen: RequestingLocationContainer},
-        InCommingRequestLocationView: {screen: InCommingRequestLocationScreen},
+        InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},
     },
     {
         mode: "modal",

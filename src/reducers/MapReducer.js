@@ -24,9 +24,8 @@ export const MapReducer = (state = initialState, action) => {
             return state
         case ActionTypes.MAP_LEAVE_CHANNEL:
             return leaveChannel(state, data)
-        case ActionTypes.MAP_REDUCER_TEST:
-            console.log("MAP_REDUCER_TEST")
-            return Object.assign({}, state, {map: "mapxxx"})
+        case ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP:
+            return setFriendDataInMap(state, data)
         default:
             return state
     }
@@ -55,6 +54,12 @@ function leaveChannel(state, data) {
     FirebaseHelper.write("channels/" + channelId + "/users/" + userId, status)
 
     return state
+}
+
+function setFriendDataInMap(state, data) {
+    let {friendData} = data
+
+    return Object.assign({}, state, {friendData: friendData})
 }
 
 export default MapReducer

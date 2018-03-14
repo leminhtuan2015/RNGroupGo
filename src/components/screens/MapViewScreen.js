@@ -12,7 +12,6 @@ import DialogBox from "react-native-dialogbox"
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
-import * as Constant from "../../utils/Constant"
 import * as ActionTypes from "../../constants/ActionTypes"
 import MessageTypes from "../../constants/MessageTypes";
 import NavigationHelper from "../views/NavigationHelper";
@@ -351,6 +350,11 @@ class MapViewScreen extends React.Component {
         this.props.dispatch({
             type: ActionTypes.USER_REJECT_JOIN_CHANNEL,
             data: {channelId: channelId, userId: myUserId}
+        })
+
+        this.props.dispatch({
+            type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP,
+            data: {friendData: null}
         })
     }
 

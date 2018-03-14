@@ -8,6 +8,7 @@ import {
 
 import {Button} from 'react-native-elements'
 import Indicator from "../views/Indicator"
+import * as ActionTypes from "../../constants/ActionTypes"
 
 class InCommingRequestLocationScreen extends Component<> {
 
@@ -23,27 +24,36 @@ class InCommingRequestLocationScreen extends Component<> {
 
         this.callback = this.props.navigation.state.params.callback
         this.friendId = this.props.navigation.state.params.friendId
-
-
     }
 
     componentDidMount = () => {
         console.log("InCommingRequestLocationScreen componentDidMount")
 
+        this.props.dispatch({type: ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, friendId: this.friendId})
     }
 
     render() {
+        let friendName = " "
+        let friendImage = " "
+
+        if(this.props.store.mapState.friendData){
+            friendName = this.props.store.mapState.friendData.name
+            friendImage = this.props.store.mapState.friendData.photoURL
+        }
+
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
                     <Text style={styles.titleText}>In Comming Call</Text>
-                    <Text>{this.friendId}</Text>
+                    <Text>
+                        {friendName}
+                    </Text>
                 </View>
 
                 <View style={styles.center}>
                     <Image
                         style={[styles.roundImage]}
-                        source={{uri: "https://static.pexels.com/photos/658687/pexels-photo-658687.jpeg"}}
+                        source={{uri: friendImage}}
                     />
 
                     <Indicator style={styles.center}/>
