@@ -28,7 +28,7 @@ class MapViewScreen extends React.Component {
                 color="gray"
                 onPress={params.rightButtonOnPress}/>
 
-        const headerTitle = (<Text>{params.channelId ? params.channelId : ""}</Text>)
+        const headerTitle = (<Text>{params.headerTitle}</Text>)
 
         return {
             tabBarLabel: params.label,
@@ -227,6 +227,7 @@ class MapViewScreen extends React.Component {
             <View style={styles.tool}>
                 {IconManager.icon("plus-circle", "gray", () => {
                     console.log("+ press")
+                    this.navigationSetParams("xxx")
                 })}
                 <Text/>
                 {IconManager.icon("minus-circle", "gray", null)}
@@ -294,11 +295,12 @@ class MapViewScreen extends React.Component {
         this.navigationSetParams()
     }
 
-    navigationSetParams = () => {
+    navigationSetParams = (headerTitle = "") => {
         this.props.navigation
             .setParams({
                 rightButtonOnPress: this.rightButtonOnPress,
-                channelId: this.props.store.mapState.channelId
+                channelId: this.props.store.mapState.channelId,
+                headerTitle: headerTitle
             });
     }
 
