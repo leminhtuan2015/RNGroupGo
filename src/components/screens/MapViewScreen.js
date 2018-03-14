@@ -227,7 +227,13 @@ class MapViewScreen extends React.Component {
             <View style={styles.tool}>
                 {IconManager.icon("plus-circle", "gray", () => {
                     console.log("+ press")
-                    this.navigationSetParams("xxx")
+                    if (this.props.store.mapState.friendData) {
+                        const friendName = this.props.store.mapState.friendData.name
+                        console.log("friendName xxx ", friendName)
+
+
+                        this.props.navigation.setParams({headerTitle: friendName})
+                    }
                 })}
                 <Text/>
                 {IconManager.icon("minus-circle", "gray", null)}
@@ -273,7 +279,9 @@ class MapViewScreen extends React.Component {
                 {this.renderMapView()}
                 {this.renderTools()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
-                <DialogBox ref={dialogbox => { this.dialogbox = dialogbox }}/>
+                <DialogBox ref={dialogbox => {
+                    this.dialogbox = dialogbox
+                }}/>
             </View>
         );
     }
@@ -324,21 +332,11 @@ class MapViewScreen extends React.Component {
     }
 
     gotoMapWithFriend = (channelId, friendId) => {
-        this.props.dispatch({
-            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
-            data: {friendId: friendId, channelId: channelId}
-        })
-
-        NavigationHelper.resetTo(this, "RootStack")
+        NavigationHelper.gotoMapWithFriend(this, channelId, friendId)
     }
 
     goToHome = () => {
-        this.props.dispatch({
-            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
-            data: {friendId: null, channelId: null}
-        })
-
-        NavigationHelper.resetTo(this, "RootStack")
+        NavigationHelper.goToHome(this)
     }
 
     acceptedJoinMap = (channelId, myUserId) => {
@@ -369,11 +367,11 @@ class MapViewScreen extends React.Component {
             .navigate("InCommingRequestLocationView", {
                 friendId: friendId,
                 callback: (isAccepted) => {
-                    if(isAccepted){
+                    if (isAccepted) {
                         this.unSubscribeChannel(this.props.store.mapState.channelId)
                         this.subscribeChannel(channelId)
                         this.acceptedJoinMap(channelId, myUserId)
-                        this.gotoMapWithFriend(channelId,friendId)
+                        this.gotoMapWithFriend(channelId, friendId)
                     } else {
                         this.rejectedJoinMap(channelId, myUserId)
                     }
@@ -436,7 +434,9 @@ class MapViewScreen extends React.Component {
 
         const currentUserId = this.props.store.userState.currentUser.uid
 
-        if (!message) {return}
+        if (!message) {
+            return
+        }
 
         let hostId = message.hostId
         let myStatus = message.users[currentUserId]

@@ -147,21 +147,11 @@ class RequestingLocationScreen extends Component<> {
     }
 
     gotoMapWithFriend = (channelId, friendId) => {
-        this.props.dispatch({
-            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
-            data: {friendId: friendId, channelId: channelId}
-        })
-
-        NavigationHelper.resetTo(this, "RootStack")
+        NavigationHelper.gotoMapWithFriend(this, channelId, friendId)
     }
 
     goToHome = () => {
-        this.props.dispatch({
-            type: ActionTypes.MAP_SET_FRIEND_IN_MAP,
-            data: {friendId: null, channelId: null}
-        })
-
-        NavigationHelper.resetTo(this, "RootStack")
+        NavigationHelper.goToHome(this)
     }
 
     stopCalling = () => {
