@@ -31,7 +31,6 @@ class MarkerAnimatedView extends React.Component {
         this.coordinateAnimated =
             new AnimatedRegion(MarkerAnimatedView.defaultCoordinate);
         this.marker = null
-
         this.subscribe(this.props.userId)
 
         console.log("constructor MarkerAnimatedView subscribe : " + this.props.userId)

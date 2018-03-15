@@ -118,8 +118,8 @@ class MapViewScreen extends React.Component {
     }
 
     autoUpdateMyPosition = () => {
-        setInterval(this.getCurrentPosition, 10 * 1000)
-        setInterval(this.updateCurrentPosition, 10 * 1000)
+        setInterval(this.getCurrentPosition, 30 * 1000)
+        setInterval(this.updateCurrentPosition, 30 * 1000)
     }
 
     getCurrentUser = () => {
@@ -164,34 +164,43 @@ class MapViewScreen extends React.Component {
 
     renderUsersMarker = () => {
         let userIds = []
-        if (this.props.store.mapState.friendId) {
-            userIds.push(this.props.store.mapState.friendId)
+        let currentUser = this.props.store.userState.currentUser
+        let friendData = this.props.store.mapState.friendData
+        let friendId = this.props.store.mapState.friendId
+
+        if (friendId) {
+            userIds.push(friendId)
         }
-        if (this.props.store.userState.currentUser) {
-            userIds.push(this.props.store.userState.currentUser.uid)
+        if (currentUser) {
+            userIds.push(currentUser.uid)
         }
 
-        console.log("renderUsersMarker userIds: " + JSON.stringify(userIds))
+        let friendName = friendData ? friendData.name : "Friend"
+
+        // console.log("renderUsersMarker userIds: " + JSON.stringify(userIds))
+        // console.log("renderUsersMarker friendData: " + JSON.stringify(friendData))
 
         let view = userIds.map((userId) => {
             console.log(" renderFriendsMarker userId: " + userId)
-            let imageName = (userId == this.props.store.userState.currentUser.uid ? "location" : "location1")
+            let imageName = (userId == currentUser.uid ? "location" : "location1")
+            let title = (userId == currentUser.uid ? currentUser.displayName : friendName)
+            let description = (userId == currentUser.uid ? "Me" : "Friend")
 
-            return this.renderMarkerView(userId, imageName)
+            return this.renderMarkerView(userId, imageName, title, description)
         })
 
         return view
     }
 
-    renderMarkerView = (userId, imageName) => {
+    renderMarkerView = (userId, imageName, title = "Me", description = "Me") => {
         console.log("renderMarkerView" + userId)
 
         return (
             <View key={userId}>
                 <MarkerAnimatedView
                     userId={userId}
-                    title="Me"
-                    description="Me"
+                    title={title}
+                    description={description}
                     imageName={imageName}
                 />
             </View>
