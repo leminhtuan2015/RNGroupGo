@@ -65,6 +65,11 @@ class MapViewScreen extends React.Component {
             "",
             [
                 {
+                    text: "Over View", onPress: () => {
+                        this.overViewAllUsers()
+                    }
+                },
+                {
                     text: "Leave This Map", onPress: () => {
                         this.confirmLeaveMap()
                     }
@@ -186,6 +191,10 @@ class MapViewScreen extends React.Component {
             MapViewScreen.defaultDistance)
 
         this.mapView.animateToRegion(friendRegion)
+    }
+
+    overViewAllUsers = () => {
+        this.mapView.fitToElements(true);
     }
 
     zoom = (level) => {
