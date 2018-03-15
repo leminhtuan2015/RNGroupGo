@@ -263,7 +263,7 @@ class MapViewScreen extends React.Component {
     renderTools = () => {
         return (
             <View style={styles.tool}>
-                {IconManager.icon("plus-circle", 35, "gray", "gray", () => {
+                {IconManager.ionIcon("ios-add-circle", 45, "#9E9E9E", "gray", () => {
                     console.log("+ press")
                     if (this.props.store.mapState.friendData) {
                         const friendName = this.props.store.mapState.friendData.name
@@ -275,7 +275,7 @@ class MapViewScreen extends React.Component {
                 })}
 
                 <Text/>
-                {IconManager.icon("minus-circle", 35, "gray", "gray", () => {
+                {IconManager.ionIcon("ios-remove-circle", 45, "#9E9E9E", "red", () => {
                     this.zoom(2.0)
                 })}
                 <Text/>
@@ -283,7 +283,7 @@ class MapViewScreen extends React.Component {
                 <Text/>
                 <Text/>
                 <Text/>
-                {IconManager.icon("map-marker", 45, "gray", "gray", () => {
+                {IconManager.ionIcon("ios-navigate", 45, "#9E9E9E", "gray", () => {
                     this.animateToCurrentRegion(MapViewScreen.defaultDistance)
                 })}
             </View>
