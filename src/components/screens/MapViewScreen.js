@@ -176,17 +176,33 @@ class MapViewScreen extends React.Component {
         this.mapView.animateToRegion(currentRegion)
     }
 
+    animateToFriendRegion = (friendData) => {
+        const friendLatitude = friendData.coordinate.latitude
+        const friendLongitude = friendData.coordinate.longitude
+
+        let friendRegion = this.regionFrom(
+            friendLatitude,
+            friendLongitude,
+            MapViewScreen.defaultDistance)
+
+        this.mapView.animateToRegion(friendRegion)
+    }
+
     zoom = (level) => {
         let currentRegion = this.regionFrom(
             this.props.store.mapState.currentCoordinate.latitude,
             this.props.store.mapState.currentCoordinate.longitude,
             MapViewScreen.defaultDistance)
 
-        let region = this.currentDraggedRegion ? this.currentDraggedRegion : currentRegion
-        region.latitudeDelta = region.latitudeDelta * level
-        region.longitudeDelta = region.longitudeDelta * level
+        try {
+            let region = this.currentDraggedRegion ? this.currentDraggedRegion : currentRegion
+            region.latitudeDelta = region.latitudeDelta * level
+            region.longitudeDelta = region.longitudeDelta * level
 
-        this.mapView.animateToRegion(region)
+            this.mapView.animateToRegion(region)
+        } catch (error) {
+            console.log("zoom catch: " + error)
+        }
     }
 
     renderUsersMarker = () => {
@@ -260,32 +276,50 @@ class MapViewScreen extends React.Component {
         )
     }
 
+    renderUserIconOnTool = () => {
+        return (
+            <View style={{marginTop: 0}}>
+                {IconManager.ionIcon("md-contact", 45, "#9E9E9E", "red", () => {
+                    let friendData = this.props.store.mapState.friendData
+                    // const friendName = friendData.name
+                    // console.log("friendName xxx ", friendName)
+                    // this.props.navigation.setParams({headerTitle: friendName})
+
+                    this.animateToFriendRegion(friendData)
+                })}
+            </View>
+        )
+
+    }
+
     renderTools = () => {
         return (
             <View style={styles.tool}>
-                {IconManager.ionIcon("ios-add-circle", 45, "#9E9E9E", "gray", () => {
-                    console.log("+ press")
-                    if (this.props.store.mapState.friendData) {
-                        const friendName = this.props.store.mapState.friendData.name
-                        console.log("friendName xxx ", friendName)
-                        this.props.navigation.setParams({headerTitle: friendName})
-                    }
+                {this.props.store.mapState.friendData && this.renderUserIconOnTool()}
 
-                    this.zoom(0.5)
-                })}
+                <View/>
+                <View/>
+                <View/>
+                <View/>
 
-                <Text/>
-                {IconManager.ionIcon("ios-remove-circle", 45, "#9E9E9E", "red", () => {
-                    this.zoom(2.0)
-                })}
-                <Text/>
-                <Text/>
-                <Text/>
-                <Text/>
-                <Text/>
-                {IconManager.ionIcon("ios-navigate", 45, "#9E9E9E", "gray", () => {
-                    this.animateToCurrentRegion(MapViewScreen.defaultDistance)
-                })}
+                <View>
+                    {IconManager.ionIcon("ios-add-circle", 45, "#9E9E9E", "gray", () => {
+                        this.zoom(0.5)
+                    })}
+
+                    <Text/>
+
+                    {IconManager.ionIcon("ios-remove-circle", 45, "#9E9E9E", "red", () => {
+                        this.zoom(2.0)
+                    })}
+
+                </View>
+
+                <View>
+                    {IconManager.ionIcon("ios-navigate", 45, "#9E9E9E", "gray", () => {
+                        this.animateToCurrentRegion(MapViewScreen.defaultDistance)
+                    })}
+                </View>
             </View>
         )
     }
@@ -538,9 +572,13 @@ const styles = StyleSheet.create({
     },
     tool: {
         backgroundColor: "transparent",
+        // backgroundColor: "red",
         position: 'absolute',
         flex: 1,
         alignItems: 'flex-end',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        top: 10,
         right: 10,
         bottom: 80,
     },
