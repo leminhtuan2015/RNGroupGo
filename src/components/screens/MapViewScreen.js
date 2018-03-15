@@ -98,6 +98,7 @@ class MapViewScreen extends React.Component {
     }
 
     getCurrentPosition = () => {
+        console.log("--------------- getCurrentPosition ---------------")
         this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_PLACE})
     }
 
@@ -287,8 +288,8 @@ class MapViewScreen extends React.Component {
     }
 
     componentWillReceiveProps = (newProps) => {
-        console.log("MapView componentWillReceiveProps newProps: " + JSON.stringify(newProps))
-        console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
+        // console.log("MapView componentWillReceiveProps newProps: " + JSON.stringify(newProps))
+        // console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
 
         this.subscribeInbox()
     }

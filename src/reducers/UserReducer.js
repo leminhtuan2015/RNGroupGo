@@ -109,7 +109,7 @@ function unSubscribeChannel(state, data) {
 function setCurrentUser(state, data) {
     const {user} = data
 
-    console.log("User Reducer setCurrentUser" + JSON.stringify(user))
+    // console.log("User Reducer setCurrentUser" + JSON.stringify(user))
 
     return Object.assign({}, state, {currentUser: user, isBusy: false})
 }

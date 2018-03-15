@@ -113,11 +113,9 @@ export function* phoneLogin(action) {
 export function* getCurrentUser(){
     const user = yield call(FirebaseAuthHelper.user)
 
-    console.log("getCurrentUser saga 2: " + JSON.stringify(user))
+    // console.log("getCurrentUser saga 2: " + JSON.stringify(user))
 
     yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
-
-    console.log("getCurrentUser saga 3: " + JSON.stringify(user))
 }
 
 export function* logout(){
@@ -129,7 +127,7 @@ export function* logout(){
 export function* getCurrentPlace(){
     const region = yield call(LocationHelper.getCurrentPosition)
 
-    console.log("saga getCurrentPlace : " + region)
+    // console.log("saga getCurrentPlace : " + region)
 
     yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE, data: {region: region}})
 }
@@ -140,7 +138,7 @@ export function* getFriendData(action){
     const path = "users/" + friendId
     const data = yield call(FirebaseHelper.read, path)
 
-    console.log("saga getFriendData : " + JSON.stringify(data))
+    // console.log("saga getFriendData : " + JSON.stringify(data))
 
     yield put({type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP, data: {friendData: data}})
 }
