@@ -43,10 +43,15 @@ class MapViewScreen extends React.Component {
         longitude: 0.0,
     }
 
+    static defaultDistance = 300
+
     constructor(props) {
         super(props)
+
         this.currentDraggedRegion = null
+        this.mapView = null
         this.dialogbox = null
+        this.mapDistance = MapViewScreen.defaultDistance
     }
 
     rightButtonOnPress = () => {
@@ -162,6 +167,28 @@ class MapViewScreen extends React.Component {
         }
     }
 
+    animateToCurrentRegion = (mapDistance) => {
+        let currentRegion = this.regionFrom(
+            this.props.store.mapState.currentCoordinate.latitude,
+            this.props.store.mapState.currentCoordinate.longitude,
+            mapDistance)
+
+        this.mapView.animateToRegion(currentRegion)
+    }
+
+    zoom = (level) => {
+        let currentRegion = this.regionFrom(
+            this.props.store.mapState.currentCoordinate.latitude,
+            this.props.store.mapState.currentCoordinate.longitude,
+            MapViewScreen.defaultDistance)
+
+        let region = this.currentDraggedRegion ? this.currentDraggedRegion : currentRegion
+        region.latitudeDelta = region.latitudeDelta * level
+        region.longitudeDelta = region.longitudeDelta * level
+
+        this.mapView.animateToRegion(region)
+    }
+
     renderUsersMarker = () => {
         let userIds = []
         let currentUser = this.props.store.userState.currentUser
@@ -171,6 +198,7 @@ class MapViewScreen extends React.Component {
         if (friendId) {
             userIds.push(friendId)
         }
+
         if (currentUser) {
             userIds.push(currentUser.uid)
         }
@@ -211,21 +239,21 @@ class MapViewScreen extends React.Component {
         return (
             <View style={styles.toolbarContainer}>
                 <View style={styles.toolbar}>
-                    {IconManager.icon("search", "gray", () => {
+                    {IconManager.icon("search", 30, "gray", "gray", () => {
                         this.handleGoToContactView()
-                    }, 30, "gray")}
+                    })}
 
-                    {IconManager.icon("history", "gray", () => {
+                    {IconManager.icon("history", 30, "gray", "gray", () => {
                         this.props.navigation.navigate("FriendView")
-                    }, 30, "gray")}
+                    })}
 
-                    {IconManager.icon("user-circle", "gray", () => {
+                    {IconManager.icon("user-circle", 30, "gray", "gray", () => {
                         this.props.navigation.navigate("ProfileView")
-                    }, 30, "gray")}
+                    })}
 
-                    {IconManager.icon("bars", "gray", () => {
+                    {IconManager.icon("bars", 30, "gray", "gray", () => {
                         this.props.navigation.navigate("SettingView")
-                    }, 30, "gray")}
+                    })}
 
                 </View>
             </View>
@@ -235,47 +263,61 @@ class MapViewScreen extends React.Component {
     renderTools = () => {
         return (
             <View style={styles.tool}>
-                {IconManager.icon("plus-circle", "gray", () => {
+                {IconManager.icon("plus-circle", 45, "gray", "gray", () => {
                     console.log("+ press")
                     if (this.props.store.mapState.friendData) {
                         const friendName = this.props.store.mapState.friendData.name
                         console.log("friendName xxx ", friendName)
-
-
                         this.props.navigation.setParams({headerTitle: friendName})
                     }
+
+                    this.zoom(0.5)
+                })}
+
+                <Text/>
+                {IconManager.icon("minus-circle", 45, "gray", "gray", () => {
+                    this.zoom(2.0)
                 })}
                 <Text/>
-                {IconManager.icon("minus-circle", "gray", null)}
                 <Text/>
                 <Text/>
                 <Text/>
                 <Text/>
-                <Text/>
-                {IconManager.icon("map-marker", "gray", null)}
+                {IconManager.icon("map-marker", 45, "gray", "gray", () => {
+                    this.animateToCurrentRegion(MapViewScreen.defaultDistance)
+                })}
             </View>
         )
     }
 
     renderMapView = () => {
-        let regionOk = this.regionFrom(
+        let currentRegion = this.regionFrom(
             this.props.store.mapState.currentCoordinate.latitude,
             this.props.store.mapState.currentCoordinate.longitude,
-            300)
+            MapViewScreen.defaultDistance)
 
         if (this.currentDraggedRegion) {
-            regionOk = this.currentDraggedRegion
+            currentRegion = this.currentDraggedRegion
         }
 
         return (
             <MapView
+                ref={mapView => {
+                    this.mapView = mapView
+                }}
                 provider={PROVIDER_GOOGLE}
                 showsCompass={true}
+                loadingEnabled={true}
                 style={styles.map}
-                region={regionOk}
-                onRegionChangeComplete={(region) => {
+                region={currentRegion}
+
+                onRegionChange={(region) => {
                     console.log("onRegionChangeComplete region", region)
                     this.currentDraggedRegion = region
+                }}
+
+                onRegionChangeComplete={(region) => {
+                    console.log("onRegionChangeComplete region", region)
                 }}>
 
                 {this.renderUsersMarker()}

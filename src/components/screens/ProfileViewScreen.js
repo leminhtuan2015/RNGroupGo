@@ -33,11 +33,11 @@ class ProfileViewScreen extends BaseViewScreen {
             {title: "Logout", value: " "}
         ]
         this.tableDataIcon = [
-            (IconManager.icon("user-circle", "#009688")),
-            (IconManager.icon("star", "#448AFF")),
-            (IconManager.icon("envelope-square", "#FFD600")),
-            (IconManager.icon("phone-square", "#311B92")),
-            (IconManager.icon("sign-out", "#F44336")),
+            (IconManager.icon("user-circle", 30, "#009688")),
+            (IconManager.icon("star", 30, "#448AFF")),
+            (IconManager.icon("envelope-square", 30, "#FFD600")),
+            (IconManager.icon("phone-square", 30, "#311B92")),
+            (IconManager.icon("sign-out", 30, "#F44336")),
         ]
 
         this.state = {
