@@ -263,7 +263,7 @@ class MapViewScreen extends React.Component {
     renderTools = () => {
         return (
             <View style={styles.tool}>
-                {IconManager.icon("plus-circle", 45, "gray", "gray", () => {
+                {IconManager.icon("plus-circle", 35, "gray", "gray", () => {
                     console.log("+ press")
                     if (this.props.store.mapState.friendData) {
                         const friendName = this.props.store.mapState.friendData.name
@@ -275,7 +275,7 @@ class MapViewScreen extends React.Component {
                 })}
 
                 <Text/>
-                {IconManager.icon("minus-circle", 45, "gray", "gray", () => {
+                {IconManager.icon("minus-circle", 35, "gray", "gray", () => {
                     this.zoom(2.0)
                 })}
                 <Text/>
