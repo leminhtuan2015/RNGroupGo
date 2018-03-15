@@ -21,11 +21,3 @@ export function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
-
-export function uniqueId() {
-    if(FirebaseAuthHelper.isLoggedIn()){
-        return FirebaseAuthHelper.currentUser().uid
-    }
-
-    return DeviceInfo.getUniqueID()
-}

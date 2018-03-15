@@ -13,14 +13,18 @@ import LocationHelper from "../helpers/LocationHelper";
 export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
 
-    let {data} = action
-    console.log("Saga Firebase Filter User : " + data)
-    let users = yield call(FirebaseHelper.filter, data, "users", "name")
-    console.log("users filtered: " + JSON.stringify(users))
-    let userData = FirebaseHelper.snapshotToArray(users)
+    let {keyword, currentUserId} = action.data
+    let users = yield call(FirebaseHelper.filter, keyword, "users", "name")
+    console.log("Saga firebaseFilterUser users: " + JSON.stringify(users))
+    console.log("Saga firebaseFilterUser currentUserId: " + currentUserId)
 
-    yield put({type: ActionTypes.USER_SET_FILTER_USERS,
-        data: {userData: userData, isBusy: false}})
+    delete users[currentUserId]
+
+    console.log("Saga firebaseFilterUser users 1: " + JSON.stringify(users))
+
+    let userData = FirebaseHelper.snapshotToArray(users)
+    console.log("Saga firebaseFilterUser userData: " + JSON.stringify(userData))
+    yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: {userData: userData, isBusy: false}})
 }
 
 export function* facebookLogin() {

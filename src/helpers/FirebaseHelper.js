@@ -71,16 +71,17 @@ class FirebaseHelper {
             .startAt(keyword)
             .endAt(keyword + "\uf8ff")
             .once("value", function (data) {
-                //console.log("Equal to filter: " + JSON.stringify(data.val()));
-                let arrayData = FirebaseHelper.snapshotToArray(data)
-                //console.log("Array filter: " + JSON.stringify(arrayData));
-                return arrayData
+                // return data
             })
 
         return query
     }
 
     static snapshotToArray(snapshot) {
+        if(!snapshot){
+            return []
+        }
+
         var returnArr = [];
         snapshot.forEach(function (childSnapshot) {
             var item = childSnapshot.val();

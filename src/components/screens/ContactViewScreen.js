@@ -39,7 +39,8 @@ class ContactViewScreen extends BaseViewScreen {
 
     onTextChange = (text) => {
         console.log("dispatch filter user..........")
-        this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: text})
+        let currentUser = this.props.store.userState.currentUser
+        this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: {keyword: text, currentUserId: currentUser.uid}})
     }
 
     requestShareLocation = (friendUserId, friendData) => {
@@ -69,7 +70,7 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     componentWillReceiveProps = (newProps) => {
-        console.log("Contact will receive props :" + JSON.stringify(this.props))
+        // console.log("Contact will receive props :" + JSON.stringify(this.props))
 
         this.setState({
             userDataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
