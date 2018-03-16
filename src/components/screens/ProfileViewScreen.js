@@ -57,7 +57,6 @@ class ProfileViewScreen extends BaseViewScreen {
     }
 
     handleLogoutPressed = () => {
-
         this.dialogbox.confirm({
             title: "Would you like to logout?",
             content: [""],
@@ -83,11 +82,17 @@ class ProfileViewScreen extends BaseViewScreen {
         });
     }
 
+    goToUpdateProfile = () => {
+        this.props.navigation.navigate("UpdateProfileView")
+    }
+
     onPressListItem = (rowData) => {
         const title = rowData.title
 
-        if (title == "Logout") {
+        if (title == this.tableData[4]["title"]) {
             this.handleLogoutPressed()
+        } else {
+            this.goToUpdateProfile()
         }
     }
 
