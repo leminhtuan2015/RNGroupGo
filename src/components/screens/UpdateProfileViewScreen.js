@@ -6,6 +6,8 @@ import {
     Text,
 } from "react-native"
 
+import * as ActionTypes from "../../constants/ActionTypes"
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import BaseViewScreen from "./BaseViewScreen"
 
 var t = require('tcomb-form-native')
@@ -16,51 +18,76 @@ class UpdateProfileViewScreen extends BaseViewScreen {
     constructor(props) {
         super(props)
 
-        this.Person = t.struct({
-            name: t.String,              // a required string
-            nickname: t.maybe(t.String),  // an optional string
+        this.currentUser = this.props.navigation.state.params.currentUser
+
+        this.User = t.struct({
+            displayName: t.maybe(t.String),      // a required string
+            nickName: t.maybe(t.String),  // an optional string
             email: t.maybe(t.String),  // an optional string
-            phone: t.maybe(t.Number),  // an optional string
+            phoneNumber: t.maybe(t.Number),  // an optional string
         })
 
         this.options = {
             fields: {
-                name: {
-                    placeholder: "Name",
+                displayName: {
+                    placeholder: this.currentUser.displayName,
                     editable: false,
-                    autoCorrect: false
+                    autoCorrect: false,
+                    label: "Name",
                 },
-                nickname: {
-                    autoCorrect: false
+                nickName: {
+                    autoCorrect: false,
+                    label: "Nick Name",
                 },
                 email: {
-                    autoCorrect: false
+                    editable: false,
+                    placeholder: this.currentUser.email,
+                    autoCorrect: false,
+                    label: "Email",
                 },
-                phone: {
-                    autoCorrect: false
+                phoneNumber: {
+                    placeholder: this.currentUser.phoneNumber,
+                    autoCorrect: false,
+                    label: "Phone Number",
                 }
             }
+        }
+
+        this.values = {
+            displayName: this.currentUser.displayName,
+            nickName: this.currentUser.nickName,
+            email: this.currentUser.email,
+            phoneNumber: this.currentUser.phoneNumber,
         }
     }
 
     render = () => {
         return (
-            <View style={styles.container}>
-                <Form
-                    ref="form"
-                    type={this.Person}
-                    options={this.options}
-                />
+            <KeyboardAwareScrollView style={styles.container}>
+                <View style={styles.containerContent}>
+                    <Form
+                        ref="form"
+                        type={this.User}
+                        options={this.options}
+                        value={this.values}
+                    />
 
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => {
-                        console.log("UpdateProfileViewScreen save")
-                    }}
-                    underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>Save</Text>
-                </TouchableHighlight>
-            </View>
+                    <TouchableHighlight
+                        style={styles.button}
+                        onPress={() => {
+                            const value = this.refs.form.getValue()
+                            console.log("UpdateProfileViewScreen save : " + JSON.stringify(value))
+
+                            this.props.dispatch({
+                                type: ActionTypes.SAGA_UPDATE_USER_INFO,
+                                data: {firebaseUser: this.currentUser, userInfo: value}
+                            })
+                        }}
+                        underlayColor='#99d9f4'>
+                        <Text style={styles.buttonText}>Save</Text>
+                    </TouchableHighlight>
+                </View>
+            </KeyboardAwareScrollView>
         )
     }
 }
@@ -69,6 +96,11 @@ export default UpdateProfileViewScreen
 
 var styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+    },
+
+    containerContent: {
         flex: 1,
         // justifyContent: 'center',
         marginTop: 0,

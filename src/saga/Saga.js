@@ -8,6 +8,7 @@ import GoogleLoginHelper from "../helpers/GoogleLoginHelper";
 import FirebaseAuthHelper from "../helpers/FirebaseAuthHelper";
 import StatusTypes from "../constants/StatusTypes";
 import LocationHelper from "../helpers/LocationHelper";
+import User from "../models/User";
 
 export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
@@ -38,14 +39,14 @@ export function* facebookLogin() {
     if(loginStatus == StatusTypes.SUCCESS){
         const accessToken = yield call(FacebookLoginHelper.getCurrentAccessToken)
         if(accessToken){
-            const user = yield call(FirebaseAuthHelper.facebookAuth, accessToken)
-            if(user){
-                console.log("facebookLogin user: " + JSON.stringify(user))
+            const firebaseUser = yield call(FirebaseAuthHelper.facebookAuth, accessToken)
+            if(firebaseUser){
+                console.log("facebookLogin firebaseUser: " + JSON.stringify(firebaseUser))
                 const userInfo = yield call(FacebookLoginHelper.getUserInfomation)
 
                 console.log("facebookLogin userInfo: " + JSON.stringify(userInfo))
                 if(userInfo){
-                    const userDetail = yield call(FirebaseAuthHelper.updateUserInfo, user, userInfo)
+                    const userDetail = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, userInfo)
                     if(userDetail){
                         yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                             data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}})
@@ -84,7 +85,10 @@ export function* googleLogin() {
 
     if(status == StatusTypes.SUCCESS){
         const {googleUser} = data
-        const gooleUserInfomation = {userName: googleUser.name, imageUrl: googleUser.photo}
+        const gooleUserInfomation = new User()
+        gooleUserInfomation.displayName = googleUser.name
+        gooleUserInfomation.photoURL = googleUser.photo
+
         const accessToken = googleUser.accessToken
         const idToken = googleUser.idToken
         const firebaseUser = yield call(FirebaseAuthHelper.googleAuth, idToken, accessToken)
@@ -118,7 +122,7 @@ export function* phoneLogin(action) {
 }
 
 export function* getCurrentUser(){
-    const user = yield call(FirebaseAuthHelper.user)
+    const user = yield call(FirebaseAuthHelper.getCurrentUser)
 
     // console.log("getCurrentUser saga 2: " + JSON.stringify(user))
 
@@ -150,6 +154,14 @@ export function* getFriendData(action){
     yield put({type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP, data: {friendData: data}})
 }
 
+export function* updateUserInfo(action) {
+    let {firebaseUser, userInfo} = action.data
+
+    console.log("Saga updateUserInfo : " + JSON.stringify(userInfo))
+
+    const status = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, userInfo)
+}
+
 export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
     yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin)
@@ -159,6 +171,7 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
     yield takeEvery(ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, getFriendData)
+    yield takeEvery(ActionTypes.SAGA_UPDATE_USER_INFO, updateUserInfo)
 }
 
 

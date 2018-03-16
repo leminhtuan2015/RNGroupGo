@@ -1,3 +1,5 @@
+import User from "../models/User";
+
 const FBSDK = require('react-native-fbsdk');
 const {
     LoginButton,
@@ -70,9 +72,11 @@ class FacebookLoginHelper {
                     reject(error);
                 }
 
-                const userInfomation = {userName: profileInfo.name, imageUrl: profileInfo.picture.data.url}
+                let user = new User()
+                user.displayName = profileInfo.name
+                user.photoURL = profileInfo.picture.data.url
 
-                resolve(userInfomation)
+                resolve(user)
             };
 
             const profileInfoRequest = new GraphRequest(

@@ -32,6 +32,7 @@ class ProfileViewScreen extends BaseViewScreen {
             {title: "Phone", value: " "},
             {title: "Logout", value: " "}
         ]
+
         this.tableDataIcon = [
             (IconManager.icon("user-circle", 30, "#009688")),
             (IconManager.icon("star", 30, "#448AFF")),
@@ -40,10 +41,8 @@ class ProfileViewScreen extends BaseViewScreen {
             (IconManager.icon("sign-out", 30, "#F44336")),
         ]
 
-        this.state = {
-            userInfoDataSource: this.ds.cloneWithRows(this.tableData),
-        }
-
+        this.userInfoDataSource = this.ds.cloneWithRows(this.tableData)
+        this.currentUser = null
         this.dialogbox = null
     }
 
@@ -51,7 +50,7 @@ class ProfileViewScreen extends BaseViewScreen {
         if(!user){return}
 
         this.tableData[0]["value"] = user.displayName
-        this.tableData[1]["value"] = user.nickname
+        this.tableData[1]["value"] = user.nickName
         this.tableData[2]["value"] = user.email
         this.tableData[3]["value"] = user.phoneNumber
     }
@@ -83,7 +82,7 @@ class ProfileViewScreen extends BaseViewScreen {
     }
 
     goToUpdateProfile = () => {
-        this.props.navigation.navigate("UpdateProfileView")
+        this.props.navigation.navigate("UpdateProfileView", {currentUser: this.currentUser})
     }
 
     onPressListItem = (rowData) => {
@@ -159,11 +158,11 @@ class ProfileViewScreen extends BaseViewScreen {
                     <View style={styles.top}>
                         <Image
                             style={styles.roundImage}
-                            source={{uri: this.props.store.userState.currentUser.photoURL}}
+                            source={{uri: this.currentUser.photoURL}}
                         />
 
                         <Text style={styles.userName}>
-                            {this.props.store.userState.currentUser.displayName}
+                            {this.currentUser.displayName}
                         </Text>
                     </View>
 
@@ -179,7 +178,7 @@ class ProfileViewScreen extends BaseViewScreen {
                             <ListView
                                 enableEmptySections={true}
                                 renderRow={this.renderRow}
-                                dataSource={this.state.userInfoDataSource}/>
+                                dataSource={this.userInfoDataSource}/>
                         </List>
                     </View>
                 </ScrollView>
@@ -200,7 +199,7 @@ class ProfileViewScreen extends BaseViewScreen {
                 {this.props.store.userState.isBusy && this.renderIndicator()}
 
                 {
-                    this.props.store.userState.currentUser ?
+                    this.currentUser ?
                         this.renderUser() :
                         this.renderLoginButtons()
                 }
@@ -211,7 +210,10 @@ class ProfileViewScreen extends BaseViewScreen {
     componentWillReceiveProps = (newProps) => {
         console.log("ProfileView will receive props : " + JSON.stringify(newProps))
 
-        this.updateTableData(newProps.store.userState.currentUser)
+        this.currentUser = newProps.store.userState.currentUser
+        this.updateTableData(this.currentUser)
+        this.userInfoDataSource = this.ds.cloneWithRows(this.tableData)
+
     }
 
     componentDidMount = () => {

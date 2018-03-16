@@ -32,14 +32,20 @@ class FirebaseAuthHelper {
             });
     }
 
-    static updateUserInfo = (user, userInfo) => {
-        return user.updateProfile({
-            displayName: userInfo.userName,
-            photoURL: userInfo.imageUrl
+    static updateUserInfo = (firebaseUser, user) => {
+        return firebaseUser.updateProfile({
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            nickName: user.nickName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+
         }).then(function() {
             // Update successful.
-            return user
+            // console.log("updateUserInfo successful")
+            return firebaseUser
         }).catch(function(error) {
+            // console.log("updateUserInfo error")
             // An error happened.
             return null
         });
@@ -58,7 +64,7 @@ class FirebaseAuthHelper {
         });
     }
 
-    static user = () => {
+    static getCurrentUser = () => {
         return new Promise((resolve, reject) => {
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
@@ -70,20 +76,6 @@ class FirebaseAuthHelper {
                 }
             });
         })
-    }
-
-    static currentUser = () => {
-        const user = firebase.auth().currentUser
-
-        return user
-    }
-
-    static isLoggedIn = () => {
-        if(FirebaseAuthHelper.currentUser()){
-            return true
-        }
-
-        return false
     }
 }
 
