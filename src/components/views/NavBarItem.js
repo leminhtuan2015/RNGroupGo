@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import IconManager from "../../utils/IconManager";
 
 class NavBarItem extends Component {
     render() {
@@ -11,7 +11,7 @@ class NavBarItem extends Component {
                 style={{paddingHorizontal: 20}}
                 onPress={() => onPress()}
             >
-                <Icon name={iconName} size={25} color={color}/>
+                {IconManager.ionIcon(iconName, 30, color, color, onPress)}
             </TouchableOpacity>
 
         );

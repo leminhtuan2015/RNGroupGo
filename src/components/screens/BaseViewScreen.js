@@ -8,7 +8,7 @@ class BaseViewScreen extends React.Component {
 
         const headerLeft =
             <NavBarItem
-                iconName="times"
+                iconName="md-close"
                 color="gray"
                 onPress={() => {
                     navigation.goBack()
