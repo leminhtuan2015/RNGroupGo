@@ -2,7 +2,6 @@ import {call, put, takeEvery, takeLatest} from 'redux-saga/effects'
 import {delay} from 'redux-saga'
 
 import * as ActionTypes from "../constants/ActionTypes"
-import * as Utils from "../utils/Utils"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
 import GoogleLoginHelper from "../helpers/GoogleLoginHelper";
@@ -14,16 +13,20 @@ export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
 
     let {keyword, currentUserId} = action.data
-    let users = yield call(FirebaseHelper.filter, keyword, "users", "name")
-    console.log("Saga firebaseFilterUser users: " + JSON.stringify(users))
-    console.log("Saga firebaseFilterUser currentUserId: " + currentUserId)
+    let usersSnapshot = yield call(FirebaseHelper.filter, keyword, "users", "name")
+    let usersObject = {}
 
-    delete users[currentUserId]
+    // console.log("Saga firebaseFilterUser users: -" + JSON.stringify(usersObject) + "-")
+    // console.log("Saga firebaseFilterUser currentUserId: " + currentUserId)
 
-    console.log("Saga firebaseFilterUser users 1: " + JSON.stringify(users))
+    if(JSON.stringify(usersSnapshot) != "null"){
+        usersObject = usersSnapshot.toJSON()
+        delete usersObject[currentUserId]
+    }
 
-    let userData = FirebaseHelper.snapshotToArray(users)
-    console.log("Saga firebaseFilterUser userData: " + JSON.stringify(userData))
+    let userData = FirebaseHelper.objectToArray(usersObject)
+
+    // console.log("Saga firebaseFilterUser userData: " + JSON.stringify(userData))
     yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: {userData: userData, isBusy: false}})
 }
 

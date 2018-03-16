@@ -78,20 +78,38 @@ class FirebaseHelper {
     }
 
     static snapshotToArray(snapshot) {
-        if(!snapshot){
-            return []
+        let returnArr = []
+
+        if (!snapshot) {
+            return returnArr
         }
 
-        var returnArr = [];
         snapshot.forEach(function (childSnapshot) {
-            var item = childSnapshot.val();
-            item.key = childSnapshot.key;
+            const item = childSnapshot.val()
+            item.key = childSnapshot.key
 
-            returnArr.push(item);
-        });
+            returnArr.push(item)
+        })
 
-        return returnArr;
-    };
+        return returnArr
+    }
+
+    static objectToArray(object) {
+        let returnArr = []
+
+        if (!object) {
+            return returnArr
+        }
+
+        for (var key in object) {
+            const item = object[key]
+            item.key = key
+
+            returnArr.push(item)
+        }
+
+        return returnArr
+    }
 }
 
 export default FirebaseHelper
