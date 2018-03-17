@@ -40,7 +40,7 @@ class UpdateProfileViewScreen extends BaseViewScreen {
                     label: "Nick Name",
                 },
                 email: {
-                    editable: false,
+                    editable: this.currentUser.email ? false : true,
                     placeholder: this.currentUser.email,
                     autoCorrect: false,
                     label: "Email",
@@ -61,6 +61,15 @@ class UpdateProfileViewScreen extends BaseViewScreen {
         }
     }
 
+    updateUserEmail = (firebaseUser, userInfo) => {
+        console.log("UpdateProfileViewScreen updateUserEmail : " + JSON.stringify(userInfo))
+
+        this.props.dispatch({
+            type: ActionTypes.SAGA_UPDATE_USER_EMAIL,
+            data: {firebaseUser: firebaseUser, userInfo: userInfo}
+        })
+    }
+
     render = () => {
         return (
             <KeyboardAwareScrollView style={styles.container}>
@@ -76,12 +85,7 @@ class UpdateProfileViewScreen extends BaseViewScreen {
                         style={styles.button}
                         onPress={() => {
                             const value = this.refs.form.getValue()
-                            console.log("UpdateProfileViewScreen save : " + JSON.stringify(value))
-
-                            this.props.dispatch({
-                                type: ActionTypes.SAGA_UPDATE_USER_INFO,
-                                data: {firebaseUser: this.currentUser, userInfo: value}
-                            })
+                            this.updateUserEmail(this.currentUser, value)
                         }}
                         underlayColor='#99d9f4'>
                         <Text style={styles.buttonText}>Save</Text>

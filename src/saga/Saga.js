@@ -46,7 +46,7 @@ export function* facebookLogin() {
 
                 console.log("facebookLogin userInfo: " + JSON.stringify(userInfo))
                 if(userInfo){
-                    const userDetail = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, userInfo)
+                    const userDetail = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, userInfo)
                     if(userDetail){
                         yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                             data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}})
@@ -94,7 +94,7 @@ export function* googleLogin() {
         const firebaseUser = yield call(FirebaseAuthHelper.googleAuth, idToken, accessToken)
 
         if(firebaseUser){
-            const firebaseUserDetail = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, gooleUserInfomation)
+            const firebaseUserDetail = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, gooleUserInfomation)
             if(firebaseUserDetail){
                 yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
                     data: {status: StatusTypes.SUCCESS, user: firebaseUserDetail, message: "Login Success"}})
@@ -154,12 +154,17 @@ export function* getFriendData(action){
     yield put({type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP, data: {friendData: data}})
 }
 
-export function* updateUserInfo(action) {
+export function* updateUserEmail(action) {
     let {firebaseUser, userInfo} = action.data
 
-    console.log("Saga updateUserInfo : " + JSON.stringify(userInfo))
+    console.log("Saga updateUserEmail : " + JSON.stringify(userInfo))
 
-    const status = yield call(FirebaseAuthHelper.updateUserInfo, firebaseUser, userInfo)
+    const user = yield call(FirebaseAuthHelper.updateUserEmail, firebaseUser, userInfo)
+
+    console.log("Saga updateUserEmail 1 : " + JSON.stringify(user))
+
+
+    // yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
 }
 
 export default function* rootSaga() {
@@ -171,7 +176,7 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
     yield takeEvery(ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, getFriendData)
-    yield takeEvery(ActionTypes.SAGA_UPDATE_USER_INFO, updateUserInfo)
+    yield takeEvery(ActionTypes.SAGA_UPDATE_USER_EMAIL, updateUserEmail)
 }
 
 
