@@ -82,11 +82,17 @@ class ProfileViewScreen extends BaseViewScreen {
         this.props.navigation.navigate("UpdateProfileView", {currentUser: this.currentUser})
     }
 
+    goToUpdatePhoneNumber = () => {
+        this.props.navigation.navigate("UpdatePhoneNumberView", {currentUser: this.currentUser})
+    }
+
     onPressListItem = (rowData) => {
         const title = rowData.title
 
         if (title == this.tableData[3]["title"]) {
             this.handleLogoutPressed()
+        } else if(title == this.tableData[2]["title"]) {
+            this.goToUpdatePhoneNumber()
         } else {
             this.goToUpdateProfile()
         }

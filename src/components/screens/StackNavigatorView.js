@@ -8,12 +8,12 @@ import MapViewContainer from '../../containers/MapViewContainer'
 import ContactViewContainer from '../../containers/ContactViewContainer'
 import ProfileViewContainer from '../../containers/ProfileViewContainer'
 import UpdateProfileViewContainer from '../../containers/UpdateProfileViewContainer'
+import UpdatePhoneNumberViewContainer from '../../containers/UpdatePhoneNumberContainer'
+import RequestingLocationContainer from '../../containers/RequestingLocationContainer'
+import InCommingRequestLocationContainer from "../../containers/InCommingRequestLocationContainer"
 
 import FriendViewScreen from './FriendViewScreen'
 import SettingViewScreen from './SettingViewScreen'
-
-import RequestingLocationContainer from '../../containers/RequestingLocationContainer'
-import InCommingRequestLocationContainer from "../../containers/InCommingRequestLocationContainer"
 
 const StackNavigatorView = StackNavigator(
     {
@@ -22,6 +22,7 @@ const StackNavigatorView = StackNavigator(
         ContactView: {screen: ContactViewContainer},
         FriendView: {screen: FriendViewScreen},
         UpdateProfileView: {screen: UpdateProfileViewContainer},
+        UpdatePhoneNumberView: {screen: UpdatePhoneNumberViewContainer},
         SettingView: {screen: SettingViewScreen,},
         RequestingLocationView: {screen: RequestingLocationContainer},
         InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},

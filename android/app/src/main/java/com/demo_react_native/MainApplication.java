@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
 
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNFirebasePackage(),
                     new RNGoogleSigninPackage(),
                     new FBSDKPackage(mCallbackManager),
                     new RNAdMobPackage(),
