@@ -158,12 +158,8 @@ export function* updateUserEmail(action) {
     let {firebaseUser, userInfo} = action.data
 
     console.log("Saga updateUserEmail : " + JSON.stringify(userInfo))
-
     const user = yield call(FirebaseAuthHelper.updateUserEmail, firebaseUser, userInfo)
-
     console.log("Saga updateUserEmail 1 : " + JSON.stringify(user))
-
-
     // yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
 }
 

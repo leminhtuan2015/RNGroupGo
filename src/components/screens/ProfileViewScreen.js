@@ -27,7 +27,6 @@ class ProfileViewScreen extends BaseViewScreen {
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.tableData = [
             {title: "Name", value: " "},
-            {title: "Nickname", value: " "},
             {title: "Email", value: " "},
             {title: "Phone", value: " "},
             {title: "Logout", value: " "}
@@ -35,7 +34,6 @@ class ProfileViewScreen extends BaseViewScreen {
 
         this.tableDataIcon = [
             (IconManager.icon("user-circle", 30, "#009688")),
-            (IconManager.icon("star", 30, "#448AFF")),
             (IconManager.icon("envelope-square", 30, "#FFD600")),
             (IconManager.icon("phone-square", 30, "#311B92")),
             (IconManager.icon("sign-out", 30, "#F44336")),
@@ -50,9 +48,8 @@ class ProfileViewScreen extends BaseViewScreen {
         if(!user){return}
 
         this.tableData[0]["value"] = user.displayName
-        this.tableData[1]["value"] = user.nickName
-        this.tableData[2]["value"] = user.email
-        this.tableData[3]["value"] = user.phoneNumber
+        this.tableData[1]["value"] = user.email
+        this.tableData[2]["value"] = user.phoneNumber
     }
 
     handleLogoutPressed = () => {
@@ -88,7 +85,7 @@ class ProfileViewScreen extends BaseViewScreen {
     onPressListItem = (rowData) => {
         const title = rowData.title
 
-        if (title == this.tableData[4]["title"]) {
+        if (title == this.tableData[3]["title"]) {
             this.handleLogoutPressed()
         } else {
             this.goToUpdateProfile()

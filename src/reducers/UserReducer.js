@@ -122,13 +122,18 @@ function userLoginDone(state, data) {
     if(status == StatusTypes.SUCCESS){
         const {user} = data
         console.log("userLoginDone : " + JSON.stringify(user))
-        FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
-        FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
+
+        storeUserToFirebaseDatabase(user)
 
         return Object.assign({}, state, {currentUser: user, isBusy: false})
     } else {
         return Object.assign({}, state, {isBusy: false})
     }
+}
+
+function storeUserToFirebaseDatabase(user) {
+    FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
+    FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
 }
 
 function userLogoutDone(state, data) {

@@ -22,42 +22,36 @@ class UpdateProfileViewScreen extends BaseViewScreen {
 
         this.User = t.struct({
             displayName: t.maybe(t.String),      // a required string
-            nickName: t.maybe(t.String),  // an optional string
             email: t.maybe(t.String),  // an optional string
-            phoneNumber: t.maybe(t.Number),  // an optional string
+            // phoneNumber: t.maybe(t.Number),  // an optional string
         })
 
         this.options = {
             fields: {
                 displayName: {
                     placeholder: this.currentUser.displayName,
-                    editable: false,
+                    // editable: false,
                     autoCorrect: false,
                     label: "Name",
                 },
-                nickName: {
-                    autoCorrect: false,
-                    label: "Nick Name",
-                },
                 email: {
-                    editable: this.currentUser.email ? false : true,
                     placeholder: this.currentUser.email,
+                    // editable: this.currentUser.email ? false : true,
                     autoCorrect: false,
                     label: "Email",
                 },
-                phoneNumber: {
-                    placeholder: this.currentUser.phoneNumber,
-                    autoCorrect: false,
-                    label: "Phone Number",
-                }
+                // phoneNumber: {
+                //     placeholder: this.currentUser.phoneNumber,
+                //     autoCorrect: false,
+                //     label: "Phone Number",
+                // }
             }
         }
 
         this.values = {
             displayName: this.currentUser.displayName,
-            nickName: this.currentUser.nickName,
             email: this.currentUser.email,
-            phoneNumber: this.currentUser.phoneNumber,
+            // phoneNumber: this.currentUser.phoneNumber,
         }
     }
 
