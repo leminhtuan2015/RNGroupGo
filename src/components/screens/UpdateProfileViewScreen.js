@@ -6,6 +6,8 @@ import {
     Text,
 } from "react-native"
 
+import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
+import DialogBox from "react-native-dialogbox"
 import * as ActionTypes from "../../constants/ActionTypes"
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import BaseViewScreen from "./BaseViewScreen"
@@ -18,7 +20,11 @@ class UpdateProfileViewScreen extends BaseViewScreen {
     constructor(props) {
         super(props)
 
+        this.state = {isBusy: false}
+
         this.currentUser = this.props.navigation.state.params.currentUser
+        this.dialogbox = null
+        this.formValues = null
 
         this.User = t.struct({
             displayName: t.maybe(t.String),      // a required string
@@ -48,45 +54,101 @@ class UpdateProfileViewScreen extends BaseViewScreen {
             }
         }
 
-        this.values = {
-            displayName: this.currentUser.displayName,
-            email: this.currentUser.email,
+        this.setFormValue(this.currentUser)
+    }
+
+    setFormValue = (user) => {
+        this.formValues = {
+            displayName: user.displayName,
+            email: user.email,
             // phoneNumber: this.currentUser.phoneNumber,
         }
     }
 
-    updateUserEmail = (firebaseUser, userInfo) => {
+    onFormValue = (value) => {
+        this.setFormValue(value)
+    }
+
+    updateUserInfo = (firebaseUser, userInfo) => {
         console.log("UpdateProfileViewScreen updateUserEmail : " + JSON.stringify(userInfo))
 
         this.props.dispatch({
-            type: ActionTypes.SAGA_UPDATE_USER_EMAIL,
+            type: ActionTypes.SAGA_UPDATE_USER_INFO,
             data: {firebaseUser: firebaseUser, userInfo: userInfo}
         })
+    }
+
+    renderNeedToReAuth = (userState) => {
+        let title = ""
+        if (userState.isNeedReAuth) {
+            title = "Please re-login to update email!"
+        } else {
+            title = "Updated Successful"
+        }
+
+        this.dialogbox.tip({
+            title: title,
+            content: "",
+            btn: {
+                text: "OK",
+                callback: () => {
+                },
+            },
+        });
+    }
+
+    renderIndicator = () => {
+        return(
+            <ActivityIndicatorCustom />
+        )
+    }
+
+    renderForm = () => {
+        return (
+            <View>
+                <Form
+                    ref="form"
+                    type={this.User}
+                    options={this.options}
+                    value={this.formValues}
+                    onChange={this.onFormValue}
+                />
+
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => {
+                        this.setState({isBusy: true})
+                        const value = this.refs.form.getValue()
+                        this.updateUserInfo(this.currentUser, value)
+                    }}
+                    underlayColor='#99d9f4'>
+                    <Text style={styles.buttonText}>Save</Text>
+                </TouchableHighlight>
+            </View>
+        )
     }
 
     render = () => {
         return (
             <KeyboardAwareScrollView style={styles.container}>
                 <View style={styles.containerContent}>
-                    <Form
-                        ref="form"
-                        type={this.User}
-                        options={this.options}
-                        value={this.values}
-                    />
+                    {this.state.isBusy && this.renderIndicator()}
 
-                    <TouchableHighlight
-                        style={styles.button}
-                        onPress={() => {
-                            const value = this.refs.form.getValue()
-                            this.updateUserEmail(this.currentUser, value)
-                        }}
-                        underlayColor='#99d9f4'>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableHighlight>
+                    {this.renderForm()}
                 </View>
+
+                <DialogBox ref={dialogbox => {
+                    this.dialogbox = dialogbox
+                }}/>
             </KeyboardAwareScrollView>
         )
+    }
+
+    componentWillReceiveProps = (newProps) => {
+        this.setState({isBusy: false})
+        this.currentUser = newProps.store.userState.currentUser
+        this.setFormValue(this.currentUser)
+        this.renderNeedToReAuth(newProps.store.userState)
     }
 }
 

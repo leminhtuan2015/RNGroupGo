@@ -154,13 +154,35 @@ export function* getFriendData(action){
     yield put({type: ActionTypes.MAP_SET_FRIEND_DATA_IN_MAP, data: {friendData: data}})
 }
 
-export function* updateUserEmail(action) {
+export function* updateUserInfo(action) {
     let {firebaseUser, userInfo} = action.data
 
-    console.log("Saga updateUserEmail : " + JSON.stringify(userInfo))
-    const user = yield call(FirebaseAuthHelper.updateUserEmail, firebaseUser, userInfo)
-    console.log("Saga updateUserEmail 1 : " + JSON.stringify(user))
-    // yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
+    console.log("Saga updateUserInfo : " + JSON.stringify(userInfo))
+
+    let userProfile = firebaseUser
+    let userEmail = firebaseUser
+
+    if(firebaseUser.displayName != userInfo.displayName){
+        userProfile = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, userInfo)
+        console.log("Saga updated userProfile : " + JSON.stringify(userProfile))
+    }
+
+    if(firebaseUser.email != userInfo.email){
+        userEmail = yield call(FirebaseAuthHelper.updateUserEmail, firebaseUser, userInfo)
+        console.log("Saga updated userEmail : " + JSON.stringify(userEmail))
+    }
+
+    console.log("Saga updateUserInfo userEmail : " + JSON.stringify(userEmail))
+    console.log("Saga updateUserInfo userProfile : " + JSON.stringify(userProfile))
+
+    if(userProfile && userEmail){
+        userProfile.email = userEmail.email
+        yield put({type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
+            data: {user: userProfile, error: null}})
+    } else {
+        yield put({type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
+            data: {user: userProfile, error: {message: "Need Login Again"}}})
+    }
 }
 
 export default function* rootSaga() {
@@ -172,7 +194,7 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_USER_LOGOUT, logout)
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
     yield takeEvery(ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, getFriendData)
-    yield takeEvery(ActionTypes.SAGA_UPDATE_USER_EMAIL, updateUserEmail)
+    yield takeEvery(ActionTypes.SAGA_UPDATE_USER_INFO, updateUserInfo)
 }
 
 

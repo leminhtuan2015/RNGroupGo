@@ -8,7 +8,8 @@ import StatusTypes from "../constants/StatusTypes";
 const initialState = {
     filterUsers: [],
     currentUser: null,
-    isBusy: false
+    isBusy: false,
+    isNeedReAuth: false,
 }
 
 export const UserReducer = (state = initialState, action) => {
@@ -40,6 +41,10 @@ export const UserReducer = (state = initialState, action) => {
             return userLogoutDone(state, data)
         case ActionTypes.USER_SET_IS_BUSY:
             return setBusyStatus(state, data)
+        case ActionTypes.USER_SET_IS_NEED_RE_AUTH:
+            return setIsNeedReAuthStatus(state, data)
+        case ActionTypes.USER_UPDATE_USER_INFO_DONE:
+            return updateUserInfoDone(state, data)
         default:
             return state
     }
@@ -118,6 +123,7 @@ function userLoginDone(state, data) {
 
     const {status, message} = data
     console.log("status : " + status + "message userLoginDone: " + message)
+    const commonData = {isBusy: false, isNeedReAuth: false}
 
     if(status == StatusTypes.SUCCESS){
         const {user} = data
@@ -125,9 +131,9 @@ function userLoginDone(state, data) {
 
         storeUserToFirebaseDatabase(user)
 
-        return Object.assign({}, state, {currentUser: user, isBusy: false})
+        return Object.assign({}, state, {currentUser: user}, commonData)
     } else {
-        return Object.assign({}, state, {isBusy: false})
+        return Object.assign({}, state, commonData)
     }
 }
 
@@ -149,6 +155,21 @@ function userLogoutDone(state, data) {
 function setBusyStatus(state, data) {
     const {isBusy} = data
     return Object.assign({}, state, {isBusy: isBusy})
+}
+
+function setIsNeedReAuthStatus(state, data) {
+    const {isNeedReAuth} = data
+    return Object.assign({}, state, {isBusy: isNeedReAuth})
+}
+
+function updateUserInfoDone(state, data) {
+    const {user, error} = data
+
+    if(error){
+        return Object.assign({}, state, {currentUser: user, isNeedReAuth: true})
+    } else {
+        return Object.assign({}, state, {currentUser: user, isNeedReAuth: false})
+    }
 }
 
 export default UserReducer
