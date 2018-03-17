@@ -140,6 +140,8 @@ function userLoginDone(state, data) {
 function storeUserToFirebaseDatabase(user) {
     FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
     FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
+    FirebaseHelper.write("users/" + user.uid + "/email", user.email)
+    FirebaseHelper.write("users/" + user.uid + "/phoneNumber", user.phoneNumber)
 }
 
 function userLogoutDone(state, data) {
@@ -164,6 +166,8 @@ function setIsNeedReAuthStatus(state, data) {
 
 function updateUserInfoDone(state, data) {
     const {user, error} = data
+
+    storeUserToFirebaseDatabase(user)
 
     if(error){
         return Object.assign({}, state, {currentUser: user, isNeedReAuth: true})
