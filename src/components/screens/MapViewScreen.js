@@ -24,7 +24,7 @@ class MapViewScreen extends React.Component {
 
         let headerRight =
             <NavBarItem
-                iconName="bars"
+                iconName="ios-options"
                 color="gray"
                 onPress={params.rightButtonOnPress}/>
 
