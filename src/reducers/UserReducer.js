@@ -115,7 +115,7 @@ function setCurrentUser(state, data) {
     const {user} = data
 
     // console.log("User Reducer setCurrentUser" + JSON.stringify(user))
-
+    updateStatus(user.uid)
     return Object.assign({}, state, {currentUser: user, isBusy: false})
 }
 
@@ -138,10 +138,16 @@ function userLoginDone(state, data) {
 }
 
 function storeUserToFirebaseDatabase(user) {
+    FirebaseHelper.write("users/" + user.uid + "/status", "1")
     FirebaseHelper.write("users/" + user.uid + "/name", user.displayName)
     FirebaseHelper.write("users/" + user.uid + "/photoURL", user.photoURL)
     FirebaseHelper.write("users/" + user.uid + "/email", user.email)
     FirebaseHelper.write("users/" + user.uid + "/phoneNumber", user.phoneNumber)
+}
+
+function updateStatus(uid) {
+    FirebaseHelper.onDisconnect("users/" + uid + "/status", "0")
+    FirebaseHelper.write("users/" + uid + "/status", "1")
 }
 
 function userLogoutDone(state, data) {

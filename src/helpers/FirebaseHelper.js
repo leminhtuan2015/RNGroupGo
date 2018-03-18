@@ -15,6 +15,11 @@ let database = firebase.database()
 
 class FirebaseHelper {
 
+    static onDisconnect(path, value) {
+        var ref = firebase.database().ref(path)
+        ref.onDisconnect().set(value)
+    }
+
     static subscribe(path, callback) {
         FirebaseHelper.unSubscribe(path)
 
