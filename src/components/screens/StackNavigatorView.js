@@ -17,15 +17,15 @@ import SettingViewScreen from './SettingViewScreen'
 
 const StackNavigatorView = StackNavigator(
     {
-        ProfileView: {screen: ProfileViewContainer},
         MapView: {screen: MapViewContainer},
+        ProfileView: {screen: ProfileViewContainer},
         ContactView: {screen: ContactViewContainer},
-        FriendView: {screen: FriendViewScreen},
         UpdateProfileView: {screen: UpdateProfileViewContainer},
         UpdatePhoneNumberView: {screen: UpdatePhoneNumberViewContainer},
-        SettingView: {screen: SettingViewScreen,},
         RequestingLocationView: {screen: RequestingLocationContainer},
         InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},
+        SettingView: {screen: SettingViewScreen,},
+        FriendView: {screen: FriendViewScreen},
     },
     {
         mode: "modal",

@@ -18,6 +18,7 @@ import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
 
 import * as ActionTypes from "../../constants/ActionTypes"
 import BaseViewScreen from "./BaseViewScreen"
+import AvatarCustom from "../views/AvatarCustom";
 
 class ContactViewScreen extends BaseViewScreen {
 
@@ -49,6 +50,12 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     renderRow = (rowData, sectionID) => {
+
+        let avatar = <AvatarCustom
+            uri={rowData.photoURL}
+            userId={rowData.key}
+        />
+
         return (
             <ListItem
                 onPress={() => {
@@ -56,7 +63,8 @@ class ContactViewScreen extends BaseViewScreen {
                 }}
 
                 roundAvatar
-                avatar={{uri: rowData.photoURL}}
+                // avatar={{uri: rowData.photoURL}}
+                avatar={avatar}
                 underlayColor="#bdbdbd"
 
                 titleStyle={{color: "#263238", fontSize: 16}}
