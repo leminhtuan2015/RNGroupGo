@@ -31,11 +31,23 @@ class ContactViewScreen extends BaseViewScreen {
         }
     }
 
+    addUserToHistory = (friendId) => {
+        let currentUser = this.props.store.userState.currentUser
+
+        if(currentUser){
+            this.props.dispatch({type: ActionTypes.SAGA_ADD_USER_TO_HISTORY,
+                data: {uid: currentUser.uid, friendId: friendId}})
+        } else {
+
+        }
+    }
+
     onPressListItem = (rowData) => {
         console.log("Contact onPressListItem user : " + JSON.stringify(rowData))
 
         const friendUserId = rowData.key
         this.requestShareLocation(friendUserId, rowData)
+        this.addUserToHistory(friendUserId)
     }
 
     onTextChange = (text) => {
@@ -75,14 +87,6 @@ class ContactViewScreen extends BaseViewScreen {
                 subtitle={rowData.name}
             />
         )
-    }
-
-    componentWillReceiveProps = (newProps) => {
-        // console.log("Contact will receive props :" + JSON.stringify(this.props))
-
-        this.setState({
-            userDataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
-        })
     }
 
     renderListView = () => {
@@ -143,6 +147,14 @@ class ContactViewScreen extends BaseViewScreen {
                 </View>
             </TouchableWithoutFeedback>
         );
+    }
+
+    componentWillReceiveProps = (newProps) => {
+        // console.log("Contact will receive props :" + JSON.stringify(this.props))
+
+        this.setState({
+            userDataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
+        })
     }
 }
 

@@ -10,6 +10,7 @@ const initialState = {
     currentUser: null,
     isBusy: false,
     isNeedReAuth: false,
+    friendsHistory: [],
 }
 
 export const UserReducer = (state = initialState, action) => {
@@ -45,6 +46,8 @@ export const UserReducer = (state = initialState, action) => {
             return setIsNeedReAuthStatus(state, data)
         case ActionTypes.USER_UPDATE_USER_INFO_DONE:
             return updateUserInfoDone(state, data)
+        case ActionTypes.USER_SET_FRIEND_HISTORY:
+            return setFriendHistory(state, data)
         default:
             return state
     }
@@ -180,6 +183,13 @@ function updateUserInfoDone(state, data) {
     } else {
         return Object.assign({}, state, {currentUser: user, isNeedReAuth: false})
     }
+}
+
+function setFriendHistory(state, data) {
+    const {users} = data
+
+    return Object.assign({}, state, {friendsHistory: users})
+
 }
 
 export default UserReducer

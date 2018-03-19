@@ -11,8 +11,8 @@ import UpdateProfileViewContainer from '../../containers/UpdateProfileViewContai
 import UpdatePhoneNumberViewContainer from '../../containers/UpdatePhoneNumberContainer'
 import RequestingLocationContainer from '../../containers/RequestingLocationContainer'
 import InCommingRequestLocationContainer from "../../containers/InCommingRequestLocationContainer"
+import FriendViewContainer from "../../containers/FriendViewContainer"
 
-import FriendViewScreen from './FriendViewScreen'
 import SettingViewScreen from './SettingViewScreen'
 
 const StackNavigatorView = StackNavigator(
@@ -24,8 +24,8 @@ const StackNavigatorView = StackNavigator(
         UpdatePhoneNumberView: {screen: UpdatePhoneNumberViewContainer},
         RequestingLocationView: {screen: RequestingLocationContainer},
         InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},
+        FriendView: {screen: FriendViewContainer},
         SettingView: {screen: SettingViewScreen,},
-        FriendView: {screen: FriendViewScreen},
     },
     {
         mode: "modal",

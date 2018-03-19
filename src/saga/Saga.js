@@ -185,6 +185,57 @@ export function* updateUserInfo(action) {
     }
 }
 
+export function* addUserToHistory(action) {
+    let {uid, friendId} = action.data
+    let path = "users/" + uid + "/friendsHistory"
+    let friendIds = []
+
+    const data = yield call(FirebaseHelper.read, path)
+
+    if(data){
+        console.log("data" + data)
+
+        if(!data.includes(friendId)){
+            data.push(friendId)
+        }
+
+        console.log("friendIdsData 2" + data)
+
+        friendIds = data
+
+    } else {
+        friendIds.push(friendId)
+    }
+
+    yield call(FirebaseHelper.write, path, friendIds)
+}
+
+export function* getUserFromHistory(action) {
+    let {uid} = action.data
+    let path = "users/" + uid + "/friendsHistory"
+    let users = []
+
+    const userIds = yield call(FirebaseHelper.read, path)
+
+    console.log("getUserFromHistory userIds: " + JSON.stringify(userIds))
+
+    if(userIds){
+        let usersData = []
+
+        yield* userIds.map(function* (userId) {
+            const user = yield call(FirebaseHelper.read, "users/" + userId)
+            user.key = userId
+            usersData.push(user)
+        })
+
+        console.log("getUserFromHistory usersData: " + JSON.stringify(usersData))
+        users = usersData
+    }
+
+    yield put({type: ActionTypes.USER_SET_FRIEND_HISTORY,
+        data: {users: users}})
+}
+
 export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
     yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin)
@@ -195,6 +246,8 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_GET_CURRENT_PLACE, getCurrentPlace)
     yield takeEvery(ActionTypes.SAGA_GET_FRIEND_DATA_IN_MAP, getFriendData)
     yield takeEvery(ActionTypes.SAGA_UPDATE_USER_INFO, updateUserInfo)
+    yield takeEvery(ActionTypes.SAGA_ADD_USER_TO_HISTORY, addUserToHistory)
+    yield takeEvery(ActionTypes.SAGA_GET_USER_FROM_HISTORY, getUserFromHistory)
 }
 
 
