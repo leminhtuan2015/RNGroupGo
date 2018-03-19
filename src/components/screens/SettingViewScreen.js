@@ -146,7 +146,8 @@ class SettingViewScreen extends BaseViewScreen {
 
     renderListView = () => {
         return (
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+                contentContainerStyle={styles.contentContainer}>
                 <List
                     style={{flex: 1,}}
                     enableEmptySections={true}
@@ -157,6 +158,7 @@ class SettingViewScreen extends BaseViewScreen {
                     }}>
 
                     <ListView
+                        automaticallyAdjustContentInsets={false}
                         enableEmptySections={true}
                         renderRow={this.renderRow}
                         dataSource={this.userInfoDataSource}/>
@@ -183,13 +185,12 @@ export default SettingViewScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
         marginTop: 0,
         backgroundColor: "white",
     },
 
     contentContainer: {
-        paddingVertical: 0,
+        // paddingVertical: 0,
         // paddingBottom: 60
     },
 

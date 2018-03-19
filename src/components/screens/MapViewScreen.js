@@ -235,9 +235,9 @@ class MapViewScreen extends React.Component {
 
         let view = userIds.map((userId) => {
             console.log(" renderFriendsMarker userId: " + userId)
-            let imageName = (userId == currentUser.uid ? "location" : "location1")
-            let title = (userId == currentUser.uid ? currentUser.displayName : friendName)
-            let description = (userId == currentUser.uid ? "Me" : "Friend")
+            let imageName = (currentUser && userId == currentUser.uid ? "location" : "location1")
+            let title = (currentUser && userId == currentUser.uid ? currentUser.displayName : friendName)
+            let description = (currentUser && userId == currentUser.uid ? "Me" : "Friend")
 
             return this.renderMarkerView(userId, imageName, title, description)
         })

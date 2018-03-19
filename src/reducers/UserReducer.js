@@ -118,7 +118,11 @@ function setCurrentUser(state, data) {
     const {user} = data
 
     // console.log("User Reducer setCurrentUser" + JSON.stringify(user))
-    updateStatus(user.uid)
+
+    if(user) {
+        updateStatus(user.uid)
+    }
+
     return Object.assign({}, state, {currentUser: user, isBusy: false})
 }
 
