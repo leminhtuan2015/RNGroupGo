@@ -13,6 +13,7 @@ import RequestingLocationContainer from '../../containers/RequestingLocationCont
 import InCommingRequestLocationContainer from "../../containers/InCommingRequestLocationContainer"
 import FriendViewContainer from "../../containers/FriendViewContainer"
 import SettingViewContainer from "../../containers/SettingViewContainer"
+import InviteFriendViewContainer from "../../containers/InviteFriendViewContainer";
 
 const StackNavigatorView = StackNavigator(
     {
@@ -25,6 +26,7 @@ const StackNavigatorView = StackNavigator(
         InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},
         FriendView: {screen: FriendViewContainer},
         SettingView: {screen: SettingViewContainer},
+        InviteFriendView: {screen: InviteFriendViewContainer},
     },
     {
         mode: "modal",

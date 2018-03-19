@@ -36,14 +36,16 @@ class SettingViewScreen extends BaseViewScreen {
             {title: "Apps", value: " "},
             {title: "Vote", value: " "},
             {title: "Feedback", value: " "},
-            {title: "Infomation", value: " "}
+            {title: "Infomation", value: " "},
+            {title: "Invite Friend", value: " "}
         ]
 
         this.tableDataIcon = [
-            (IconManager.ionIcon("ios-apps", 30, "#009688")),
-            (IconManager.icon("thumbs-up", 30, "#FFD600")),
-            (IconManager.icon("envelope", 30, "#311B92")),
-            (IconManager.icon("info-circle", 30, "#03A9F4")),
+            (IconManager.ionIcon(Platform.OS === 'ios' ? "ios-appstore" : "md-appstore", 33, "#009688")),
+            (IconManager.ionIcon("md-thumbs-up", 33, "#FFD600")),
+            (IconManager.ionIcon("md-send", 30, "#311B92")),
+            (IconManager.ionIcon("ios-information-circle", 33, "#03A9F4")),
+            (IconManager.ionIcon("ios-contacts", 33, "#FF6F00")),
         ]
 
         this.userInfoDataSource = this.ds.cloneWithRows(this.tableData)
@@ -70,7 +72,7 @@ class SettingViewScreen extends BaseViewScreen {
             // do stuff
         }).catch((err) => {
             this.dialogbox.tip({
-                title: "Notify",
+                title: "Notification",
                 content: "Can not open app store.",
                 btn: {
                     text: "OK",
@@ -96,7 +98,7 @@ class SettingViewScreen extends BaseViewScreen {
             supported && Linking.openURL(link)
         }, (err) => {
             this.dialogbox.tip({
-                title: "Notify",
+                title: "Notification",
                 content: "Can not open app store.",
                 btn: {
                     text: "OK",
@@ -107,10 +109,16 @@ class SettingViewScreen extends BaseViewScreen {
         })
     }
 
+    inviteFriend = () => {
+        this.props.navigation.navigate("InviteFriendView")
+    }
+
     onPressListItem = (rowData) => {
         const title = rowData.title
 
-        if (title == this.tableData[3]["title"]) {
+        if (title == this.tableData[4]["title"]) {
+            this.inviteFriend()
+        } else if (title == this.tableData[3]["title"]) {
             this.openInfomationDialog()
         } else if (title == this.tableData[2]["title"]) {
             this.openFeedback()
