@@ -6,6 +6,8 @@ import {
     Text,
     View,
     Alert,
+    TouchableHighlight,
+    Image,
 } from "react-native"
 
 import DialogBox from "react-native-dialogbox"
@@ -301,6 +303,30 @@ class MapViewScreen extends React.Component {
 
     }
 
+    renderFindFriendButton = () => {
+        return (
+            <View style={styles.findFriendButtonContainer}>
+                <View/>
+                <View/>
+                <View/>
+                <View/>
+                <View/>
+
+                <TouchableHighlight
+                    underlayColor="transparent"
+                    onPress={() => {
+                        this.props.navigation.navigate("ContactView")
+                    }}
+                >
+                    <Image
+                        style={styles.findFriendButton}
+                        source={require('../../resources/images/add-person.png')}
+                    />
+                </TouchableHighlight>
+            </View>
+        )
+    }
+
     renderTools = () => {
         return (
             <View style={styles.tool}>
@@ -373,6 +399,7 @@ class MapViewScreen extends React.Component {
             <View style={styles.container}>
                 {this.renderMapView()}
                 {this.renderTools()}
+                {!this.props.store.mapState.channelId && this.renderFindFriendButton()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
                 <DialogBox ref={dialogbox => {
                     this.dialogbox = dialogbox
@@ -590,6 +617,22 @@ const styles = StyleSheet.create({
         top: 10,
         right: 10,
         bottom: 80,
+    },
+    findFriendButtonContainer: {
+        backgroundColor: "transparent",
+        // backgroundColor: "red",
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'flex-end',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        top: 10,
+        left: 10,
+        bottom: 80,
+    },
+    findFriendButton: {
+        width: 50,
+        height: 50,
     },
     toolbar: {
         backgroundColor: "white",
