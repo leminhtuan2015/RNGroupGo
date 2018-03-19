@@ -191,7 +191,6 @@ class ProfileViewScreen extends BaseViewScreen {
                 }}/>
             </View>
         )
-
     }
 
     render = () => {
