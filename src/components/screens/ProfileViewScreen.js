@@ -28,14 +28,14 @@ class ProfileViewScreen extends BaseViewScreen {
         this.tableData = [
             {title: "Name", value: " "},
             {title: "Email", value: " "},
-            {title: "Phone", value: " "},
+            // {title: "Phone", value: " "},
             {title: "Logout", value: " "}
         ]
 
         this.tableDataIcon = [
             (IconManager.icon("user-circle", 30, "#009688")),
             (IconManager.icon("envelope-square", 30, "#FFD600")),
-            (IconManager.icon("phone-square", 30, "#311B92")),
+            // (IconManager.icon("phone-square", 30, "#311B92")),
             (IconManager.icon("sign-out", 30, "#F44336")),
         ]
 
@@ -49,7 +49,7 @@ class ProfileViewScreen extends BaseViewScreen {
 
         this.tableData[0]["value"] = user.displayName
         this.tableData[1]["value"] = user.email
-        this.tableData[2]["value"] = user.phoneNumber
+        // this.tableData[2]["value"] = user.phoneNumber
     }
 
     handleLogoutPressed = () => {
@@ -89,10 +89,10 @@ class ProfileViewScreen extends BaseViewScreen {
     onPressListItem = (rowData) => {
         const title = rowData.title
 
-        if (title == this.tableData[3]["title"]) {
+        if (title == this.tableData[2]["title"]) {
             this.handleLogoutPressed()
-        } else if(title == this.tableData[2]["title"]) {
-            this.goToUpdatePhoneNumber()
+        // } else if(title == this.tableData[1]["title"]) {
+        //     this.goToUpdatePhoneNumber()
         } else {
             this.goToUpdateProfile()
         }
@@ -222,6 +222,8 @@ class ProfileViewScreen extends BaseViewScreen {
         console.log("PROFILE componentDidMount")
 
         this.props.dispatch({type: ActionTypes.SAGA_GET_CURRENT_USER})
+
+        this.props.navigation.setParams({headerTitle: "Profile"})
     }
 }
 

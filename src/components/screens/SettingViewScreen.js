@@ -178,6 +178,10 @@ class SettingViewScreen extends BaseViewScreen {
             </View>
         )
     }
+
+    componentDidMount = () => {
+        this.props.navigation.setParams({headerTitle: "More"})
+    }
 }
 
 export default SettingViewScreen

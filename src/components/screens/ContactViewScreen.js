@@ -34,9 +34,11 @@ class ContactViewScreen extends BaseViewScreen {
     addUserToHistory = (friendId) => {
         let currentUser = this.props.store.userState.currentUser
 
-        if(currentUser){
-            this.props.dispatch({type: ActionTypes.SAGA_ADD_USER_TO_HISTORY,
-                data: {uid: currentUser.uid, friendId: friendId}})
+        if (currentUser) {
+            this.props.dispatch({
+                type: ActionTypes.SAGA_ADD_USER_TO_HISTORY,
+                data: {uid: currentUser.uid, friendId: friendId}
+            })
         } else {
 
         }
@@ -53,7 +55,10 @@ class ContactViewScreen extends BaseViewScreen {
     onTextChange = (text) => {
         console.log("dispatch filter user..........")
         let currentUser = this.props.store.userState.currentUser
-        this.props.dispatch({type: ActionTypes.SAGA_FIREBASE_FILTER_USER, data: {keyword: text, currentUserId: currentUser.uid}})
+        this.props.dispatch({
+            type: ActionTypes.SAGA_FIREBASE_FILTER_USER,
+            data: {keyword: text, currentUserId: currentUser.uid}
+        })
     }
 
     requestShareLocation = (friendUserId, friendData) => {
@@ -128,8 +133,8 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     renderIndicator = () => {
-        return(
-            <ActivityIndicatorCustom />
+        return (
+            <ActivityIndicatorCustom/>
         )
     }
 
@@ -155,6 +160,10 @@ class ContactViewScreen extends BaseViewScreen {
         this.setState({
             userDataSource: this.ds.cloneWithRows(newProps.store.userState.filterUsers),
         })
+    }
+
+    componentDidMount = () => {
+        this.props.navigation.setParams({headerTitle: "Find Friend"})
     }
 }
 

@@ -4,7 +4,9 @@ import NavBarItem from "../views/NavBarItem"
 class BaseViewScreen extends React.Component {
 
     static navigationOptions = ({navigation}) => {
-        const {params = {}} = navigation.state;
+        const {params = {}} = navigation.state
+
+        let headerTitle = params.headerTitle
 
         const headerLeft =
             <NavBarItem
@@ -15,6 +17,7 @@ class BaseViewScreen extends React.Component {
                 }}/>
 
         return {
+            headerTitle: headerTitle,
             drawerLabel: '',
             tabBarLabel: '',
             headerLeft: headerLeft,

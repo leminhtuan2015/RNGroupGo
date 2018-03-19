@@ -106,6 +106,7 @@ class FriendViewScreen extends BaseViewScreen {
                 data: {uid: currentUser.uid}})
         }
 
+        this.props.navigation.setParams({headerTitle: "History"})
     }
 }
 
