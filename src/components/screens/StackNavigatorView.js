@@ -16,7 +16,6 @@ import SettingViewContainer from "../../containers/SettingViewContainer"
 
 const StackNavigatorView = StackNavigator(
     {
-        SettingView: {screen: SettingViewContainer},
         MapView: {screen: MapViewContainer},
         ProfileView: {screen: ProfileViewContainer},
         ContactView: {screen: ContactViewContainer},
@@ -25,6 +24,7 @@ const StackNavigatorView = StackNavigator(
         RequestingLocationView: {screen: RequestingLocationContainer},
         InCommingRequestLocationView: {screen: InCommingRequestLocationContainer},
         FriendView: {screen: FriendViewContainer},
+        SettingView: {screen: SettingViewContainer},
     },
     {
         mode: "modal",
