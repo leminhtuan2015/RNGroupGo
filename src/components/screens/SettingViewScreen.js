@@ -154,7 +154,7 @@ class SettingViewScreen extends BaseViewScreen {
                     containerStyle={{
                         borderBottomColor: "#ffffff",
                         borderBottomWidth: 0,
-                        borderTopWidth: 1,
+                        borderTopWidth: 0,
                     }}>
 
                     <ListView
