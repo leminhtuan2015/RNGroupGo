@@ -19,6 +19,7 @@ import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
 import * as ActionTypes from "../../constants/ActionTypes"
 import BaseViewScreen from "./BaseViewScreen"
 import AvatarCustom from "../views/AvatarCustom";
+import SearchTextInput from "../views/SearchTextInput";
 
 class ContactViewScreen extends BaseViewScreen {
 
@@ -54,18 +55,24 @@ class ContactViewScreen extends BaseViewScreen {
     }
 
     onTextChange = (text) => {
-        console.log("dispatch filter user..........")
+        console.log("Search keyword.........." + text)
         let currentUser = this.props.store.userState.currentUser
+
+        if(!text){
+            return
+        }
+
+        console.log("Searching----------" + text)
 
         // this.props.dispatch({
         //     type: ActionTypes.SAGA_FIREBASE_FILTER_USER,
         //     data: {keyword: text, currentUserId: currentUser.uid}
         // })
 
-        // this.props.dispatch({
-        //     type: ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER,
-        //     data: {keyword: text, currentUserId: currentUser.uid}
-        // })
+        this.props.dispatch({
+            type: ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER,
+            data: {keyword: text, currentUserId: currentUser.uid}
+        })
     }
 
     requestShareLocation = (friendUserId, friendData) => {
@@ -123,20 +130,17 @@ class ContactViewScreen extends BaseViewScreen {
 
     renderTopView = () => {
         return (
-            <FormInput
-                inputStyle={{color: "#2196f3", marginLeft: 10}}
-                // containerStyle={{backgroundColor: "#fafafa", borderRadius: 25}}
-                ref={(input) => {
-                    this.input = input
-                }}
-                onChangeText={(text) => {
-                    this.onTextChange(text)
-                }}
-                placeholder="Search"
-                autoFocus={true}
-                autoCorrect={false}
-                autoCapitalize="none"
-                defaultValue=""/>
+            <View>
+                <SearchTextInput
+                    pauseDelay={1000}
+                    onChangeText={(text) => {
+                        console.log("Text Changed")
+                    }}
+                    onPauseText={(text) => {
+                        this.onTextChange(text)
+                    }}
+                />
+            </View>
         )
     }
 
