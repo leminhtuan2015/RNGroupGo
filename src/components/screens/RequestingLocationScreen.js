@@ -36,7 +36,7 @@ class RequestingLocationScreen extends Component<> {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <Text style={styles.titleText}>Calling</Text>
+                    <Text style={styles.titleText}>Requesting</Text>
                     <Text>{this.friendData.name}</Text>
                 </View>
 

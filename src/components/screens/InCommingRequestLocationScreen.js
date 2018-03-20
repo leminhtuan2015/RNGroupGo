@@ -44,7 +44,7 @@ class InCommingRequestLocationScreen extends Component<> {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <Text style={styles.titleText}>In Comming Call</Text>
+                    <Text style={styles.titleText}>Incoming Request</Text>
                     <Text>
                         {friendName}
                     </Text>

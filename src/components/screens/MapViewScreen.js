@@ -290,7 +290,7 @@ class MapViewScreen extends React.Component {
     renderUserIconOnTool = () => {
         return (
             <View style={{marginTop: 0}}>
-                {IconManager.ionIcon("md-contact", 45, "#9E9E9E", "red", () => {
+                {IconManager.ionIcon("md-contact", 45, "#2196F3", "red", () => {
                     let friendData = this.props.store.mapState.friendData
                     // const friendName = friendData.name
                     // console.log("friendName xxx ", friendName)
