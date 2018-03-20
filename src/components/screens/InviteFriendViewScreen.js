@@ -163,6 +163,10 @@ class InviteFriendViewScreen extends BaseViewScreen {
     componentWillReceiveProps = (newProps) => {
 
     }
+
+    componentDidMount = () => {
+        this.props.navigation.setParams({headerTitle: "Invite Friend"})
+    }
 }
 
 export default InviteFriendViewScreen

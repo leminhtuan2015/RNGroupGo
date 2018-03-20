@@ -155,6 +155,10 @@ class UpdateProfileViewScreen extends BaseViewScreen {
             this.renderNeedToReAuth(newProps.store.userState)
         }
     }
+
+    componentDidMount = () => {
+        this.props.navigation.setParams({headerTitle: "Update Profile"})
+    }
 }
 
 export default UpdateProfileViewScreen
