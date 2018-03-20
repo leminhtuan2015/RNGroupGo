@@ -10,6 +10,8 @@ import {
     Image,
 } from "react-native"
 
+import {AdMobInterstitial} from 'react-native-admob'
+
 import DialogBox from "react-native-dialogbox"
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
@@ -54,6 +56,13 @@ class MapViewScreen extends React.Component {
         this.mapView = null
         this.dialogbox = null
         this.mapDistance = MapViewScreen.defaultDistance
+    }
+
+    showIntertitialAd = () => {
+        // Display an interstitial
+        AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
+        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+        AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
     }
 
     rightButtonOnPress = () => {
@@ -423,6 +432,7 @@ class MapViewScreen extends React.Component {
         this.autoUpdateMyPosition()
 
         this.navigationSetParams()
+        this.showIntertitialAd()
     }
 
     navigationSetParams = (headerTitle = "") => {
