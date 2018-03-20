@@ -54,7 +54,7 @@ class ContactViewScreen extends BaseViewScreen {
         this.addUserToHistory(friendUserId)
     }
 
-    onTextChange = (text) => {
+    onPauseText = (text) => {
         console.log("Search keyword.........." + text)
         let currentUser = this.props.store.userState.currentUser
 
@@ -134,10 +134,15 @@ class ContactViewScreen extends BaseViewScreen {
                 <SearchTextInput
                     pauseDelay={1000}
                     onChangeText={(text) => {
+                        this.props.dispatch({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
+
+                        if(!text){
+                            this.props.dispatch({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: false}})
+                        }
                         console.log("Text Changed")
                     }}
                     onPauseText={(text) => {
-                        this.onTextChange(text)
+                        this.onPauseText(text)
                     }}
                 />
             </View>

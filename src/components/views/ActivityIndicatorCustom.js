@@ -7,7 +7,8 @@ import {
 
 import {
     RotationHoleLoader,
-    ColorDotsLoader
+    ColorDotsLoader,
+    BubblesLoader
 } from 'react-native-indicator'
 
 class ActivityIndicatorCustom extends React.Component {
@@ -15,7 +16,7 @@ class ActivityIndicatorCustom extends React.Component {
     render() {
         return (
             <View style={styles.center}>
-                <ColorDotsLoader
+                <BubblesLoader
                 />
             </View>
         )
@@ -26,6 +27,7 @@ export default ActivityIndicatorCustom
 
 const styles = StyleSheet.create({
     center: {
+        zIndex: 1000,
         position: 'absolute',
         left: 0,
         right: 0,

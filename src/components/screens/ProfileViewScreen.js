@@ -210,12 +210,11 @@ class ProfileViewScreen extends BaseViewScreen {
     }
 
     componentWillReceiveProps = (newProps) => {
-        console.log("ProfileView will receive props : " + JSON.stringify(newProps))
+        // console.log("ProfileView will receive props : " + JSON.stringify(newProps))
 
         this.currentUser = newProps.store.userState.currentUser
         this.updateTableData(this.currentUser)
         this.userInfoDataSource = this.ds.cloneWithRows(this.tableData)
-
     }
 
     componentDidMount = () => {

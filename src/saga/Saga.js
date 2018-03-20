@@ -48,6 +48,8 @@ function fetchSearchUser(keyword) {
 }
 
 export function* firebaseFunctionsSearchUser(action) {
+    yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
+
     let userIds = []
     let userData = []
     let {keyword, currentUserId} = action.data

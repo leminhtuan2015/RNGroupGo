@@ -33,10 +33,11 @@ class InviteFriendViewScreen extends BaseViewScreen {
         this.options = {
             fields: {
                 email: {
-                    placeholder: "Email",
+                    placeholder: "Friend's email ",
                     autoCorrect: false,
-                    label: "Email",
+                    label: "Friend's email ",
                     autoCapitalize: "none",
+                    autoFocus: true,
                 },
             }
         }
@@ -137,7 +138,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
                         this.inviteFriend(value)
                     }}
                     underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>Invite</Text>
+                    <Text style={styles.buttonText}>Send Invite</Text>
                 </TouchableHighlight>
             </View>
         )

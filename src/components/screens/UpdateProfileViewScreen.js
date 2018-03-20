@@ -150,7 +150,10 @@ class UpdateProfileViewScreen extends BaseViewScreen {
         this.setState({isBusy: false})
         this.currentUser = newProps.store.userState.currentUser
         this.setFormValue(this.currentUser)
-        this.renderNeedToReAuth(newProps.store.userState)
+
+        if(newProps.store.userState != this.props.store.userState){
+            this.renderNeedToReAuth(newProps.store.userState)
+        }
     }
 }
 
