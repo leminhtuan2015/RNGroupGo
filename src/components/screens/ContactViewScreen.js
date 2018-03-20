@@ -29,6 +29,7 @@ class ContactViewScreen extends BaseViewScreen {
         this.state = {
             userDataSource: this.ds.cloneWithRows([]),
         }
+        this.input = null
     }
 
     addUserToHistory = (friendId) => {
@@ -61,10 +62,10 @@ class ContactViewScreen extends BaseViewScreen {
         //     data: {keyword: text, currentUserId: currentUser.uid}
         // })
 
-        this.props.dispatch({
-            type: ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER,
-            data: {keyword: text, currentUserId: currentUser.uid}
-        })
+        // this.props.dispatch({
+        //     type: ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER,
+        //     data: {keyword: text, currentUserId: currentUser.uid}
+        // })
     }
 
     requestShareLocation = (friendUserId, friendData) => {
