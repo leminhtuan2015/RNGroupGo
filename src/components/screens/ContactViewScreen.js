@@ -128,6 +128,7 @@ class ContactViewScreen extends BaseViewScreen {
                 placeholder="Search"
                 autoFocus={true}
                 autoCorrect={false}
+                autoCapitalize="none"
                 defaultValue=""/>
         )
     }

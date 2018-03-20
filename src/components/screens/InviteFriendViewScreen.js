@@ -35,6 +35,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
                     placeholder: "Email",
                     autoCorrect: false,
                     label: "Email",
+                    autoCapitalize: "none",
                 },
             }
         }

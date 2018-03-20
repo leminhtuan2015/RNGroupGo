@@ -38,12 +38,14 @@ class UpdateProfileViewScreen extends BaseViewScreen {
                     placeholder: this.currentUser.displayName,
                     // editable: false,
                     autoCorrect: false,
+                    // autoCapitalize: "none",
                     label: "Name",
                 },
                 email: {
                     placeholder: this.currentUser.email,
                     // editable: this.currentUser.email ? false : true,
                     autoCorrect: false,
+                    autoCapitalize: "none",
                     label: "Email",
                 },
                 // phoneNumber: {
