@@ -236,6 +236,24 @@ export function* getUserFromHistory(action) {
         data: {users: users}})
 }
 
+export function* sendInviteEmail(action) {
+
+    let {url, toEmailAddress, emailSubject, emailHtmlContent} = action.data
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            toEmailAddress: toEmailAddress,
+            emailSubject: emailSubject,
+            emailHtmlContent: emailHtmlContent
+        }),
+    });
+}
+
 export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
     yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin)
@@ -248,6 +266,7 @@ export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_UPDATE_USER_INFO, updateUserInfo)
     yield takeEvery(ActionTypes.SAGA_ADD_USER_TO_HISTORY, addUserToHistory)
     yield takeEvery(ActionTypes.SAGA_GET_USER_FROM_HISTORY, getUserFromHistory)
+    yield takeEvery(ActionTypes.SAGA_SEND_EMAIL, sendInviteEmail)
 }
 
 

@@ -56,14 +56,22 @@ class InviteFriendViewScreen extends BaseViewScreen {
     }
 
     sendEmail = (email) => {
-
+        this.props.dispatch({
+            type: ActionTypes.SAGA_SEND_EMAIL,
+            data: {
+                url: "http://us-central1-react-native-way.cloudfunctions.net/sendMail",
+                toEmailAddress: email,
+                emailSubject: "Invitation to use Location Sharing app",
+                emailHtmlContent: "Your friend invite you to use this app:",
+            }
+        })
     }
 
     inviteFriend = (value) => {
         let email = value.email
 
-        if(email){
-            if(this.validateEmail(email)){
+        if (email) {
+            if (this.validateEmail(email)) {
                 this.sendEmail(email)
 
                 this.dialogbox.tip({
@@ -103,8 +111,8 @@ class InviteFriendViewScreen extends BaseViewScreen {
     }
 
     renderIndicator = () => {
-        return(
-            <ActivityIndicatorCustom />
+        return (
+            <ActivityIndicatorCustom/>
         )
     }
 
