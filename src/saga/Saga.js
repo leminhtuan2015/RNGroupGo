@@ -2,6 +2,7 @@ import {call, put, takeEvery, takeLatest} from 'redux-saga/effects'
 import {delay} from 'redux-saga'
 
 import * as ActionTypes from "../constants/ActionTypes"
+import * as Constant from "../utils/Constant"
 import FirebaseHelper from "../helpers/FirebaseHelper"
 import FacebookLoginHelper from "../helpers/FacebookLoginHelper";
 import GoogleLoginHelper from "../helpers/GoogleLoginHelper";
@@ -20,7 +21,7 @@ export function* firebaseFilterUser(action) {
     // console.log("Saga firebaseFilterUser users: -" + JSON.stringify(usersObject) + "-")
     // console.log("Saga firebaseFilterUser currentUserId: " + currentUserId)
 
-    if(JSON.stringify(usersSnapshot) != "null"){
+    if (JSON.stringify(usersSnapshot) != "null") {
         usersObject = usersSnapshot.toJSON()
         delete usersObject[currentUserId]
     }
@@ -31,44 +32,94 @@ export function* firebaseFilterUser(action) {
     yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: {userData: userData, isBusy: false}})
 }
 
+function fetchSearchUser(keyword) {
+    return fetch(Constant.FIREBASE_FUNCTIONS_SEARCH + "?query=" + keyword)
+        .then((response) => {
+            // console.log("firebaseFunctionsSearchUser response : " + JSON.stringify(response))
+            return response.json()
+        })
+        .then((responseJson) => {
+            // console.log("firebaseFunctionsSearchUser responseJson : " + JSON.stringify(responseJson))
+            return responseJson
+        }).catch((error) => {
+            console.log("firebaseFunctionsSearchUser error : " + JSON.stringify(error))
+            return null
+        });
+}
+
+export function* firebaseFunctionsSearchUser(action) {
+    let userIds = []
+    let userData = []
+    let {keyword, currentUserId} = action.data
+    let jsonResult = yield call(fetchSearchUser, keyword)
+
+    console.log("firebaseFunctionsSearchUser jsonResult : " + JSON.stringify(jsonResult))
+
+    jsonResult.map(function (data) {
+        userIds.push(data.objectID)
+    })
+
+    delete userIds[currentUserId]
+
+    yield* userIds.map(function* (userId) {
+        const user = yield call(FirebaseHelper.read, "users/" + userId)
+        user.key = userId
+        userData.push(user)
+    })
+
+    yield put({type: ActionTypes.USER_SET_FILTER_USERS, data: {userData: userData, isBusy: false}})
+}
+
 export function* facebookLogin() {
     yield put({type: ActionTypes.USER_SET_IS_BUSY, data: {isBusy: true}})
 
     const loginStatus = yield call(FacebookLoginHelper.login)
 
-    if(loginStatus == StatusTypes.SUCCESS){
+    if (loginStatus == StatusTypes.SUCCESS) {
         const accessToken = yield call(FacebookLoginHelper.getCurrentAccessToken)
-        if(accessToken){
+        if (accessToken) {
             const firebaseUser = yield call(FirebaseAuthHelper.facebookAuth, accessToken)
-            if(firebaseUser){
+            if (firebaseUser) {
                 console.log("facebookLogin firebaseUser: " + JSON.stringify(firebaseUser))
                 const userInfo = yield call(FacebookLoginHelper.getUserInfomation)
 
                 console.log("facebookLogin userInfo: " + JSON.stringify(userInfo))
-                if(userInfo){
+                if (userInfo) {
                     const userDetail = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, userInfo)
-                    if(userDetail){
-                        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                            data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}})
+                    if (userDetail) {
+                        yield put({
+                            type: ActionTypes.USER_USER_LOGIN_DONE,
+                            data: {status: StatusTypes.SUCCESS, user: userDetail, message: "Login Success"}
+                        })
                     } else {
-                        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                            data: {status: StatusTypes.FAILED, message: "userDetail failed"}})
+                        yield put({
+                            type: ActionTypes.USER_USER_LOGIN_DONE,
+                            data: {status: StatusTypes.FAILED, message: "userDetail failed"}
+                        })
                     }
                 } else {
-                    yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                        data: {status: StatusTypes.FAILED, message: "userInfo failed"}})
+                    yield put({
+                        type: ActionTypes.USER_USER_LOGIN_DONE,
+                        data: {status: StatusTypes.FAILED, message: "userInfo failed"}
+                    })
                 }
             } else {
-                yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                    data: {status: StatusTypes.FAILED, message: "user failed"}})
+                yield put({
+                    type: ActionTypes.USER_USER_LOGIN_DONE,
+                    data: {status: StatusTypes.FAILED, message: "user failed"}
+                })
             }
         } else {
-            yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                data: {status: StatusTypes.FAILED, message: "accessToken failed"}})
+            yield put({
+                type: ActionTypes.USER_USER_LOGIN_DONE,
+                data: {status: StatusTypes.FAILED, message: "accessToken failed"}
+            })
         }
     } else {
-        yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-            data: {status: loginStatus, message: "login not ok"}})
+        yield put({
+            type: ActionTypes.USER_USER_LOGIN_DONE,
+            data: {status: loginStatus, message: "login not ok"}
+        })
     }
 
     console.log("loginStatus : " + loginStatus)
@@ -83,7 +134,7 @@ export function* googleLogin() {
 
     console.log("gg login status : " + status)
 
-    if(status == StatusTypes.SUCCESS){
+    if (status == StatusTypes.SUCCESS) {
         const {googleUser} = data
         const gooleUserInfomation = new User()
         gooleUserInfomation.displayName = googleUser.name
@@ -93,18 +144,28 @@ export function* googleLogin() {
         const idToken = googleUser.idToken
         const firebaseUser = yield call(FirebaseAuthHelper.googleAuth, idToken, accessToken)
 
-        if(firebaseUser){
+        if (firebaseUser) {
             const firebaseUserDetail = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, gooleUserInfomation)
-            if(firebaseUserDetail){
-                yield put({type: ActionTypes.USER_USER_LOGIN_DONE,
-                    data: {status: StatusTypes.SUCCESS, user: firebaseUserDetail, message: "Login Success"}})
+            if (firebaseUserDetail) {
+                yield put({
+                    type: ActionTypes.USER_USER_LOGIN_DONE,
+                    data: {status: StatusTypes.SUCCESS, user: firebaseUserDetail, message: "Login Success"}
+                })
             } else {
-                yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
-                        message: "updateUserInfo failed"}})
+                yield put({
+                    type: ActionTypes.USER_USER_LOGIN_DONE, data: {
+                        status: StatusTypes.FAILED,
+                        message: "updateUserInfo failed"
+                    }
+                })
             }
         } else {
-            yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: StatusTypes.FAILED,
-                    message: "googleAuth failed"}})
+            yield put({
+                type: ActionTypes.USER_USER_LOGIN_DONE, data: {
+                    status: StatusTypes.FAILED,
+                    message: "googleAuth failed"
+                }
+            })
         }
     } else {
         yield put({type: ActionTypes.USER_USER_LOGIN_DONE, data: {status: status, message: "Login Failed"}})
@@ -121,7 +182,7 @@ export function* phoneLogin(action) {
     // const status = yield call(FirebaseAuthHelper.phoneNumberAuth, phoneNumber)
 }
 
-export function* getCurrentUser(){
+export function* getCurrentUser() {
     const user = yield call(FirebaseAuthHelper.getCurrentUser)
 
     // console.log("getCurrentUser saga 2: " + JSON.stringify(user))
@@ -129,13 +190,13 @@ export function* getCurrentUser(){
     yield put({type: ActionTypes.USER_SET_CURRENT_USER, data: {user: user}})
 }
 
-export function* logout(){
+export function* logout() {
     const statusType = yield call(FirebaseAuthHelper.logout)
 
     yield put({type: ActionTypes.USER_USER_LOGOUT_DONE, data: {status: statusType}})
 }
 
-export function* getCurrentPlace(){
+export function* getCurrentPlace() {
     const region = yield call(LocationHelper.getCurrentPosition)
 
     // console.log("saga getCurrentPlace : " + region)
@@ -143,7 +204,7 @@ export function* getCurrentPlace(){
     yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE, data: {region: region}})
 }
 
-export function* getFriendData(action){
+export function* getFriendData(action) {
 
     const {friendId} = action
     const path = "users/" + friendId
@@ -162,12 +223,12 @@ export function* updateUserInfo(action) {
     let userProfile = firebaseUser
     let userEmail = firebaseUser
 
-    if(firebaseUser.displayName != userInfo.displayName){
+    if (firebaseUser.displayName != userInfo.displayName) {
         userProfile = yield call(FirebaseAuthHelper.updateUserProfile, firebaseUser, userInfo)
         console.log("Saga updated userProfile : " + JSON.stringify(userProfile))
     }
 
-    if(firebaseUser.email != userInfo.email){
+    if (firebaseUser.email != userInfo.email) {
         userEmail = yield call(FirebaseAuthHelper.updateUserEmail, firebaseUser, userInfo)
         console.log("Saga updated userEmail : " + JSON.stringify(userEmail))
     }
@@ -175,13 +236,17 @@ export function* updateUserInfo(action) {
     console.log("Saga updateUserInfo userEmail : " + JSON.stringify(userEmail))
     console.log("Saga updateUserInfo userProfile : " + JSON.stringify(userProfile))
 
-    if(userProfile && userEmail){
+    if (userProfile && userEmail) {
         userProfile.email = userEmail.email
-        yield put({type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
-            data: {user: userProfile, error: null}})
+        yield put({
+            type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
+            data: {user: userProfile, error: null}
+        })
     } else {
-        yield put({type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
-            data: {user: userProfile, error: {message: "Need Login Again"}}})
+        yield put({
+            type: ActionTypes.USER_UPDATE_USER_INFO_DONE,
+            data: {user: userProfile, error: {message: "Need Login Again"}}
+        })
     }
 }
 
@@ -192,10 +257,10 @@ export function* addUserToHistory(action) {
 
     const data = yield call(FirebaseHelper.read, path)
 
-    if(data){
+    if (data) {
         console.log("data" + data)
 
-        if(!data.includes(friendId)){
+        if (!data.includes(friendId)) {
             data.push(friendId)
         }
 
@@ -219,7 +284,7 @@ export function* getUserFromHistory(action) {
 
     console.log("getUserFromHistory userIds: " + JSON.stringify(userIds))
 
-    if(userIds){
+    if (userIds) {
         let usersData = []
 
         yield* userIds.map(function* (userId) {
@@ -232,8 +297,10 @@ export function* getUserFromHistory(action) {
         users = usersData
     }
 
-    yield put({type: ActionTypes.USER_SET_FRIEND_HISTORY,
-        data: {users: users}})
+    yield put({
+        type: ActionTypes.USER_SET_FRIEND_HISTORY,
+        data: {users: users}
+    })
 }
 
 export function* sendInviteEmail(action) {
@@ -256,6 +323,7 @@ export function* sendInviteEmail(action) {
 
 export default function* rootSaga() {
     yield takeEvery(ActionTypes.SAGA_FIREBASE_FILTER_USER, firebaseFilterUser)
+    yield takeEvery(ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER, firebaseFunctionsSearchUser)
     yield takeEvery(ActionTypes.SAGA_GOOGLE_LOGIN, googleLogin)
     yield takeEvery(ActionTypes.SAGA_FACEBOOK_LOGIN, facebookLogin)
     yield takeEvery(ActionTypes.SAGA_PHONE_NUMBER_LOGIN, phoneLogin)

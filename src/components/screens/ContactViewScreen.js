@@ -55,8 +55,14 @@ class ContactViewScreen extends BaseViewScreen {
     onTextChange = (text) => {
         console.log("dispatch filter user..........")
         let currentUser = this.props.store.userState.currentUser
+
+        // this.props.dispatch({
+        //     type: ActionTypes.SAGA_FIREBASE_FILTER_USER,
+        //     data: {keyword: text, currentUserId: currentUser.uid}
+        // })
+
         this.props.dispatch({
-            type: ActionTypes.SAGA_FIREBASE_FILTER_USER,
+            type: ActionTypes.SAGA_FIREBASE_FUNCTIONS_SEARCH_USER,
             data: {keyword: text, currentUserId: currentUser.uid}
         })
     }

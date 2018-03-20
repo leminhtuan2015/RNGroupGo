@@ -23,3 +23,6 @@ export const styleToast = {
 };
 
 export const appColor = "#2196F3"
+
+export const FIREBASE_FUNCTIONS_SEND_MAIL = "http://us-central1-react-native-way.cloudfunctions.net/sendMail"
+export const FIREBASE_FUNCTIONS_SEARCH = "http://us-central1-react-native-way.cloudfunctions.net/search"

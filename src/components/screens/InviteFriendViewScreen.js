@@ -9,6 +9,7 @@ import {
 import ActivityIndicatorCustom from "../views/ActivityIndicatorCustom";
 import DialogBox from "react-native-dialogbox"
 import * as ActionTypes from "../../constants/ActionTypes"
+import * as Constant from "../../utils/Constant"
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import BaseViewScreen from "./BaseViewScreen"
 
@@ -60,7 +61,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
         this.props.dispatch({
             type: ActionTypes.SAGA_SEND_EMAIL,
             data: {
-                url: "http://us-central1-react-native-way.cloudfunctions.net/sendMail",
+                url: Constant.FIREBASE_FUNCTIONS_SEND_MAIL,
                 toEmailAddress: email,
                 emailSubject: "Invitation to use Location Sharing app",
                 emailHtmlContent: "Your friend invite you to use this app:",
