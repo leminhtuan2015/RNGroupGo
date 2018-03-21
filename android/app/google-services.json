@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "289883308274",
+    "firebase_url": "https://react-native-way.firebaseio.com",
+    "project_id": "react-native-way",
+    "storage_bucket": "react-native-way.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289883308274:android:93fe138b9762cd7d",
+        "android_client_info": {
+          "package_name": "com.leminhtuan.locationsharing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289883308274-h7dftu8btond67nc984qonpaaj51juts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsQ0ddeJPXw-_ownUe2lvFYeZ1hPSu6pY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
