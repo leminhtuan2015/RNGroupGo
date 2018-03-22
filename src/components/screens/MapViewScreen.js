@@ -8,8 +8,11 @@ import {
     Alert,
     TouchableHighlight,
     Image,
+    AppState,
 } from "react-native"
 
+
+import OpenAppSettings from 'react-native-app-settings'
 import Permissions from 'react-native-permissions'
 import {AdMobInterstitial} from 'react-native-admob'
 import DropdownAlert from 'react-native-dropdownalert';
@@ -21,6 +24,9 @@ import * as ActionTypes from "../../constants/ActionTypes"
 import MessageTypes from "../../constants/MessageTypes";
 import NavigationHelper from "../views/NavigationHelper";
 import FirebaseHelper from "../../helpers/FirebaseHelper";
+
+var MessageBarAlert = require('react-native-message-bar').MessageBar;
+var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 
 class MapViewScreen extends React.Component {
 
@@ -56,10 +62,16 @@ class MapViewScreen extends React.Component {
         this.currentDraggedRegion = null
         this.mapView = null
         this.dialogbox = null
-        this.dropdown = null
         this.mapDistance = MapViewScreen.defaultDistance
 
         this.state = {locationPermission: false}
+    }
+
+    handleAppStateChange = (nextAppState) => {
+        console.log('App currentState' + AppState.currentState)
+        console.log('App nextAppState' + AppState.nextAppState)        
+
+        this.checkLocationPermission()
     }
 
     showIntertitialAd = () => {
@@ -416,32 +428,28 @@ class MapViewScreen extends React.Component {
         )
     }
 
-    onCloseDropdownAlert(data) {
-        // data = {type, title, message, action}
-        // action means how the alert was closed.
-        // returns: automatic, programmatic, tap, pan or cancel
-
-        this.showDropdownAlert()        
-      }
+    onTappedDropdownAlert(data) {
+        OpenAppSettings.open()
+    }
 
     showDropdownAlert = () => {
-        this.dropdown.alertWithType('error', 'Error',
-        "Location Services Disabled, Please turn on Location Service to enable location sharing");
+        MessageBarManager.showAlert({
+            title: 'Your alert title goes here',
+            message: 'Your alert message goes here',
+            alertType: 'error',
+          });
     }
 
     renderDropdownAlert = () => {
         return (
-            <DropdownAlert 
-                translucent={true}
-                tapToCloseEnabled={true}
-                panResponderEnabled={false}
-                activeStatusBarStyle="dark-content"
-                closeInterval={1000 * 60}
-                ref={ref => this.dropdown = ref} 
-                onClose={data => {
-                    this.onCloseDropdownAlert(data)
-                }} 
-            />
+            <MessageBarAlert
+                shouldHideAfterDelay={false}
+                shouldHideOnTap={false}
+                onTapped={() => {
+                    this.onTappedDropdownAlert()
+                }}
+                duration={1000 * 60}
+                ref="alert" />
         )
     }
 
@@ -465,20 +473,24 @@ class MapViewScreen extends React.Component {
         // console.log("MapView componentWillReceiveProps newProps: " + JSON.stringify(newProps))
         // console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
 
+        console.log("MapView componentWillReceiveProps locationPermission: " +
+            this.state.locationPermission)
+
+
         this.subscribeInbox()
 
-        if(newProps != this.props){
-            if(this.state.locationPermission == "denied" 
-                || newProps.store.mapState.locationPermission == "denied") {
-                
-                    this.showDropdownAlert(null)
-            }
+        if(this.state.locationPermission == "denied" || 
+            newProps.store.mapState.locationPermission == "denied") {
+            this.showDropdownAlert()
         }
 
     }
 
     componentDidMount = () => {
         console.log("MapView componentDidMount")
+
+        AppState.addEventListener('change', this.handleAppStateChange);
+        MessageBarManager.registerMessageBar(this.refs.alert);
 
         this.getCurrentUser()
         this.getCurrentPosition()
@@ -494,6 +506,13 @@ class MapViewScreen extends React.Component {
             // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
             console.log( "Permissions response : " + response)
             this.setState({ locationPermission: response })
+
+            if(response == "denied") {
+                this.showDropdownAlert()
+            } else {
+                MessageBarManager.hideAlert();
+                this.getCurrentPosition()
+            }
         })
     }
 
