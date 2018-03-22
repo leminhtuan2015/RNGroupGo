@@ -20,6 +20,7 @@ target 'demo_react_native' do
     'BatchedBridge'
   ]
 
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'react-native-maps', path: rn_maps_path

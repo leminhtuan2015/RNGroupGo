@@ -5,6 +5,7 @@ import DeviceInfo from 'react-native-device-info';
 
 const initialState = {
     currentCoordinate: {latitude: 0, longitude: 0},
+    locationPermission: false,
     friendId: null,
     friendData: null,
     channelId: null,
@@ -32,8 +33,8 @@ export const MapReducer = (state = initialState, action) => {
 }
 
 function setCurrentPlace(state, data) {
-    const {region} = data
-    return Object.assign({}, state, {currentCoordinate: region})
+    const {region, locationPermission} = data
+    return Object.assign({}, state, {currentCoordinate: region, locationPermission: locationPermission})
 }
 
 function setFriendInMap(state, data) {

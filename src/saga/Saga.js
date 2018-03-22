@@ -203,7 +203,8 @@ export function* getCurrentPlace() {
 
     // console.log("saga getCurrentPlace : " + region)
 
-    yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE, data: {region: region}})
+    yield put({type: ActionTypes.MAP_SET_CURRENT_PLACE,
+        data: {region: region, locationPermission: region ? true : "denied"}})
 }
 
 export function* getFriendData(action) {

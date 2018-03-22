@@ -10,8 +10,9 @@ import {
     Image,
 } from "react-native"
 
+import Permissions from 'react-native-permissions'
 import {AdMobInterstitial} from 'react-native-admob'
-
+import DropdownAlert from 'react-native-dropdownalert';
 import DialogBox from "react-native-dialogbox"
 import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
@@ -55,7 +56,10 @@ class MapViewScreen extends React.Component {
         this.currentDraggedRegion = null
         this.mapView = null
         this.dialogbox = null
+        this.dropdown = null
         this.mapDistance = MapViewScreen.defaultDistance
+
+        this.state = {locationPermission: false}
     }
 
     showIntertitialAd = () => {
@@ -124,7 +128,7 @@ class MapViewScreen extends React.Component {
     }
 
     updateCurrentPosition = () => {
-        if (this.props.store.userState.currentUser) {
+        if (this.props.store.userState.currentUser && this.props.store.mapState.currentCoordinate) {
             this.props.dispatch({
                 type: ActionTypes.MAP_UPDATE_CURRENT_PLACE_TO_FIREBASE,
                 data: {
@@ -184,6 +188,10 @@ class MapViewScreen extends React.Component {
     }
 
     animateToCurrentRegion = (mapDistance) => {
+        if(!this.props.store.mapState.currentCoordinate){
+            return
+        }
+
         let currentRegion = this.regionFrom(
             this.props.store.mapState.currentCoordinate.latitude,
             this.props.store.mapState.currentCoordinate.longitude,
@@ -369,10 +377,15 @@ class MapViewScreen extends React.Component {
     }
 
     renderMapView = () => {
-        let currentRegion = this.regionFrom(
-            this.props.store.mapState.currentCoordinate.latitude,
-            this.props.store.mapState.currentCoordinate.longitude,
-            MapViewScreen.defaultDistance)
+
+        let currentRegion = MapViewScreen.defaultCoordinate
+
+        if(this.props.store.mapState.currentCoordinate){
+            currentRegion = this.regionFrom(
+                this.props.store.mapState.currentCoordinate.latitude,
+                this.props.store.mapState.currentCoordinate.longitude,
+                MapViewScreen.defaultDistance)
+        }
 
         if (this.currentDraggedRegion) {
             currentRegion = this.currentDraggedRegion
@@ -403,6 +416,35 @@ class MapViewScreen extends React.Component {
         )
     }
 
+    onCloseDropdownAlert(data) {
+        // data = {type, title, message, action}
+        // action means how the alert was closed.
+        // returns: automatic, programmatic, tap, pan or cancel
+
+        this.showDropdownAlert()        
+      }
+
+    showDropdownAlert = () => {
+        this.dropdown.alertWithType('error', 'Error',
+        "Location Services Disabled, Please turn on Location Service to enable location sharing");
+    }
+
+    renderDropdownAlert = () => {
+        return (
+            <DropdownAlert 
+                translucent={true}
+                tapToCloseEnabled={true}
+                panResponderEnabled={false}
+                activeStatusBarStyle="dark-content"
+                closeInterval={1000 * 60}
+                ref={ref => this.dropdown = ref} 
+                onClose={data => {
+                    this.onCloseDropdownAlert(data)
+                }} 
+            />
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -410,9 +452,11 @@ class MapViewScreen extends React.Component {
                 {this.renderTools()}
                 {!this.props.store.mapState.channelId && this.renderFindFriendButton()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
+                {this.renderDropdownAlert()}
+
                 <DialogBox ref={dialogbox => {
                     this.dialogbox = dialogbox
-                }}/>
+                }}/>                
             </View>
         );
     }
@@ -422,6 +466,15 @@ class MapViewScreen extends React.Component {
         // console.log("MapView componentWillReceiveProps currentUser: " + this.props.store.userState.currentUser)
 
         this.subscribeInbox()
+
+        if(newProps != this.props){
+            if(this.state.locationPermission == "denied" 
+                || newProps.store.mapState.locationPermission == "denied") {
+                
+                    this.showDropdownAlert(null)
+            }
+        }
+
     }
 
     componentDidMount = () => {
@@ -433,9 +486,18 @@ class MapViewScreen extends React.Component {
 
         this.navigationSetParams()
         this.showIntertitialAd()
+        this.checkLocationPermission()
     }
 
-    navigationSetParams = (headerTitle = "") => {
+    checkLocationPermission = () => {
+        Permissions.request('location').then(response => {
+            // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+            console.log( "Permissions response : " + response)
+            this.setState({ locationPermission: response })
+        })
+    }
+
+    navigationSetParams = (headerTitle = "Location Sharing") => {
         this.props.navigation
             .setParams({
                 rightButtonOnPress: this.rightButtonOnPress,
