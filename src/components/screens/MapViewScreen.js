@@ -385,7 +385,7 @@ class MapViewScreen extends React.Component {
                 }}
                 provider={PROVIDER_GOOGLE}
                 showsCompass={true}
-                loadingEnabled={true}
+                loadingEnabled={false}
                 style={styles.map}
                 region={currentRegion}
 
