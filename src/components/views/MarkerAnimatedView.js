@@ -55,14 +55,8 @@ class MarkerAnimatedView extends React.Component {
         if(!newCoordinate){
             return
         }
-
-        if (Platform.OS === 'android') {
-            if (this.marker) {
-                this.marker._component.animateMarkerToCoordinate(newCoordinate, 500);
-            }
-        } else {
-            this.coordinateAnimated.timing(newCoordinate).start();
-        }
+        
+        this.coordinateAnimated.timing(newCoordinate).start();
     }
 
     render() {

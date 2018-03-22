@@ -324,7 +324,7 @@ class MapViewScreen extends React.Component {
                 <TouchableHighlight
                     underlayColor="transparent"
                     onPress={() => {
-                        this.props.navigation.navigate("ContactView")
+                        this.handleGoToContactView()
                     }}
                 >
                     <Image
