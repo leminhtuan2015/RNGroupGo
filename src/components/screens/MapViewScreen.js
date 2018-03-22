@@ -434,8 +434,8 @@ class MapViewScreen extends React.Component {
 
     showDropdownAlert = () => {
         MessageBarManager.showAlert({
-            title: 'Your alert title goes here',
-            message: 'Your alert message goes here',
+            title: 'Location Services Disabled',
+            message: 'Please turn on Location Services to enable Location Sharing feature',
             alertType: 'error',
           });
     }
