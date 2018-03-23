@@ -9,6 +9,7 @@ import {
     TouchableHighlight,
     Image,
     AppState,
+    Platform,
 } from "react-native"
 
 
@@ -71,7 +72,9 @@ class MapViewScreen extends React.Component {
         console.log('App currentState' + AppState.currentState)
         console.log('App nextAppState' + AppState.nextAppState)        
 
-        this.checkLocationPermission()
+        if (Platform.OS === 'ios') {
+            this.checkLocationPermission()
+        }
     }
 
     showIntertitialAd = () => {
@@ -507,7 +510,7 @@ class MapViewScreen extends React.Component {
             console.log( "Permissions response : " + response)
             this.setState({ locationPermission: response })
 
-            if(response == "denied") {
+            if(response == "denied" || response == "restricted") {
                 this.showDropdownAlert()
             } else {
                 MessageBarManager.hideAlert();
