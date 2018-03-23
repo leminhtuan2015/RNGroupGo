@@ -22,6 +22,7 @@ import IconManager from "../../utils/IconManager"
 import MarkerAnimatedView from "../views/MarkerAnimatedView"
 import NavBarItem from "../views/NavBarItem"
 import * as ActionTypes from "../../constants/ActionTypes"
+import * as Constant from "../../utils/Constant"
 import MessageTypes from "../../constants/MessageTypes";
 import NavigationHelper from "../views/NavigationHelper";
 import FirebaseHelper from "../../helpers/FirebaseHelper";
@@ -81,9 +82,14 @@ class MapViewScreen extends React.Component {
 
     showIntertitialAd = () => {
         // Display an interstitial
-        AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
-        AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
-        AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+        try {
+            AdMobInterstitial.setAdUnitID(Constant.ADS_INTERTITIAL_ID);
+            AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+            AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+        } catch (error) {
+            console.log("Error show ad")
+        }
+
     }
 
     rightButtonOnPress = () => {

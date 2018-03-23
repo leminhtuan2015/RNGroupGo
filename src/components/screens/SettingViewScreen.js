@@ -22,10 +22,10 @@ import IconManager from "../../utils/IconManager";
 
 class SettingViewScreen extends BaseViewScreen {
 
-    static APPLE_APP_ID = "id302584613"
+    static APPLE_APP_ID = "id1362024645"
     static GOOGLE_APP_ID = "com.eaglecs.learningkorean"
 
-    static APPLE_DEVELOPER_ID = "id284417353"
+    static APPLE_DEVELOPER_ID = "id1191347157"
     static GOOGLE_DEVELOPER_ID = "5054071932619131185"
 
     constructor(props) {

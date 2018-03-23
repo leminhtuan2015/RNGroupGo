@@ -20,7 +20,7 @@ class FriendViewScreen extends BaseViewScreen {
 
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            userDataSource: this.ds.cloneWithRows([{name: "tuan"}]),
+            userDataSource: this.ds.cloneWithRows([]),
         }
     }
 
@@ -82,10 +82,20 @@ class FriendViewScreen extends BaseViewScreen {
         )
     }
 
+    renderText = () => {
+        return(
+            <View style={styles.text}>
+                <Text style={{fontSize: 16, marginTop: 30, color: "#BDBDBD"}}>
+                    Currently, there are no communication yet
+                </Text>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                {this.renderListView()}
+                {this.state.userDataSource.length ? this.renderListView() : this.renderText()}
             </View>
         );
     }
@@ -123,6 +133,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         marginTop: 20,
+    },
+
+    text: {
+        justifyContent: 'center',
+        alignItems: "center",
     },
 
     button: {
