@@ -50,9 +50,11 @@ class MapViewScreen extends React.Component {
         }
     }
 
-    static defaultCoordinate = {
+    static defaultRegion = {
         latitude: 0.0,
         longitude: 0.0,
+        latitudeDelta: 1,
+        longitudeDelta: 1,
     }
 
     static defaultDistance = 300
@@ -393,7 +395,7 @@ class MapViewScreen extends React.Component {
 
     renderMapView = () => {
 
-        let currentRegion = MapViewScreen.defaultCoordinate
+        let currentRegion = MapViewScreen.defaultRegion
 
         if(this.props.store.mapState.currentCoordinate){
             currentRegion = this.regionFrom(
