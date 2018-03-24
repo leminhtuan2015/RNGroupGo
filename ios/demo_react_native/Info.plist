@@ -65,20 +65,18 @@
 			</dict>
 		</dict>
 	</dict>
-  
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Require Usage Apple Music</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Require Usage Bluetooth</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Require Usage Calendars</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Require Usage Location</string>
-  <key>NSCalendarsUsageDescription</key>
-  <string>Require Usage Calendars</string>
-  <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>Require Usage Bluetooth</string>
-  <key>NSAppleMusicUsageDescription</key>
-  <string>Require Usage Apple Music</string>
-  <key>NSMotionUsageDescription</key>
-  <string>Require Usage Motion</string>
-  <key>NSSpeechRecognitionUsageDescription</key>
-  <string>Require Usage Speech Recognition</string>
-  
+	<key>NSMotionUsageDescription</key>
+	<string>Require Usage Motion</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Require Usage Speech Recognition</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>
