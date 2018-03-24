@@ -28,10 +28,9 @@ class MarkerAnimatedView extends React.Component {
     constructor(props) {
         super(props)
 
-        this.coordinateAnimated =
-            new AnimatedRegion(MarkerAnimatedView.defaultCoordinate);
+        this.coordinateAnimated = new AnimatedRegion(MarkerAnimatedView.defaultCoordinate);
         this.marker = null
-        this.subscribe(this.props.userId)
+        this.currentCoordinate = null
 
         console.log("constructor MarkerAnimatedView subscribe : " + this.props.userId)
     }
@@ -44,6 +43,7 @@ class MarkerAnimatedView extends React.Component {
         FirebaseHelper.observe(path, (data) => {
             if(!data){ return}
             const newCoordinate = data.coordinate
+            this.currentCoordinate = newCoordinate
             console.log("subscribe newCoordinate: " + JSON.stringify(newCoordinate))
             this.moveMarker(newCoordinate)
         })
@@ -70,6 +70,9 @@ class MarkerAnimatedView extends React.Component {
     }
 
     render() {
+        this.coordinateAnimated =
+            new AnimatedRegion(this.currentCoordinate ? this.currentCoordinate : MarkerAnimatedView.defaultCoordinate);
+
         return (
             <View>
                 <MapView.Marker.Animated
@@ -86,6 +89,11 @@ class MarkerAnimatedView extends React.Component {
             </View>
         );
     }
+
+    componentDidMount = () => {
+        this.subscribe(this.props.userId)
+    }
+    
 }
 
 export default MarkerAnimatedView
