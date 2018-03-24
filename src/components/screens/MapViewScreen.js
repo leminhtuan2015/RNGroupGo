@@ -730,7 +730,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         top: 10,
-        left: 10,
+        left: 5,
         bottom: 80,
     },
 
