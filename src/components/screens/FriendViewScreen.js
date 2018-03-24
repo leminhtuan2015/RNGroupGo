@@ -20,6 +20,7 @@ class FriendViewScreen extends BaseViewScreen {
 
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
+            users: [],
             userDataSource: this.ds.cloneWithRows([]),
         }
     }
@@ -95,7 +96,7 @@ class FriendViewScreen extends BaseViewScreen {
     render() {
         return (
             <View style={styles.container}>
-                {this.state.userDataSource.length ? this.renderListView() : this.renderText()}
+                {this.state.users.length ? this.renderListView() : this.renderText()}
             </View>
         );
     }
@@ -104,6 +105,7 @@ class FriendViewScreen extends BaseViewScreen {
         // console.log("Contact will receive props :" + JSON.stringify(this.props))
 
         this.setState({
+            users: newProps.store.userState.friendsHistory,
             userDataSource: this.ds.cloneWithRows(newProps.store.userState.friendsHistory),
         })
     }
