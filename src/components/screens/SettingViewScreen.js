@@ -73,7 +73,7 @@ class SettingViewScreen extends BaseViewScreen {
         }).catch((err) => {
             this.dialogbox.tip({
                 title: "Notification",
-                content: "Can not open app store.",
+                content: "Can not open app store",
                 btn: {
                     text: "OK",
                     callback: () => {
@@ -84,22 +84,54 @@ class SettingViewScreen extends BaseViewScreen {
     }
 
     openFeedback = () => {
-        Linking.openURL('mailto:minhtuan.techno@gmail.com?subject=Feedback&body=LocalSharing')
+        const linkMailApp = 'mailto:minhtuan.techno@gmail.com?subject=Feedback&body=LocalSharing'
+        
+        Linking.canOpenURL(linkMailApp).then(supported => {
+            if(supported){
+                Linking.openURL(linkMailApp)
+            } else {
+                this.dialogbox.tip({
+                    title: "Notification",
+                    content: "Please install mail app first",
+                    btn: {
+                        text: "OK",
+                        callback: () => {
+                        },
+                    },
+                });
+            }
+        }, (err) => {
+            this.dialogbox.tip({
+                title: "Notification",
+                content: "Can not open mail app",
+                btn: {
+                    text: "OK",
+                    callback: () => {
+                    },
+                },
+            });
+        })
     }
 
     openDevelopApps = () => {
         let linkApple = "itms-apps://itunes.apple.com/us/developer/apple/" + SettingViewScreen.APPLE_DEVELOPER_ID + "?mt=8"
+        let linkAppleWeb = "https://itunes.apple.com/us/developer/apple/" + SettingViewScreen.APPLE_DEVELOPER_ID + "?mt=8"
+
         let linkGG = "market://play.google.com/store/apps/dev?id=" + SettingViewScreen.GOOGLE_DEVELOPER_ID
         let link = linkApple
 
         Platform.OS === 'ios' ? link = linkApple : link = linkGG
 
         Linking.canOpenURL(link).then(supported => {
-            supported && Linking.openURL(link)
+            if(supported){
+                Linking.openURL(link)
+            } else {
+                Linking.openURL(linkAppleWeb)
+            }
         }, (err) => {
             this.dialogbox.tip({
                 title: "Notification",
-                content: "Can not open app store.",
+                content: "Can not open app store",
                 btn: {
                     text: "OK",
                     callback: () => {
