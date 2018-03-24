@@ -345,31 +345,25 @@ class MapViewScreen extends React.Component {
 
     renderFindFriendButton = () => {
         return (
-            <View style={styles.findFriendButtonContainer}>
-                <View/>
-                <View/>
-                <View/>
-                <View/>
-                <View/>
-
-                <TouchableHighlight
-                    underlayColor="transparent"
-                    onPress={() => {
-                        this.handleGoToContactView()
-                    }}
-                >
-                    <Image
-                        style={styles.findFriendButton}
-                        source={require('../../resources/images/add-person.png')}
-                    />
-                </TouchableHighlight>
-            </View>
+            <TouchableHighlight
+                underlayColor="transparent"
+                onPress={() => {
+                    this.handleGoToContactView()
+                }}
+            >
+                <Image
+                    style={styles.findFriendButton}
+                    source={require('../../resources/images/add-person.png')}
+                />
+            </TouchableHighlight>
         )
     }
 
     renderTools = () => {
         return (
-            <View style={styles.tool}>
+            <View style={styles.toolLeft}>
+                <View/>
+
                 {this.props.store.mapState.friendData && this.renderUserIconOnTool()}
 
                 <View/>
@@ -395,6 +389,13 @@ class MapViewScreen extends React.Component {
                         this.animateToCurrentRegion(MapViewScreen.defaultDistance)
                     })}
                 </View>
+
+                <View/>
+                <View/>
+                <View/>
+
+                {!this.props.store.mapState.channelId && this.renderFindFriendButton()}
+
             </View>
         )
     }
@@ -469,7 +470,6 @@ class MapViewScreen extends React.Component {
             <View style={styles.container}>
                 {this.renderMapView()}
                 {this.renderTools()}
-                {!this.props.store.mapState.channelId && this.renderFindFriendButton()}
                 {!this.props.store.mapState.channelId && this.renderBottomBar()}
                 {this.renderDropdownAlert()}
 
@@ -720,6 +720,20 @@ const styles = StyleSheet.create({
         right: 10,
         bottom: 80,
     },
+
+    toolLeft: {
+        backgroundColor: "transparent",
+        // backgroundColor: "red",
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        top: 10,
+        left: 10,
+        bottom: 80,
+    },
+
     findFriendButtonContainer: {
         backgroundColor: "transparent",
         // backgroundColor: "red",
