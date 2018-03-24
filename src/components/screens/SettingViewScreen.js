@@ -23,7 +23,7 @@ import IconManager from "../../utils/IconManager";
 class SettingViewScreen extends BaseViewScreen {
 
     static APPLE_APP_ID = "id1362024645"
-    static GOOGLE_APP_ID = "com.eaglecs.learningkorean"
+    static GOOGLE_APP_ID = "com.leminhtuan.locationsharing"
 
     static APPLE_DEVELOPER_ID = "id1191347157"
     static GOOGLE_DEVELOPER_ID = "5054071932619131185"
@@ -55,7 +55,7 @@ class SettingViewScreen extends BaseViewScreen {
     openInfomationDialog = () => {
         this.dialogbox.tip({
             title: "Infomation",
-            content: "Version 2018.03.19",
+            content: "Version 1.0.0",
             btn: {
                 text: "OK",
                 callback: () => {

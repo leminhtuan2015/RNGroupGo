@@ -36,7 +36,7 @@ class RequestingLocationScreen extends Component<> {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <Text style={styles.titleText}>Requesting</Text>
+                    <Text style={styles.titleText}>Requesting Location</Text>
                     <Text>{this.friendData.name}</Text>
                 </View>
 
@@ -130,17 +130,17 @@ class RequestingLocationScreen extends Component<> {
         }
 
         if (myStatus == -2) {
-            Alert.alert("You Leaved Map")
+            Alert.alert("You Stopped Sharing Location")
             this.goToHome()
         } else if (friendStatus == -2) {
-            Alert.alert("Friend Leaved Map")
+            Alert.alert("Friend Stopped Sharing Location With You")
             this.goToHome()
         } else if (friendStatus == -1) {
-            Alert.alert("Friend Rejected")
+            Alert.alert("Request Rejected")
             this.props.navigation.goBack()
             this.unSubscribeChannel(channelId)
         } else if (friendStatus == 1) {
-            Alert.alert("Friend Accepted")
+            Alert.alert("Request Accepted")
             this.props.navigation.goBack()
             this.gotoMapWithFriend(channelId, friendId)
         }

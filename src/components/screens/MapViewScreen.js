@@ -103,12 +103,12 @@ class MapViewScreen extends React.Component {
             "",
             [
                 {
-                    text: "Over View", onPress: () => {
+                    text: "Over View All Members In Map", onPress: () => {
                         this.overViewAllUsers()
                     }
                 },
                 {
-                    text: "Leave This Map", onPress: () => {
+                    text: "Stop Sharing Location", onPress: () => {
                         this.confirmLeaveMap()
                     }
                 },
@@ -123,7 +123,7 @@ class MapViewScreen extends React.Component {
 
     confirmLeaveMap = () => {
         this.dialogbox.confirm({
-            title: "Would you like to leave?",
+            title: "Would you like to stop sharing location?",
             content: [""],
             ok: {
                 text: "Yes",
@@ -508,7 +508,7 @@ class MapViewScreen extends React.Component {
         this.autoUpdateMyPosition()
 
         this.navigationSetParams()
-        this.showIntertitialAd()
+        // this.showIntertitialAd()
         this.checkLocationPermission()
     }
 
@@ -677,10 +677,10 @@ class MapViewScreen extends React.Component {
         }
 
         if (myStatus == -2) {
-            dialogTitle = "You Leaved Map"
+            dialogTitle = "You Stopped Sharing Location"
             this.goToHome()
         } else if (friendStatus == -2) {
-            dialogTitle = "Friend Leaved Map"
+            dialogTitle = "Friend Stopped Sharing Location With You"
             this.goToHome()
         }
 

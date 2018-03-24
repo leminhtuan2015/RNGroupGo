@@ -44,7 +44,7 @@ class InCommingRequestLocationScreen extends Component<> {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <Text style={styles.titleText}>Incoming Request</Text>
+                    <Text style={styles.titleText}>Share Location Request</Text>
                     <Text>
                         {friendName}
                     </Text>
@@ -66,7 +66,7 @@ class InCommingRequestLocationScreen extends Component<> {
                         onPress={() => {
                             this.rejected()
                         }}
-                        title="Cancel"
+                        title="Decline"
                         borderRadius={5}
                         color="white"
                         backgroundColor="#C62828"
@@ -79,7 +79,7 @@ class InCommingRequestLocationScreen extends Component<> {
                         onPress={() => {
                             this.accepted()
                         }}
-                        title="OK"
+                        title="Accept"
                         borderRadius={5}
                         color="white"
                         backgroundColor="#4CAF50"

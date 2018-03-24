@@ -12,6 +12,7 @@ import * as ActionTypes from "../../constants/ActionTypes"
 import * as Constant from "../../utils/Constant"
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import BaseViewScreen from "./BaseViewScreen"
+import SettingViewScreen from "./SettingViewScreen"
 
 var t = require('tcomb-form-native')
 var Form = t.form.Form;
@@ -59,13 +60,20 @@ class InviteFriendViewScreen extends BaseViewScreen {
     }
 
     sendEmail = (email) => {
+
+        const htmlContent = 
+        "<ul>" + 
+        "<li><b>IOS:</b> https://itunes.apple.com/us/developer/apple/" + SettingViewScreen.APPLE_APP_ID + "?mt=8</li>"
+        + "<li><b>Android:</b> https://play.google.com/store/apps/details?id=" + SettingViewScreen.GOOGLE_APP_ID + "</li>"
+        + "</ul>"
+
         this.props.dispatch({
             type: ActionTypes.SAGA_SEND_EMAIL,
             data: {
                 url: Constant.FIREBASE_FUNCTIONS_SEND_MAIL,
                 toEmailAddress: email,
                 emailSubject: "Invitation to use Location Sharing app",
-                emailHtmlContent: "Your friend invite you to use this app:",
+                emailHtmlContent: htmlContent,
             }
         })
     }
@@ -79,7 +87,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
 
                 this.dialogbox.tip({
                     title: "Successful",
-                    content: "Invite request is sent",
+                    content: "Invitation has been sent",
                     btn: {
                         text: "OK",
                         callback: () => {
@@ -90,7 +98,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
             } else {
                 this.dialogbox.tip({
                     title: "Error",
-                    content: "Email address is not valid",
+                    content: "Please enter a valid email address",
                     btn: {
                         text: "OK",
                         callback: () => {
@@ -102,7 +110,7 @@ class InviteFriendViewScreen extends BaseViewScreen {
         } else {
             this.dialogbox.tip({
                 title: "Notification",
-                content: "Please fill the email field",
+                content: "Please fill in the email field",
                 btn: {
                     text: "OK",
                     callback: () => {
