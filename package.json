@@ -35,6 +35,7 @@
     "react-native-ui-kitten": "^3.0.0",
     "react-native-vector-icons": "^4.4.3",
     "react-navigation": "^1.0.0-beta.27",
+    "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
