@@ -1871,6 +1871,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.leminhtuan.locationsharing;
 				PRODUCT_NAME = demo_react_native;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1907,6 +1908,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.leminhtuan.locationsharing;
 				PRODUCT_NAME = demo_react_native;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
