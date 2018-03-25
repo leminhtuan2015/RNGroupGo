@@ -41,7 +41,7 @@ class MapViewScreen extends React.Component {
                 color="gray"
                 onPress={params.rightButtonOnPress}/>
 
-        const headerTitle = (<Text>{params.headerTitle}</Text>)
+        const headerTitle = params.headerTitle
 
         return {
             tabBarLabel: params.label,
