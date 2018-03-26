@@ -5,9 +5,8 @@ ASSETS_DEST="android/app/src/main/res/"
 cd ../
 
 react-native bundle \
+  --platform android \
   --dev false \
 	--entry-file ${INDEX_JS} \
   --bundle-output ${BUNDLE_OUTPUT} \
-  --assets-dest ${ASSETS_DEST} \ 
-	--platform android
-
+  --assets-dest ${ASSETS_DEST}
