@@ -1,4 +1,4 @@
 cd ../android
 
 ./gradlew clean
-./gradlew assembleRelease
+./gradlew assembleRelease --stacktrace

@@ -100,7 +100,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 //END KEYSTORE
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
     defaultConfig {
