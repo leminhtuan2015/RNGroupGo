@@ -2,7 +2,6 @@ package com.demo_react_native;
 
 import android.app.Application;
 
-import com.facebook.BuildConfig;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.react.ReactApplication;
