@@ -41,10 +41,10 @@ PODS:
   - nanopb/encode (0.3.8)
   - React (0.51.0):
     - React/Core (= 0.51.0)
-  - react-native-google-maps (0.19.0):
+  - react-native-google-maps (0.20.1):
     - GoogleMaps (= 2.5.0)
     - React
-  - react-native-maps (0.19.0):
+  - react-native-maps (0.20.1):
     - React
   - React/BatchedBridge (0.51.0):
     - React/Core
@@ -107,15 +107,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
   react-native-google-maps:
-    :path: "../node_modules/react-native-maps"
+    :path: ../node_modules/react-native-maps
   react-native-maps:
-    :path: "../node_modules/react-native-maps"
+    :path: ../node_modules/react-native-maps
   ReactNativePermissions:
-    :path: "../node_modules/react-native-permissions"
+    :path: ../node_modules/react-native-permissions
   yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
+    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
 
 SPEC CHECKSUMS:
   Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
@@ -128,11 +128,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   React: 352f02f1db6e4744f9a758527e13e3fdefbbd6ba
-  react-native-google-maps: dc6d7644b0517e6e232644d2b66004714b91e152
-  react-native-maps: d3b689927722398a12a4b3007fd9a0c60e1c48cd
+  react-native-google-maps: 74a81c3aa24f2095fe8c8d27cb80b2b3808a5bc3
+  react-native-maps: 6ab4fa4f78e88824ec300de0eb412f0556b6a84b
   ReactNativePermissions: 2e324bb3baf12702e3ec27f76c8ae1158fa69fc6
   yoga: b5d96400ca8b2936965a7a6516da7c1177f432a3
 
 PODFILE CHECKSUM: e90b8b8db908dd453dde0113f65dc7674ef7ea93
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
