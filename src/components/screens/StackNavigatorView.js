@@ -14,9 +14,11 @@ import InCommingRequestLocationContainer from "../../containers/InCommingRequest
 import FriendViewContainer from "../../containers/FriendViewContainer"
 import SettingViewContainer from "../../containers/SettingViewContainer"
 import InviteFriendViewContainer from "../../containers/InviteFriendViewContainer";
+import ChatViewContainer from "../../containers/ChatViewContainer";
 
 const StackNavigatorView = StackNavigator(
     {
+        ChatView: {screen: ChatViewContainer},
         MapView: {screen: MapViewContainer},
         ProfileView: {screen: ProfileViewContainer},
         ContactView: {screen: ContactViewContainer},
