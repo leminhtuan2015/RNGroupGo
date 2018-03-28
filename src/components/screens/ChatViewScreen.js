@@ -20,11 +20,14 @@ import AppLink from 'react-native-app-link'
 import DialogBox from "react-native-dialogbox"
 import BaseViewScreen from "./BaseViewScreen";
 import IconManager from "../../utils/IconManager";
+import RocketChatSubscription from "../../helpers/RocketChatSubscription"
 
 class ChatViewScreen extends BaseViewScreen {
 
     constructor(props) {
         super(props)
+
+        RocketChatSubscription.subscribe()
     }
 
     onClickButton = () => {
