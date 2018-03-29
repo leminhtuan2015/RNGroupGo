@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "ddp-client": "^0.1.2",
     "firebase": "^4.9.0",
     "react": "16.0.0",
     "react-ddp": "^1.1.11",
