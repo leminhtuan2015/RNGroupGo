@@ -33,11 +33,11 @@ class ChatViewScreen extends BaseViewScreen {
     onClickButton = () => {
         console.log("Hello")
 
-        fetch('http://localhost:3000/api/v1/chat.postMessage', {
+        fetch('https://open.rocket.chat/api/v1/chat.postMessage', {
             method: 'POST',
             headers: {
-                "X-Auth-Token": "WTSr59QZg1iZ-E1ZzUZpG0Bcp0PgQhIpJG50torh7LW",
-                "X-User-Id": "ghKGbKC3EcP6uKyem",
+                "X-Auth-Token": "32mnBoMBAYXGU-YP94XZ6oNm01II6di2cSv6qGouRck",
+                "X-User-Id": "a4JtGAoBZmkvbKPs7",
                 "Accept": 'application/json',
                 'Content-Type': 'application/json',
             },

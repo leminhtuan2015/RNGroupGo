@@ -1,8 +1,8 @@
 import DDP from "react-ddp";
 import Meteor from 'react-native-meteor';
 
-const serverHost = "wss://localhost:3000/websocket";
-const authToken = "WTSr59QZg1iZ-E1ZzUZpG0Bcp0PgQhIpJG50torh7LW";
+const serverHost = "wss://open.rocket.chat/websocket";
+const authToken = "32mnBoMBAYXGU-YP94XZ6oNm01II6di2cSv6qGouRck";
 const subscribe = "GENERAL";
 
 
@@ -16,22 +16,13 @@ class RocketChatHelper {
 
         console.log("RocketChatHelper Connecting")
 
-        Meteor.call('login', {
-            "msg": "method",
-            "method": "login",
-            "id": "42",
-            "params":[
-                { "resume": "auth-token" }
-            ]
-        }, (error, result) => {
+        Meteor.call('login', [{ "resume": authToken }], (error, result) => {
             if(error){
                 console.log("RocketChatHelper login error : " + JSON.stringify(error))
             } else {
                 console.log("RocketChatHelper login ok")
             }
         });
-
-        console.log("Meteor.status() : " + JSON.stringify(Meteor.status()))
     }
 }
 
