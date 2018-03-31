@@ -3,14 +3,13 @@
 // import DDPClient from "ddp";
 import DDPClient from "ddp-client";
 
-
 const serverHost = "wss://open.rocket.chat/websocket";
 const authToken = "32mnBoMBAYXGU-YP94XZ6oNm01II6di2cSv6qGouRck";
 const subscribe = "GENERAL";
 
 class RocketChatHelper {
 
-    static subscribe() {
+    static subscribe(onMessage) {
         process.nextTick = setImmediate
         
         console.log("RocketChatHelper Initing")
@@ -55,6 +54,10 @@ class RocketChatHelper {
                             console.log("Subscription Complete.\n");                            
                             ddpclient.on("message", function (msg) {
                                 console.log("On message -----> : " + msg);
+                                const msgJson = JSON.parse(msg)
+                                if(msgJson.msg == "changed"){
+                                    onMessage(msgJson)
+                                }
                             });
                         })
                     }

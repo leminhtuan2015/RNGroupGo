@@ -9,7 +9,9 @@
   "dependencies": {
     "ddp": "^0.12.1",
     "ddp-client": "^0.1.2",
+    "emoji-utils": "^1.0.1",
     "firebase": "^4.9.0",
+    "prop-types": "^15.6.1",
     "react": "16.0.0",
     "react-ddp": "^1.1.11",
     "react-native": "0.51.0",
@@ -22,6 +24,7 @@
     "react-native-elements": "^0.18.5",
     "react-native-fbsdk": "^0.7.0",
     "react-native-firebase": "^3.3.1",
+    "react-native-gifted-chat": "^0.4.3",
     "react-native-google-signin": "^0.12.0",
     "react-native-indicator": "^0.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.4.4",
