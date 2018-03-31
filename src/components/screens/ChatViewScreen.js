@@ -34,7 +34,7 @@ class ChatViewScreen extends BaseViewScreen {
         this.state = {messages: []}
 
         RocketChatHelper.subscribe((msgJson) => {
-            console.log("Got message: " + msgJson)
+            console.log("<<<<<<<<<<<<<<<<<<<<<< Got message: " + msgJson)
 
             const newMessages = [
                 {
@@ -85,7 +85,10 @@ class ChatViewScreen extends BaseViewScreen {
     onSend(messages = []) {
         console.log("onSend : " + JSON.stringify(messages))
 
-        this.sendMessageToRocket(messages[0].text)
+        const text = messages[0].text
+
+        RocketChatHelper.sendMessageToRocket(text)
+        // RocketChatHelper.sendLiveMessageToRocket(text)
     }
 
     renderMessage(props) {
@@ -107,25 +110,6 @@ class ChatViewScreen extends BaseViewScreen {
         );
     }
 
-    sendMessageToRocket = (text) => {
-        console.log("Hello")
-
-        fetch('https://open.rocket.chat/api/v1/chat.postMessage', {
-            method: 'POST',
-            headers: {
-                "X-Auth-Token": "32mnBoMBAYXGU-YP94XZ6oNm01II6di2cSv6qGouRck",
-                "X-User-Id": "a4JtGAoBZmkvbKPs7",
-                "Accept": 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "channel": "#general",
-                "text": text
-            }),
-        });
-
-    }
-
     render = () => {
         return (
             <View style={styles.container}>
@@ -133,11 +117,6 @@ class ChatViewScreen extends BaseViewScreen {
                     messages={this.state.messages}
                     renderMessage={this.renderMessage}
                     onSend={messages => this.onSend(messages)}
-                    user={{
-                        _id: 2,
-                        name: "Tuan 2",
-                        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzOT4uekAcWnhWFJ691CSzeyaw81YVHWYXTes30KLNGqqeGag_Xw',
-                    }}
                 />
             </View>
         )
