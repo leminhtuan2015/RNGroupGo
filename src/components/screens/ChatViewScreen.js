@@ -36,6 +36,10 @@ class ChatViewScreen extends BaseViewScreen {
         RocketChatHelper.subscribe((msgJson) => {
             console.log("<<<<<<<<<<<<<<<<<<<<<< Got message: " + msgJson)
 
+            const avatar = "https://open.rocket.chat/avatar/" + msgJson.fields.args[0].u.username
+
+            console.log("avatar : " + avatar)
+
             const newMessages = [
                 {
                     _id: msgJson.fields.args[0]._id,
@@ -44,7 +48,7 @@ class ChatViewScreen extends BaseViewScreen {
                     user: {
                         _id: msgJson.fields.args[0].u._id,
                         name: msgJson.fields.args[0].u.username,
-                        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzOT4uekAcWnhWFJ691CSzeyaw81YVHWYXTes30KLNGqqeGag_Xw',
+                        avatar: avatar
                     },
                 },
             ]
@@ -87,8 +91,8 @@ class ChatViewScreen extends BaseViewScreen {
 
         const text = messages[0].text
 
-        RocketChatHelper.sendMessageToRocket(text)
-        // RocketChatHelper.sendLiveMessageToRocket(text)
+        // RocketChatHelper.sendMessageToRocket(text)
+        RocketChatHelper.sendLiveMessageToRocket(text)
     }
 
     renderMessage(props) {

@@ -88,6 +88,13 @@ class RocketChatHelper {
 
     static sendLiveMessageToRocket = (text) => {
         ddpclient.call(
+            'livechat:getInitialData',             // name of Meteor Method being called
+            [{visitorToken: authToken}],
+            function (result) {   // callback which returns the method call results
+                console.log('called getInitialData done: ' + JSON.stringify(result));
+            });
+
+        ddpclient.call(
             'sendMessageLivechat',             // name of Meteor Method being called
             [{
                 "_id": userId,
