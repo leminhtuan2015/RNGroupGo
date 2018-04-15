@@ -107,7 +107,7 @@ android {
         applicationId "com.leminhtuan.locationsharing"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1803251954
+        versionCode 1804151204
         versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
