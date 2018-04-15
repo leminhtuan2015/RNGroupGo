@@ -18,7 +18,7 @@ import ChatViewContainer from "../../containers/ChatViewContainer";
 
 const StackNavigatorView = StackNavigator(
     {
-        ChatView: {screen: ChatViewContainer},
+        // ChatView: {screen: ChatViewContainer},
         MapView: {screen: MapViewContainer},
         ProfileView: {screen: ProfileViewContainer},
         ContactView: {screen: ContactViewContainer},
